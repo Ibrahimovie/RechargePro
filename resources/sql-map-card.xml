@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+    <select id="cardDao.isCardExist" resultClass="int">
+		<![CDATA[
+        SELECT count(0)
+        FROM card_info
+        WHERE card_number = #card_number#
+        ]]>
+	</select>
+
+    <select id="cardDao.getCardTypeByNum" resultClass="int">
+        <![CDATA[
+        SELECT card_type
+        FROM card_info
+        WHERE card_number = #card_number#
+        ]]>
+    </select>
+
+    <select id="cardDao.getCardPhoneByNum" resultClass="String">
+        <![CDATA[
+        SELECT phone
+        FROM card_info
+        WHERE card_number = #card_number#
+        ]]>
+    </select>
+
+    <select id="cardDao.getLastTimeByNum" resultClass="String">
+        <![CDATA[
+        SELECT last_time
+        FROM card_info
+        WHERE card_number = #card_number#
+        ]]>
+    </select>
+
+    <select id="cardDao.getStartTimeByNum" resultClass="String">
+        <![CDATA[
+        SELECT start_time
+        FROM card_info
+        WHERE card_number = #card_number#
+        ]]>
+    </select>
+
+    <select id="cardDao.getUsernameByCardNum" resultClass="String">
+        <![CDATA[
+        SELECT username
+        FROM card_info
+        WHERE card_number = #card_number#
+        ]]>
+    </select>
+
+
+    <update id="cardDao.updateCardInfo">
+        <![CDATA[
+        update card_info
+        set card_type     = #card_type#,
+            balance       = #balance#,
+            valid_day     = #valid_day#,
+            last_time     = #last_time#,
+            start_time    = #start_time#,
+            recharge_time = #recharge_time#,
+            pay_rate      = #pay_rate#,
+            power_rate    = #power_rate#
+        WHERE card_number = #card_number#
+        ]]>
+    </update>
+
+    <update id="cardDao.updateCardInfoQ10">
+        <![CDATA[
+        update card_info
+        set balance = #balance#
+        WHERE card_number = #card_number#
+        ]]>
+    </update>
+
+
+    <update id="cardDao.updateCardInfoExTime">
+        <![CDATA[
+        update card_info
+        set card_type     = #card_type#,
+            balance       = #balance#,
+            valid_day     = #valid_day#,
+            recharge_time = #recharge_time#,
+            pay_rate      = #pay_rate#,
+            power_rate    = #power_rate#
+        WHERE card_number = #card_number#
+        ]]>
+    </update>
+
+    <insert id="cardDao.addCard">
+        <![CDATA[
+        INSERT INTO card_info
+        (card_number, card_type, balance, valid_day, last_time, start_time, recharge_time, pay_rate, power_rate)
+        VALUES
+            (#card_number#, #card_type#, #balance#, #valid_day#, #last_time#, #start_time#, #recharge_time#,
+             #pay_rate#, #power_rate#)
+        ]]>
+    </insert>
+
+    <insert id="cardDao.addNewCard">
+        <![CDATA[
+        INSERT INTO card_info
+        (card_number, username, phone)
+        VALUES (#card_number#, #username#, #phone#)
+        ]]>
+    </insert>
+
+    <delete id="cardDao.deleteCard">
+        <![CDATA[
+        delete from card_info
+        where card_number = #card_number#
+        ]]>
+    </delete>
+
+
+</sqlMap>

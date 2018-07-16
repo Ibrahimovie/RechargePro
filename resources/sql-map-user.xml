@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+    <resultMap id="getUserInfo" class="java.util.HashMap">
+        <result property="user_id" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="system_password" column="system_password"/>
+        <result property="sector_id" column="sector_id"/>
+        <result property="portrate_id" column="portrate_id"/>
+        <result property="port_id" column="port_id"/>
+        <result property="device_id" column="device_id"/>
+    </resultMap>
+
+    <select id="userDao.isUserExist" resultClass="int">
+		<![CDATA[
+        SELECT count(0)
+        FROM user
+        WHERE username = #username#
+        ]]>
+	</select>
+
+    <select id="userDao.getUserInfo" resultMap="getUserInfo">
+        <![CDATA[
+        SELECT
+            user_id,
+            username,
+            password,
+            system_password,
+            sector_id,
+            portrate_id,
+            port_id,
+            device_id
+        FROM user
+        WHERE username = #username#
+        ]]>
+    </select>
+
+    <update id="userDao.updateSectorOrder">
+        <![CDATA[
+        update user
+        set sector_id = #sector_id#
+        WHERE user_id = #user_id# and username = #username#
+        ]]>
+    </update>
+
+    <update id="userDao.updatePortrateOrder">
+        <![CDATA[
+        update user
+        set portrate_id = #portrate_id#
+        WHERE user_id = #user_id# and username = #username#
+        ]]>
+    </update>
+
+    <update id="userDao.updatePortOrder">
+        <![CDATA[
+        update user
+        set port_id = #port_id#
+        WHERE user_id = #user_id# and username = #username#
+        ]]>
+    </update>
+
+    <update id="userDao.updatePassword">
+        <![CDATA[
+        update user
+        set password = #password#
+        WHERE user_id = #user_id# and username = #username#
+        ]]>
+    </update>
+
+    <update id="userDao.updateUsername">
+        <![CDATA[
+        update user
+        set username = #username#
+        WHERE user_id = #user_id#
+        ]]>
+    </update>
+
+    <update id="userDao.updateSystemPassword">
+        <![CDATA[
+        update user
+        set system_password = #system_password#
+        WHERE user_id = #user_id# and username = #username#
+        ]]>
+    </update>
+
+
+</sqlMap>

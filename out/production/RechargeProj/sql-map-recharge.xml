@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+    <resultMap id="getRechargeHis" class="java.util.HashMap">
+        <result property="card_number" column="card_number"/>
+        <result property="phone" column="phone"/>
+        <result property="username" column="username"/>
+        <result property="card_type" column="card_type"/>
+        <result property="now_time" column="now_time"/>
+        <result property="top_up" column="top_up"/>
+        <result property="balance" column="balance"/>
+        <result property="valid_day" column="valid_day"/>
+        <result property="recharge_time" column="recharge_time"/>
+        <result property="pay_rate" column="pay_rate"/>
+        <result property="power_rate" column="power_rate"/>
+    </resultMap>
+
+    <insert id="rechargeDao.addRechargeHis">
+        <![CDATA[
+        INSERT INTO recharge_his
+        (card_number, username, phone, card_type, balance, top_up, valid_day, recharge_time, pay_rate, power_rate, now_time)
+        VALUES
+            (#card_number#, #username#, #phone#, #card_type#, #balance#, #top_up#, #valid_day#, #recharge_time#,
+                #pay_rate#, #power_rate#, #now_time#)
+        ]]>
+    </insert>
+
+    <select id="rechargeDao.getRechargeCount" resultClass="int">
+        <![CDATA[
+        select count(recharge_id)
+        from recharge_his
+        ]]>
+    </select>
+
+    <select id="rechargeDao.getRechargeCountRangeWithPhone" resultClass="int">
+        <![CDATA[
+        select count(recharge_id)
+        from recharge_his
+        where now_time >= #start_time# and now_time <= #end_time# and phone like #phone#
+        ]]>
+    </select>
+
+    <select id="rechargeDao.getRechargeCountRangeWithoutPhone" resultClass="int">
+        <![CDATA[
+        select count(recharge_id)
+        from recharge_his
+        where now_time >= #start_time# and now_time <= #end_time#
+        ]]>
+    </select>
+
+
+    <select id="rechargeDao.getRechargeHisAll" resultMap="getRechargeHis">
+        <![CDATA[
+        select
+            card_number,
+            phone,
+            username,
+            card_type,
+            now_time,
+            top_up,
+            balance,
+            valid_day,
+            recharge_time,
+            pay_rate,
+            power_rate
+        from recharge_his
+        order by now_time
+            desc
+        ]]>
+    </select>
+
+    <select id="rechargeDao.getRechargeHisRangeWithPhone" resultMap="getRechargeHis">
+        <![CDATA[
+        select
+            card_number,
+            phone,
+            username,
+            card_type,
+            now_time,
+            top_up,
+            balance,
+            valid_day,
+            recharge_time,
+            pay_rate,
+            power_rate
+        from recharge_his
+        where now_time >= #start_time# and now_time <= #end_time# and phone like #phone#
+        order by now_time
+            desc
+        ]]>
+    </select>
+
+    <select id="rechargeDao.getRechargeHisRangeWithoutPhone" resultMap="getRechargeHis">
+        <![CDATA[
+        select
+            card_number,
+            phone,
+            username,
+            card_type,
+            now_time,
+            top_up,
+            balance,
+            valid_day,
+            recharge_time,
+            pay_rate,
+            power_rate
+        from recharge_his
+        where now_time >= #start_time# and now_time <= #end_time#
+        order by now_time
+            desc
+        ]]>
+    </select>
+
+
+</sqlMap>

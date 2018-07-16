@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="rechargeDB">
+  <database-model serializer="dbm" rdbms="SQLITE" format-version="4.9">
+    <root id="1">
+      <ServerVersion>3.20.1</ServerVersion>
+    </root>
+    <schema id="2" parent="1" name="main">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <collation id="3" parent="1" name="BINARY"/>
+    <collation id="4" parent="1" name="NOCASE"/>
+    <collation id="5" parent="1" name="RTRIM"/>
+    <table id="6" parent="2" name="card_info"/>
+    <table id="7" parent="2" name="recharge_his"/>
+    <table id="8" parent="2" name="sqlite_master">
+      <System>1</System>
+    </table>
+    <table id="9" parent="2" name="sqlite_sequence">
+      <System>1</System>
+    </table>
+    <table id="10" parent="2" name="user"/>
+    <column id="11" parent="6" name="card_id">
+      <Position>1</Position>
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="12" parent="6" name="card_number">
+      <Position>2</Position>
+      <DataType>varchar|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>-1</DefaultExpression>
+    </column>
+    <column id="13" parent="6" name="card_type">
+      <Position>3</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="14" parent="6" name="phone">
+      <Position>4</Position>
+      <DataType>varchar|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>-1</DefaultExpression>
+    </column>
+    <column id="15" parent="6" name="balance">
+      <Position>5</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="16" parent="6" name="valid_day">
+      <Position>6</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="17" parent="6" name="last_time">
+      <Position>7</Position>
+      <DataType>varchar|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>-1</DefaultExpression>
+    </column>
+    <column id="18" parent="6" name="start_time">
+      <Position>8</Position>
+      <DataType>varchar|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>-1</DefaultExpression>
+    </column>
+    <column id="19" parent="6" name="recharge_time">
+      <Position>9</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="20" parent="6" name="pay_rate">
+      <Position>10</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="21" parent="6" name="power_rate">
+      <Position>11</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="22" parent="6" name="username">
+      <Position>12</Position>
+      <DataType>varchar|0s</DataType>
+      <DefaultExpression>&apos;-&apos;</DefaultExpression>
+    </column>
+    <index id="23" parent="6" name="card_info_card_number_uindex">
+      <ColNames>card_number</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="24" parent="6">
+      <ColNames>card_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="25" parent="7" name="recharge_id">
+      <Position>1</Position>
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="26" parent="7" name="card_number">
+      <Position>2</Position>
+      <DataType>varchar|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;-1&apos;</DefaultExpression>
+    </column>
+    <column id="27" parent="7" name="card_type">
+      <Position>3</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>-1</DefaultExpression>
+    </column>
+    <column id="28" parent="7" name="balance">
+      <Position>4</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>-1</DefaultExpression>
+    </column>
+    <column id="29" parent="7" name="valid_day">
+      <Position>5</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>-1</DefaultExpression>
+    </column>
+    <column id="30" parent="7" name="recharge_time">
+      <Position>6</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>-1</DefaultExpression>
+    </column>
+    <column id="31" parent="7" name="pay_rate">
+      <Position>7</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>-1</DefaultExpression>
+    </column>
+    <column id="32" parent="7" name="power_rate">
+      <Position>8</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>-1</DefaultExpression>
+    </column>
+    <column id="33" parent="7" name="now_time">
+      <Position>9</Position>
+      <DataType>varchar|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;-1&apos;</DefaultExpression>
+    </column>
+    <column id="34" parent="7" name="top_up">
+      <Position>10</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="35" parent="7" name="username">
+      <Position>11</Position>
+      <DataType>varchar|0s</DataType>
+      <DefaultExpression>&apos;-&apos;</DefaultExpression>
+    </column>
+    <column id="36" parent="7" name="phone">
+      <Position>12</Position>
+      <DataType>String|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;-&apos;</DefaultExpression>
+    </column>
+    <key id="37" parent="7">
+      <ColNames>recharge_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="38" parent="8" name="type">
+      <Position>1</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="39" parent="8" name="name">
+      <Position>2</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="40" parent="8" name="tbl_name">
+      <Position>3</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="41" parent="8" name="rootpage">
+      <Position>4</Position>
+      <DataType>integer|0s</DataType>
+    </column>
+    <column id="42" parent="8" name="sql">
+      <Position>5</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="43" parent="9" name="name">
+      <Position>1</Position>
+    </column>
+    <column id="44" parent="9" name="seq">
+      <Position>2</Position>
+    </column>
+    <column id="45" parent="10" name="user_id">
+      <Position>1</Position>
+      <DataType>integer|0s</DataType>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="46" parent="10" name="username">
+      <Position>2</Position>
+      <DataType>nchar|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="47" parent="10" name="password">
+      <Position>3</Position>
+      <DataType>char|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="48" parent="10" name="system_password">
+      <Position>4</Position>
+      <DataType>char|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="49" parent="10" name="portrate_id">
+      <Position>5</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="50" parent="10" name="port_id">
+      <Position>6</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="51" parent="10" name="device_id">
+      <Position>7</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="52" parent="10" name="sector_id">
+      <Position>8</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>2</DefaultExpression>
+    </column>
+    <index id="53" parent="10" name="user_username_uindex">
+      <ColNames>username</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="54" parent="10">
+      <ColNames>user_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+  </database-model>
+</dataSource>
