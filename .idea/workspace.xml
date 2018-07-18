@@ -7,17 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1b3df59-7c25-4711-b592-3ada313821af" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ext/RXTXcomm.jar" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ext/RXTXcomm.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ext/rxtxParallel.dll" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ext/rxtxParallel.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ext/rxtxSerial.dll" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ext/rxtxSerial.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/swing/RechargeFrame$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/swing/RechargeFrame$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/swing/RechargeFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/swing/RechargeFrame.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rechargeDB" beforeDir="false" afterPath="$PROJECT_DIR$/rechargeDB" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sqlite/SqliteExecution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sqlite/SqliteExecution.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/swing/QueryToRechargeFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/swing/QueryToRechargeFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/swing/RechargeFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/swing/RechargeFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/swing/QueryToRechargeFrame$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/swing/QueryToRechargeFrame$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/swing/QueryToRechargeFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/swing/QueryToRechargeFrame.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -105,8 +97,8 @@
       <file leaf-file-name="QueryToRechargeFrame.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/swing/QueryToRechargeFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="136" column="49" lean-forward="true" selection-start-line="136" selection-start-column="49" selection-end-line="136" selection-end-column="49" />
+            <state relative-caret-position="79">
+              <caret line="133" column="15" selection-start-line="133" selection-start-column="15" selection-end-line="133" selection-end-column="15" />
               <folding>
                 <element signature="e#13236#13400#0" expanded="true" />
                 <element signature="e#13399#13400#0" expanded="true" />
@@ -462,16 +454,23 @@
       <workItem from="1531819421744" duration="2367000" />
       <workItem from="1531822624763" duration="495000" />
       <workItem from="1531823135929" duration="2320000" />
-      <workItem from="1531879556999" duration="10880000" />
+      <workItem from="1531879556999" duration="11161000" />
     </task>
+    <task id="LOCAL-00001" summary="充值默认输入">
+      <created>1531906721653</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1531906721653</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="80373000" />
+    <option name="totallyTimeSpent" value="80654000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -489,7 +488,7 @@
       <window_info id="Capture Tool" order="2" />
       <window_info anchor="bottom" id="Database Console" order="8" weight="0.32897604" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.14658849" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14658849" />
       <window_info anchor="right" id="Database" order="3" weight="0.17377399" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -510,6 +509,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="充值默认输入" />
+    <option name="LAST_COMMIT_MESSAGE" value="充值默认输入" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/service/Service.java">
@@ -731,6 +734,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6850">
           <caret line="292" column="48" selection-start-line="292" selection-start-column="48" selection-end-line="292" selection-end-column="48" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -830,8 +836,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/swing/QueryToRechargeFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="136" column="49" lean-forward="true" selection-start-line="136" selection-start-column="49" selection-end-line="136" selection-end-column="49" />
+        <state relative-caret-position="79">
+          <caret line="133" column="15" selection-start-line="133" selection-start-column="15" selection-end-line="133" selection-end-column="15" />
           <folding>
             <element signature="e#13236#13400#0" expanded="true" />
             <element signature="e#13399#13400#0" expanded="true" />
