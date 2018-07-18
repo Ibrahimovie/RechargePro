@@ -36,6 +36,7 @@ public class QueryToRechargeFrame extends JFrame {
     private JTextField rechargeText;
     private JTextField payRateText;
     private JTextField powerRateText;
+    private DecimalFormat df;
 
     public QueryToRechargeFrame(RechargeFrame frame, String cardNum, int cardType, int deviceType, int lastTime, int startTime, int isReturn,
                                 int formerValidDay, int formerBalance, int formerRechargeTime, int formerPayRate, int formerPowerRate) {
@@ -51,6 +52,7 @@ public class QueryToRechargeFrame extends JFrame {
         this.formerRechargeTime = formerRechargeTime;
         this.formerPayRate = formerPayRate;
         this.formerPowerRate = formerPowerRate;
+        df = new DecimalFormat("0.0");
         initComponents(cardNum, cardType);
         this.setSize(510, 390);
         this.setTitle("充值界面");
@@ -69,7 +71,8 @@ public class QueryToRechargeFrame extends JFrame {
                 int money = (int) (Double.parseDouble(moneyInput) * 10.0);
                 if (money + formerBalance > 50000) {
                     JOptionPane.showMessageDialog(null, "账户余额不得超过5000元！");
-                    moneyText.setText("");
+                    moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                    moneyText.requestFocus();
                 } else {
                     SerialPort serialPort = PortManager.getSerialPort();
                     User user = UserManager.getUser();
@@ -97,27 +100,27 @@ public class QueryToRechargeFrame extends JFrame {
                     this.dispose();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
-                moneyText.setText("");
+                JOptionPane.showMessageDialog(null, "请按照正确格式输入充值金额，且最多一位小数！");
+                moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
                 moneyText.requestFocus();
             }
         } else if (cardType == 3) {
             String moneyInput = moneyText.getText();
-            String validDayInput = validText.getText();
-            String rechargeTimeInput = rechargeText.getText();
-            String payRateInput = payRateText.getText();
-            String powerRateInput = powerRateText.getText();
+            String validDayInput = (validText.getText()==null||"".equals(validText.getText().trim())||validText.getText().contains("当前"))? String.valueOf(formerValidDay) :validText.getText();
+            String rechargeTimeInput = (rechargeText.getText()==null||"".equals(rechargeText.getText().trim())||rechargeText.getText().contains("当前"))?df.format(formerRechargeTime / 10.0f):rechargeText.getText();
+            String payRateInput = (payRateText.getText()==null||"".equals(payRateText.getText().trim())||payRateText.getText().contains("当前"))?df.format(formerPayRate / 10.0f):payRateText.getText();
+            String powerRateInput = (powerRateText.getText()==null||"".equals(powerRateText.getText().trim())||powerRateText.getText().contains("当前"))?df.format(formerPowerRate / 100.0f):powerRateText.getText();
             int money, validDay, rechargeTime, payRate, powerRate;
             if (pattern.matcher(moneyInput).matches() && pattern.matcher(rechargeTimeInput).matches() && pattern.matcher(payRateInput).matches()
                     && pattern.matcher(validDayInput).matches() && pattern.matcher(powerRateInput).matches()) {
                 money = (int) (Double.parseDouble(moneyInput) * 10.0);
                 if (money + formerBalance > 50000) {
                     JOptionPane.showMessageDialog(null, "账户余额不得超过5000元！");
-                    moneyText.setText("");
-                    validText.setText("");
-                    rechargeText.setText("");
-                    payRateText.setText("");
-                    powerRateText.setText("");
+                    moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                    validText.addFocusListener(new JTextFieldHintListener(validText, "当前：" + formerValidDay));
+                    rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                    payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                    powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
                     moneyText.requestFocus();
                 } else {
                     validDay = (int) Double.parseDouble(validDayInput);
@@ -126,11 +129,11 @@ public class QueryToRechargeFrame extends JFrame {
                     powerRate = (int) (Double.parseDouble(powerRateInput) * 100.0);
                     if (validDay > 200 || rechargeTime > 255 || payRate > 255 || powerRate > 200) {
                         JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
-                        moneyText.setText("");
-                        validText.setText("");
-                        rechargeText.setText("");
-                        payRateText.setText("");
-                        powerRateText.setText("");
+                        moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                        validText.addFocusListener(new JTextFieldHintListener(validText, "当前：" + formerValidDay));
+                        rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                        payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                        powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
                         moneyText.requestFocus();
                     } else {
                         SerialPort serialPort = PortManager.getSerialPort();
@@ -170,26 +173,26 @@ public class QueryToRechargeFrame extends JFrame {
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
-                moneyText.setText("");
-                validText.setText("");
-                rechargeText.setText("");
-                payRateText.setText("");
-                powerRateText.setText("");
+                moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                validText.addFocusListener(new JTextFieldHintListener(validText, "当前：" + formerValidDay));
+                rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
                 moneyText.requestFocus();
             }
         } else {
             String moneyInput = moneyText.getText();
-            String rechargeTimeInput = rechargeText.getText();
-            String payRateInput = payRateText.getText();
-            String powerRateInput = powerRateText.getText();
+            String rechargeTimeInput = (rechargeText.getText()==null||"".equals(rechargeText.getText().trim())||rechargeText.getText().contains("当前"))?df.format(formerRechargeTime / 10.0f):rechargeText.getText();
+            String payRateInput = (payRateText.getText()==null||"".equals(payRateText.getText().trim())||payRateText.getText().contains("当前"))?df.format(formerPayRate / 10.0f):payRateText.getText();
+            String powerRateInput = (powerRateText.getText()==null||"".equals(powerRateText.getText().trim())||powerRateText.getText().contains("当前"))?df.format(formerPowerRate / 100.0f):powerRateText.getText();
             if (pattern.matcher(moneyInput).matches() && pattern.matcher(rechargeTimeInput).matches() && pattern.matcher(payRateInput).matches() && pattern.matcher(powerRateInput).matches()) {
                 int money = (int) (Double.parseDouble(moneyInput) * 10.0);
                 if (money + formerBalance > 50000) {
                     JOptionPane.showMessageDialog(null, "账户余额不得超过5000元！");
-                    moneyText.setText("");
-                    rechargeText.setText("");
-                    payRateText.setText("");
-                    powerRateText.setText("");
+                    moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                    rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                    payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                    powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
                     moneyText.requestFocus();
                 } else {
                     int rechargeTime = (int) (Double.parseDouble(rechargeTimeInput) * 10.0);
@@ -197,10 +200,10 @@ public class QueryToRechargeFrame extends JFrame {
                     int powerRate = (int) (Double.parseDouble(powerRateInput) * 100.0);
                     if (rechargeTime > 255 || payRate > 255 || powerRate > 200) {
                         JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
-                        moneyText.setText("");
-                        rechargeText.setText("");
-                        payRateText.setText("");
-                        powerRateText.setText("");
+                        moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                        rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                        payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                        powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
                         moneyText.requestFocus();
                     } else {
                         SerialPort serialPort = PortManager.getSerialPort();
@@ -240,10 +243,10 @@ public class QueryToRechargeFrame extends JFrame {
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
-                moneyText.setText("");
-                rechargeText.setText("");
-                payRateText.setText("");
-                powerRateText.setText("");
+                moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
                 moneyText.requestFocus();
             }
         }
@@ -263,7 +266,6 @@ public class QueryToRechargeFrame extends JFrame {
     }
 
     private void initComponents(String cardNum, int cardType) {
-        DecimalFormat df = new DecimalFormat("0.0");
         JButton confirmButton = new JButton();
         JButton cancelButton = new JButton();
         JLabel label1 = new JLabel();
@@ -284,27 +286,39 @@ public class QueryToRechargeFrame extends JFrame {
 
         JLabel cardNumLabel = new JLabel();
         cardNumLabel.setText("卡号 ：");
-        cardNumLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 20));
+        cardNumLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 18));
         contentPane.add(cardNumLabel);
-        cardNumLabel.setBounds(new Rectangle(new Point(35, 40), cardNumLabel.getPreferredSize()));
+        cardNumLabel.setBounds(new Rectangle(new Point(20, 40), cardNumLabel.getPreferredSize()));
 
         JLabel cardNumText = new JLabel();
         cardNumText.setText(cardNum);
         cardNumText.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
         contentPane.add(cardNumText);
-        cardNumText.setBounds(new Rectangle(new Point(110, 46), cardNumText.getPreferredSize()));
+        cardNumText.setBounds(new Rectangle(new Point(80, 46), cardNumText.getPreferredSize()));
+
+        JLabel balanceLabel = new JLabel();
+        balanceLabel.setText("余额 ：");
+        balanceLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 18));
+        contentPane.add(balanceLabel);
+        balanceLabel.setBounds(new Rectangle(new Point(180, 40), balanceLabel.getPreferredSize()));
+
+        JLabel balanceText = new JLabel();
+        balanceText.setText(df.format(formerBalance/10.0f));
+        balanceText.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
+        contentPane.add(balanceText);
+        balanceText.setBounds(new Rectangle(new Point(240, 46), balanceText.getPreferredSize()));
 
         JLabel cardTypeLabel = new JLabel();
         cardTypeLabel.setText("类型 ： ");
-        cardTypeLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 20));
+        cardTypeLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 18));
         contentPane.add(cardTypeLabel);
-        cardTypeLabel.setBounds(new Rectangle(new Point(230, 40), cardTypeLabel.getPreferredSize()));
+        cardTypeLabel.setBounds(new Rectangle(new Point(320, 40), cardTypeLabel.getPreferredSize()));
 
         JLabel cardTypeText = new JLabel();
         cardTypeText.setText(Utils.getStringCardType(cardType));
         cardTypeText.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
         contentPane.add(cardTypeText);
-        cardTypeText.setBounds(new Rectangle(new Point(300, 45), cardTypeText.getPreferredSize()));
+        cardTypeText.setBounds(new Rectangle(new Point(380, 45), cardTypeText.getPreferredSize()));
 
         JLabel pleaseLabel = new JLabel();
         pleaseLabel.setText("请输入 ： ");
