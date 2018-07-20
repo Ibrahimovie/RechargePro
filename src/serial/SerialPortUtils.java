@@ -412,7 +412,7 @@ public class SerialPortUtils {
                                                                 Object[] obj = new Object[]{"Q20(电子钱包A)", "Q20(电子钱包B)", "Q20(包月卡)"};
                                                                 String cardTypeSelected = (String) JOptionPane.showInputDialog(null, "检测到该卡为新卡，请设置卡的类型:\n", null, JOptionPane.PLAIN_MESSAGE, null, obj, "Q20(电子钱包A)");
                                                                 if (cardTypeSelected != null) {
-                                                                    System.out.println("caedTypeSelected : " + cardTypeSelected);
+                                                                    System.out.println("cardTypeSelected : " + cardTypeSelected);
                                                                     int cardType = Utils.getIntCardType(cardTypeSelected), lastTime = 0, startTime = 0, isReturn = 0,
                                                                             formerValidDay = 0, formerBalance = 0, formerRechargeTime = 0, formerPayRate = 0, formerPowerRate = 0;
                                                                     if (cardType == 1) {
@@ -524,7 +524,8 @@ public class SerialPortUtils {
                                                             if ("-1".equals(phone)) {
                                                                 phone = "-";
                                                             }
-                                                            ServiceImpl.getInstance().addRechargeHis(cardNum, username, phone, card.getCardType(), balance, card.getTopUp(), card.getValidDay(), card.getRechargeTime(), card.getPayRate(), card.getPowerRate(), nowTime);
+                                                            ServiceImpl.getInstance().addRechargeHis(cardNum, username, phone, card.getCardType(), balance, card.getTopUp(),
+                                                                    card.getValidDay(), card.getRechargeTime(), card.getPayRate(), card.getPowerRate(), nowTime, UserManager.getUser().getUserName());
                                                             frame.balanceText.setText(df.format(balance / 10.0f));
                                                             frame.cardNumText.setText(cardNum);
                                                             frame.cardTypeText.setText(Utils.getStringCardType(card.getCardType()));

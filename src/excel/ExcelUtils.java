@@ -12,16 +12,17 @@ public class ExcelUtils {
         }
         HSSFSheet sheet = wb.createSheet(sheetName);
         sheet.setColumnWidth(0, 3000);
-        sheet.setColumnWidth(1, 3256);
-        sheet.setColumnWidth(2, 3512);
-        sheet.setColumnWidth(3, 4024);
-        sheet.setColumnWidth(4, 5048);
-        sheet.setColumnWidth(5, 2744);
+        sheet.setColumnWidth(1, 3000);
+        sheet.setColumnWidth(2, 3256);
+        sheet.setColumnWidth(3, 3512);
+        sheet.setColumnWidth(4, 4024);
+        sheet.setColumnWidth(5, 5048);
         sheet.setColumnWidth(6, 2744);
         sheet.setColumnWidth(7, 2744);
         sheet.setColumnWidth(8, 2744);
         sheet.setColumnWidth(9, 2744);
         sheet.setColumnWidth(10, 2744);
+        sheet.setColumnWidth(11, 2744);
         HSSFRow row = sheet.createRow(0);
         HSSFCellStyle style = wb.createCellStyle();
         style.setAlignment((short) 2);

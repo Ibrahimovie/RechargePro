@@ -27,7 +27,7 @@ public class LoginPasswdSettingFrame extends JFrame {
         this.user = user;
         this.rechargeFrame = rechargeFrame;
         this.setSize(305, 350);
-        this.setTitle("登录帐号设置");
+        this.setTitle("登录账号设置");
         this.getRootPane().setDefaultButton(confirmButton);
         Image icon = Toolkit.getDefaultToolkit().getImage("resources/dk_logo.png");
         this.setIconImage(icon);
@@ -35,53 +35,99 @@ public class LoginPasswdSettingFrame extends JFrame {
     }
 
     private void confirmButtonActionPerformed(ActionEvent e) {
-        String username = this.userText.getText();
-        if (formerPasswdText.getPassword() != null) {
-            String formerPassword = String.valueOf(formerPasswdText.getPassword());
-            if (formerPassword.equals(user.getPassword())) {
-                if (newPasswdText.getPassword() != null && checkPasswdText.getPassword() != null) {
-                    String newPassword = String.valueOf(newPasswdText.getPassword());
-                    String checkPassword = String.valueOf(checkPasswdText.getPassword());
-                    if (!"".equals(newPassword.trim()) && !"".equals(checkPassword.trim())) {
-                        if (newPassword.equals(checkPassword)) {
-                            if (username != null && !"".equals(username.trim())) {
-                                user.setUserName(username);
-                                ServiceImpl.getInstance().updateUsername(user.getUserId(), username);
+        if (user.getIsAdmin() == 1) {
+            if (formerPasswdText.getPassword() != null) {
+                String formerPassword = String.valueOf(formerPasswdText.getPassword());
+                if (formerPassword.equals(user.getPassword())) {
+                    if (newPasswdText.getPassword() != null && checkPasswdText.getPassword() != null) {
+                        String newPassword = String.valueOf(newPasswdText.getPassword());
+                        String checkPassword = String.valueOf(checkPasswdText.getPassword());
+                        if (!"".equals(newPassword.trim()) && !"".equals(checkPassword.trim())) {
+                            if (newPassword.equals(checkPassword)) {
+                                user.setPassword(newPassword);
+                                ServiceImpl.getInstance().updatePassword(user.getUserId(), user.getUserName(), newPassword);
+                                JOptionPane.showMessageDialog(null, "登录密码设置成功！请重新登录");
+                                this.dispose();
+                                UserManager.removeUser();
+                                PortManager.removePort();
+                                rechargeFrame.dispose();
+                                FrameManager.removeFrame("recharge");
+                                new LoginFrame();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "密码输入不一致！");
+                                newPasswdText.setText("");
+                                checkPasswdText.setText("");
+                                newPasswdText.requestFocus();
                             }
-                            user.setPassword(newPassword);
-                            ServiceImpl.getInstance().updatePassword(user.getUserId(), user.getUserName(), newPassword);
-                            JOptionPane.showMessageDialog(null, "登录密码设置成功！请重新登录");
-                            this.dispose();
-                            UserManager.removeUser();
-                            PortManager.removePort();
-                            rechargeFrame.dispose();
-                            FrameManager.removeFrame("recharge");
-                            new LoginFrame();
                         } else {
-                            JOptionPane.showMessageDialog(null, "密码输入不一致！");
+                            JOptionPane.showMessageDialog(null, "请输入正确的密码格式！");
                             newPasswdText.setText("");
                             checkPasswdText.setText("");
                             newPasswdText.requestFocus();
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "请输入正确的密码格式！");
-                        newPasswdText.setText("");
-                        checkPasswdText.setText("");
-                        newPasswdText.requestFocus();
+                        JOptionPane.showMessageDialog(null, "请输入新密码！");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "请输入新密码！");
+                    JOptionPane.showMessageDialog(null, "原密码错误！");
+                    formerPasswdText.setText("");
+                    newPasswdText.setText("");
+                    checkPasswdText.setText("");
+                    formerPasswdText.requestFocus();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "原密码错误！");
-                formerPasswdText.setText("");
-                newPasswdText.setText("");
-                checkPasswdText.setText("");
-                formerPasswdText.requestFocus();
+                JOptionPane.showMessageDialog(null, "请输入原密码！");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "请输入原密码！");
+            String username = userText.getText();
+            if (formerPasswdText.getPassword() != null) {
+                String formerPassword = String.valueOf(formerPasswdText.getPassword());
+                if (formerPassword.equals(user.getPassword())) {
+                    if (newPasswdText.getPassword() != null && checkPasswdText.getPassword() != null) {
+                        String newPassword = String.valueOf(newPasswdText.getPassword());
+                        String checkPassword = String.valueOf(checkPasswdText.getPassword());
+                        if (!"".equals(newPassword.trim()) && !"".equals(checkPassword.trim())) {
+                            if (newPassword.equals(checkPassword)) {
+                                if (username != null && !"".equals(username.trim()) && !"选填".equals(username)) {
+                                    user.setUserName(username);
+                                    ServiceImpl.getInstance().updateUsername(user.getUserId(), username);
+                                }
+                                user.setPassword(newPassword);
+                                ServiceImpl.getInstance().updatePassword(user.getUserId(), user.getUserName(), newPassword);
+                                JOptionPane.showMessageDialog(null, "登录密码设置成功！请重新登录");
+                                this.dispose();
+                                UserManager.removeUser();
+                                PortManager.removePort();
+                                rechargeFrame.dispose();
+                                FrameManager.removeFrame("recharge");
+                                new LoginFrame();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "密码输入不一致！");
+                                newPasswdText.setText("");
+                                checkPasswdText.setText("");
+                                newPasswdText.requestFocus();
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "请输入正确的密码格式！");
+                            newPasswdText.setText("");
+                            checkPasswdText.setText("");
+                            newPasswdText.requestFocus();
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "请输入新密码！");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "原密码错误！");
+                    formerPasswdText.setText("");
+                    newPasswdText.setText("");
+                    checkPasswdText.setText("");
+                    formerPasswdText.requestFocus();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "请输入原密码！");
+            }
         }
+
     }
 
     private void cancelButtonActionPerformed(ActionEvent e) {
@@ -99,9 +145,16 @@ public class LoginPasswdSettingFrame extends JFrame {
         contentPane.add(label4);
         label4.setBounds(new Rectangle(new Point(30, 50), label4.getPreferredSize()));
 
+
         userText = new JTextField();
         contentPane.add(userText);
         userText.setBounds(110, 45, 130, userText.getPreferredSize().height);
+        if (user.getIsAdmin() == 1) {
+            userText.setEditable(false);
+        } else {
+            userText.setEditable(true);
+            userText.addFocusListener(new JTextFieldHintListener(userText, "选填"));
+        }
 
         JLabel label1 = new JLabel();
         label1.setText("原密码 ：");
@@ -142,6 +195,8 @@ public class LoginPasswdSettingFrame extends JFrame {
         confirmButton.setBounds(75, 235, 70, 30);
         confirmButton.setBackground(new Color(180, 205, 205));
         confirmButton.setBorder(BorderFactory.createRaisedBevelBorder());
+
+        newPasswdText.requestFocus();
 
         JButton cancelButton = new JButton();
         cancelButton.setText("取消");

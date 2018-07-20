@@ -32,6 +32,7 @@ public class PortrateFrame extends JFrame {
         int selectOrder = comboBox1.getSelectedIndex();
         user.setPortrateOrder(selectOrder);
         ServiceImpl.getInstance().updatePortrateOrder(user.getUserId(), user.getUserName(), selectOrder);
+        ServiceImpl.getInstance().updateSubPortrateOrder(selectOrder);
         JOptionPane.showMessageDialog(null, "设置成功！");
         this.dispose();
     }

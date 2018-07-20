@@ -16,15 +16,16 @@
         <result property="recharge_time" column="recharge_time"/>
         <result property="pay_rate" column="pay_rate"/>
         <result property="power_rate" column="power_rate"/>
+        <result property="operator" column="operator"/>
     </resultMap>
 
     <insert id="rechargeDao.addRechargeHis">
         <![CDATA[
         INSERT INTO recharge_his
-        (card_number, username, phone, card_type, balance, top_up, valid_day, recharge_time, pay_rate, power_rate, now_time)
+        (card_number, username, phone, card_type, balance, top_up, valid_day, recharge_time, pay_rate, power_rate, now_time, operator)
         VALUES
             (#card_number#, #username#, #phone#, #card_type#, #balance#, #top_up#, #valid_day#, #recharge_time#,
-                #pay_rate#, #power_rate#, #now_time#)
+                            #pay_rate#, #power_rate#, #now_time#, #operator#)
         ]]>
     </insert>
 
@@ -41,14 +42,25 @@
         from recharge_his
         where now_time >= #start_time# and now_time <= #end_time# and phone like #phone#
         ]]>
+        <dynamic>
+            <isNotEmpty prepend="and" property="operator">
+                operator=#operator#
+            </isNotEmpty>
+        </dynamic>
     </select>
 
     <select id="rechargeDao.getRechargeCountRangeWithoutPhone" resultClass="int">
         <![CDATA[
         select count(recharge_id)
         from recharge_his
-        where now_time >= #start_time# and now_time <= #end_time#
+        where  now_time >= #start_time# and now_time <= #end_time#
         ]]>
+        <dynamic>
+            <isNotEmpty prepend="and" property="operator">
+                operator=#operator#
+            </isNotEmpty>
+        </dynamic>
+
     </select>
 
 
@@ -65,7 +77,8 @@
             valid_day,
             recharge_time,
             pay_rate,
-            power_rate
+            power_rate,
+            operator
         from recharge_his
         order by now_time
             desc
@@ -85,12 +98,20 @@
             valid_day,
             recharge_time,
             pay_rate,
-            power_rate
+            power_rate,
+            operator
         from recharge_his
         where now_time >= #start_time# and now_time <= #end_time# and phone like #phone#
-        order by now_time
-            desc
         ]]>
+
+        <dynamic>
+            <isNotEmpty prepend="and" property="operator">
+                operator=#operator#
+            </isNotEmpty>
+        </dynamic>
+
+        order by now_time
+        desc
     </select>
 
     <select id="rechargeDao.getRechargeHisRangeWithoutPhone" resultMap="getRechargeHis">
@@ -106,12 +127,20 @@
             valid_day,
             recharge_time,
             pay_rate,
-            power_rate
+            power_rate,
+            operator
         from recharge_his
         where now_time >= #start_time# and now_time <= #end_time#
-        order by now_time
-            desc
         ]]>
+
+        <dynamic>
+            <isNotEmpty prepend="and" property="operator">
+                operator = #operator#
+            </isNotEmpty>
+        </dynamic>
+
+        order by now_time
+        desc
     </select>
 
 

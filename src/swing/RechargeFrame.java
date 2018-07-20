@@ -49,7 +49,7 @@ public class RechargeFrame extends JFrame {
         this.setSize(1000, 680);
         Image icon = Toolkit.getDefaultToolkit().getImage("resources/dk_logo.png");
         this.setIconImage(icon);
-        this.setTitle("得康充值系统 v1.0");
+        this.setTitle("得康充值系统 v1.5");
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         FrameManager.addFrame("recharge", this);
@@ -61,7 +61,24 @@ public class RechargeFrame extends JFrame {
     }
 
     private void loginPasswdMenuItemActionPerformed(ActionEvent e) {
-        new SystemPasswdFrame(user, this, new LoginPasswdSettingFrame(user, this));
+        if (user.getIsAdmin() == 1) {
+            new SystemPasswdFrame(user, this, new LoginPasswdSettingFrame(user, this));
+            this.setEnabled(false);
+        } else {
+            LoginPasswdSettingFrame frame = new LoginPasswdSettingFrame(user, this);
+            frame.setVisible(true);
+        }
+    }
+
+    private void addAccountMenuItemActionPerformed(ActionEvent e) {
+        new SystemPasswdFrame(user, this, new AddAccountFrame(user));
+        this.setEnabled(false);
+    }
+
+    private void accountsManageMenuItemActionPerformed(ActionEvent e) {
+        int n = ServiceImpl.getInstance().getSubAccountsNum();
+        List<Map<String, Object>> subAccounts = ServiceImpl.getInstance().getSubAccountsInfo();
+        new SystemPasswdFrame(user, this, new AccountManageFrame(user, n, subAccounts));
         this.setEnabled(false);
     }
 
@@ -89,6 +106,7 @@ public class RechargeFrame extends JFrame {
             System.exit(0);
         }
     }
+
 
     private void logoutButtonActionPerformed(ActionEvent e) {
         try {
@@ -167,6 +185,7 @@ public class RechargeFrame extends JFrame {
             String selectPort = (String) portChooser.getSelectedItem();
             user.setPortOrder(portChooser.getSelectedIndex());
             ServiceImpl.getInstance().updatePortOrder(user.getUserId(), user.getUserName(), portChooser.getSelectedIndex());
+            ServiceImpl.getInstance().updateSubPortOrder(portChooser.getSelectedIndex());
             PortManager.removePort();
             int portRate = Utils.getPortrate(user.getPortrateOrder());
             try {
@@ -182,7 +201,6 @@ public class RechargeFrame extends JFrame {
     }
 
     private void initComponents() {
-
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -208,11 +226,16 @@ public class RechargeFrame extends JFrame {
         settingMenu.setText("系统设置");
         settingMenu.setFont(new Font("Dialog", Font.PLAIN, 12));
 
-        JMenuItem sectorMenuItem = new JMenuItem();
-        sectorMenuItem.setText("扇区设置");
-        sectorMenuItem.setFont(new Font("Dialog", Font.PLAIN, 12));
-        sectorMenuItem.addActionListener(this::sectorMenuItemActionPerformed);
-        settingMenu.add(sectorMenuItem);
+        JMenuItem accountsManageMenuItem = new JMenuItem();
+        accountsManageMenuItem.setText("多账号管理");
+        accountsManageMenuItem.setFont(new Font("Dialog", Font.PLAIN, 12));
+        accountsManageMenuItem.addActionListener(this::accountsManageMenuItemActionPerformed);
+        settingMenu.add(accountsManageMenuItem);
+        if (user.getIsAdmin() == 0) {
+            accountsManageMenuItem.setEnabled(false);
+        } else {
+            accountsManageMenuItem.setEnabled(true);
+        }
 
         JMenuItem loginPasswdMenuItem = new JMenuItem();
         loginPasswdMenuItem.setText("登录账号设置");
@@ -221,10 +244,26 @@ public class RechargeFrame extends JFrame {
         settingMenu.add(loginPasswdMenuItem);
 
         JMenuItem systemPasswdMenuItem = new JMenuItem();
-        systemPasswdMenuItem.setText("系统密码设置");
+        systemPasswdMenuItem.setText("刷卡机密码设置");
         systemPasswdMenuItem.setFont(new Font("Dialog", Font.PLAIN, 12));
         systemPasswdMenuItem.addActionListener(this::systemPasswdMenuItemActionPerformed);
         settingMenu.add(systemPasswdMenuItem);
+        if (user.getIsAdmin() == 0) {
+            systemPasswdMenuItem.setEnabled(false);
+        } else {
+            systemPasswdMenuItem.setEnabled(true);
+        }
+
+        JMenuItem sectorMenuItem = new JMenuItem();
+        sectorMenuItem.setText("扇区设置");
+        sectorMenuItem.setFont(new Font("Dialog", Font.PLAIN, 12));
+        sectorMenuItem.addActionListener(this::sectorMenuItemActionPerformed);
+        settingMenu.add(sectorMenuItem);
+        if (user.getIsAdmin() == 0) {
+            sectorMenuItem.setEnabled(false);
+        } else {
+            sectorMenuItem.setEnabled(true);
+        }
 
         JMenuItem portRateMenuItem = new JMenuItem();
         portRateMenuItem.setText("波特率设置");
@@ -232,6 +271,11 @@ public class RechargeFrame extends JFrame {
         portRateMenuItem.addActionListener(this::portRateMenuItemActionPerformed);
         settingMenu.add(portRateMenuItem);
         menuBar1.add(settingMenu);
+        if (user.getIsAdmin() == 0) {
+            portRateMenuItem.setEnabled(false);
+        } else {
+            portRateMenuItem.setEnabled(true);
+        }
 
         JMenu helpMenu = new JMenu();
         helpMenu.setText("帮助");
@@ -260,6 +304,7 @@ public class RechargeFrame extends JFrame {
             portChooser.setSelectedIndex(user.getPortOrder());
         } catch (Exception e) {
             ServiceImpl.getInstance().updatePortOrder(user.getUserId(), user.getUserName(), 0);
+            ServiceImpl.getInstance().updateSubPortOrder(0);
             user.setPortOrder(0);
             portChooser.setSelectedIndex(0);
             e.printStackTrace();
@@ -419,27 +464,56 @@ public class RechargeFrame extends JFrame {
         JSeparator separator14 = new JSeparator();
         JSeparator separator15 = new JSeparator();
         JSeparator separator16 = new JSeparator();
+        JSeparator separator17 = new JSeparator();
+        JSeparator separator18 = new JSeparator();
+        JSeparator separator19 = new JSeparator();
+        JSeparator separator20 = new JSeparator();
+
         separator11.setOrientation(SwingConstants.VERTICAL);
         separator11.setForeground(Color.lightGray);
         separator11.setBounds(15, 15, 10, 255);
         CardInfoPanel.add(separator11);
+
         separator12.setOrientation(SwingConstants.VERTICAL);
         separator12.setForeground(Color.lightGray);
         separator12.setBounds(545, 15, 10, 255);
         CardInfoPanel.add(separator12);
+
         separator13.setBounds(15, 15, 530, 15);
         separator13.setForeground(Color.lightGray);
         CardInfoPanel.add(separator13);
+
         separator14.setBounds(15, 270, 530, 15);
         separator14.setForeground(Color.lightGray);
         CardInfoPanel.add(separator14);
+
         separator15.setOrientation(SwingConstants.VERTICAL);
         separator15.setForeground(Color.lightGray);
         separator15.setBounds(230, 15, 10, 255);
         CardInfoPanel.add(separator15);
+
         separator16.setBounds(15, 140, 215, 15);
         separator16.setForeground(Color.lightGray);
         CardInfoPanel.add(separator16);
+
+        separator17.setBounds(10, 9, 540, 15);
+        separator17.setForeground(Color.lightGray);
+        CardInfoPanel.add(separator17);
+
+        separator18.setBounds(10, 275, 540, 15);
+        separator18.setForeground(Color.lightGray);
+        CardInfoPanel.add(separator18);
+
+        separator19.setOrientation(SwingConstants.VERTICAL);
+        separator19.setForeground(Color.lightGray);
+        separator19.setBounds(10, 9, 15, 265);
+        CardInfoPanel.add(separator19);
+
+        separator20.setOrientation(SwingConstants.VERTICAL);
+        separator20.setForeground(Color.lightGray);
+        separator20.setBounds(550, 9, 15, 265);
+        CardInfoPanel.add(separator20);
+
 
         JLabel cardNumLabel = new JLabel();
         cardNumLabel.setText("卡号    ：");
@@ -449,6 +523,7 @@ public class RechargeFrame extends JFrame {
 
         cardNumText = new JLabel();
         cardNumText.setText("-");
+        cardNumText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         CardInfoPanel.add(cardNumText);
         cardNumText.setBounds(new Rectangle(new Point(105, 165), cardNumText.getPreferredSize()));
         cardNumText.setBounds(105, 165, 100, cardNumText.getPreferredSize().height);
@@ -461,6 +536,7 @@ public class RechargeFrame extends JFrame {
 
         cardTypeText = new JLabel();
         cardTypeText.setText("-");
+        cardTypeText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         CardInfoPanel.add(cardTypeText);
         cardTypeText.setBounds(105, 195, 100, cardTypeText.getPreferredSize().height);
 
@@ -472,6 +548,7 @@ public class RechargeFrame extends JFrame {
 
         phoneText = new JLabel();
         phoneText.setText("-");
+        phoneText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         CardInfoPanel.add(phoneText);
         phoneText.setBounds(105, 225, 100, phoneText.getPreferredSize().height);
 
@@ -489,11 +566,13 @@ public class RechargeFrame extends JFrame {
 
         balanceText = new JLabel();
         balanceText.setText("-");
+        balanceText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         CardInfoPanel.add(balanceText);
         balanceText.setBounds(145, 50, 100, balanceText.getPreferredSize().height);
 
         validTimeText = new JLabel();
         validTimeText.setText("-");
+        validTimeText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         CardInfoPanel.add(validTimeText);
         validTimeText.setBounds(145, 100, 100, validTimeText.getPreferredSize().height);
 
@@ -535,18 +614,23 @@ public class RechargeFrame extends JFrame {
         powerRateText = new JLabel();
         welcomeLabel = new JLabel();
         lastTimeText.setText("-");
+        lastTimeText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         CardInfoPanel.add(lastTimeText);
         lastTimeText.setBounds(380, 55, 100, lastTimeText.getPreferredSize().height);
         startTimeText.setText("-");
+        startTimeText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         CardInfoPanel.add(startTimeText);
         startTimeText.setBounds(380, 95, 100, startTimeText.getPreferredSize().height);
         chargeTimeText.setText("-");
+        chargeTimeText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         CardInfoPanel.add(chargeTimeText);
         chargeTimeText.setBounds(380, 135, 100, chargeTimeText.getPreferredSize().height);
         payRateText.setText("-");
+        payRateText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         CardInfoPanel.add(payRateText);
         payRateText.setBounds(380, 175, 100, payRateText.getPreferredSize().height);
         powerRateText.setText("-");
+        powerRateText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         CardInfoPanel.add(powerRateText);
         powerRateText.setBounds(380, 215, 100, powerRateText.getPreferredSize().height);
 

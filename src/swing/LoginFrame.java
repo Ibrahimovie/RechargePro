@@ -51,7 +51,7 @@ public class LoginFrame extends JFrame {
             queryPasswd = (String) userInfo.get("password");
             User user = new User((int) userInfo.get("user_id"), userName, queryPasswd, (String) userInfo.get("system_password"),
                     (int) userInfo.get("sector_id"), (int) userInfo.get("portrate_id"), (int) userInfo.get("port_id"),
-                    (int) userInfo.get("device_id"), 0, 0);
+                    (int) userInfo.get("device_id"), 0, 0, (int) userInfo.get("is_admin"));
             UserManager.addUser(user);
             if (password.equals(queryPasswd)) {
                 System.out.println("login success ! username : " + userName + " , passwd : " + password);
@@ -97,7 +97,7 @@ public class LoginFrame extends JFrame {
         contentPane.setLayout(null);
 
         JLabel userLabel = new JLabel();
-        userLabel.setText("帐号");
+        userLabel.setText("账号");
         userLabel.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         contentPane.add(userLabel);
         userLabel.setBounds(170, 130, 78, userLabel.getPreferredSize().height);

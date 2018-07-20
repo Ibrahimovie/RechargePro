@@ -27,7 +27,15 @@ public class ServiceImpl implements Service {
         return service;
     }
 
-    //user
+    //USER DAO
+    public String getAdminPassword() {
+        return userDao.getAdminPassword();
+    }
+
+    public ArrayList<String> getSubUsername() {
+        return userDao.getSubUsername();
+    }
+
     public boolean isUserExist(String username) {
         Map<String, Object> param = new HashMap<>(1);
         param.put("username", username);
@@ -48,6 +56,12 @@ public class ServiceImpl implements Service {
         userDao.updateSectorOrder(param);
     }
 
+    public void updateSubSectorOrder(int sector_id) {
+        Map<String, Object> param = new HashMap<>(1);
+        param.put("sector_id", sector_id);
+        userDao.updateSubSectorOrder(param);
+    }
+
     public void updatePortrateOrder(int user_id, String username, int portrate_id) {
         Map<String, Object> param = new HashMap<>(3);
         param.put("user_id", user_id);
@@ -56,12 +70,33 @@ public class ServiceImpl implements Service {
         userDao.updatePortrateOrder(param);
     }
 
+    public void updateSubPortrateOrder(int portrate_id) {
+        Map<String, Object> param = new HashMap<>(1);
+        param.put("portrate_id", portrate_id);
+        userDao.updateSubPortrateOrder(param);
+    }
+
     public void updatePassword(int user_id, String username, String password) {
         Map<String, Object> param = new HashMap<>(3);
         param.put("user_id", user_id);
         param.put("username", username);
         param.put("password", password);
         userDao.updatePassword(param);
+    }
+
+    public void updateSubPassword(String username, String password) {
+        Map<String, Object> param = new HashMap<>(2);
+        param.put("username", username);
+        param.put("password", password);
+        userDao.updateSubPassword(param);
+    }
+
+    public void updateSubUserPasswd(String formerUserName, String username, String password) {
+        Map<String, Object> param = new HashMap<>(3);
+        param.put("formerUsername", formerUserName);
+        param.put("username", username);
+        param.put("password", password);
+        userDao.updateSubUserPasswd(param);
     }
 
     public void updateUsername(int user_id, String username) {
@@ -79,6 +114,12 @@ public class ServiceImpl implements Service {
         userDao.updateSystemPassword(param);
     }
 
+    public void updateSubSystemPassword(String system_password) {
+        Map<String, Object> param = new HashMap<>(1);
+        param.put("system_password", system_password);
+        userDao.updateSubSystemPassword(param);
+    }
+
     public void updatePortOrder(int user_id, String username, int port_id) {
         Map<String, Object> param = new HashMap<>(3);
         param.put("user_id", user_id);
@@ -87,6 +128,41 @@ public class ServiceImpl implements Service {
         userDao.updatePortOrder(param);
     }
 
+    public void updateSubPortOrder(int port_id) {
+        Map<String, Object> param = new HashMap<>(1);
+        param.put("port_id", port_id);
+        userDao.updateSubPortOrder(param);
+    }
+
+    public void addSubAccount(String username, String password, String systemPassword, int isAdmin, int portrateId,
+                              int portId, int deviceId, int sectorId) {
+        Map<String, Object> param = new HashMap<>(8);
+        param.put("username", username);
+        param.put("password", password);
+        param.put("system_password", systemPassword);
+        param.put("is_admin", isAdmin);
+        param.put("portrate_id", portrateId);
+        param.put("port_id", portId);
+        param.put("device_id", deviceId);
+        param.put("sector_id", sectorId);
+        userDao.addSubAccount(param);
+    }
+
+    public int getSubAccountsNum() {
+        return userDao.getSubAccountsNum();
+    }
+
+    public List<Map<String, Object>> getSubAccountsInfo() {
+        return userDao.getSubAccountsInfo();
+    }
+
+    public void deleteUser(String username) {
+        Map<String, Object> param = new HashMap<>(1);
+        param.put("username", username);
+        userDao.deleteUser(param);
+    }
+
+    //CARD DAO
     public boolean isCardExist(String cardNum) {
         Map<String, Object> param = new HashMap<>(1);
         param.put("card_number", cardNum);
@@ -184,7 +260,10 @@ public class ServiceImpl implements Service {
         return cardDao.getUsernameByCardNum(param);
     }
 
-    public void addRechargeHis(String cardNum, String username, String phone, int cardType, int balance, int topUp, int validDay, int rechargeTime, int payRate, int powerRate, String time) {
+
+    //RECHARGE DAO
+    public void addRechargeHis(String cardNum, String username, String phone, int cardType, int balance, int topUp,
+                               int validDay, int rechargeTime, int payRate, int powerRate, String time, String operator) {
         Map<String, Object> param = new HashMap<>(11);
         param.put("card_number", cardNum);
         param.put("username", username);
@@ -197,6 +276,7 @@ public class ServiceImpl implements Service {
         param.put("pay_rate", payRate);
         param.put("power_rate", powerRate);
         param.put("now_time", time);
+        param.put("operator", operator);
         rechargeDao.addRechargeHis(param);
     }
 
@@ -204,18 +284,20 @@ public class ServiceImpl implements Service {
         return rechargeDao.getRechargeCount();
     }
 
-    public int getRechargeCountRangeWithPhone(String startTime, String endTime, String phone) {
-        Map<String, Object> param = new HashMap<>(3);
+    public int getRechargeCountRangeWithPhone(String startTime, String endTime, String phone,String operator) {
+        Map<String, Object> param = new HashMap<>(4);
         param.put("start_time", startTime);
         param.put("end_time", endTime);
         param.put("phone", "%" + phone + "%");
+        param.put("operator", operator);
         return rechargeDao.getRechargeCountRangeWithPhone(param);
     }
 
-    public int getRechargeCountRangeWithoutPhone(String startTime, String endTime) {
-        Map<String, Object> param = new HashMap<>(2);
+    public int getRechargeCountRangeWithoutPhone(String startTime, String endTime, String operator) {
+        Map<String, Object> param = new HashMap<>(3);
         param.put("start_time", startTime);
         param.put("end_time", endTime);
+        param.put("operator", operator);
         return rechargeDao.getRechargeCountRangeWithoutPhone(param);
     }
 
@@ -223,18 +305,20 @@ public class ServiceImpl implements Service {
         return rechargeDao.getRechargeHisAll();
     }
 
-    public List<Map<String, Object>> getRechargeHisRangeWithPhone(String startTime, String endTime, String phone) {
-        Map<String, Object> param = new HashMap<>(3);
+    public List<Map<String, Object>> getRechargeHisRangeWithPhone(String startTime, String endTime, String phone,String operator) {
+        Map<String, Object> param = new HashMap<>(4);
         param.put("start_time", startTime);
         param.put("end_time", endTime);
         param.put("phone", "%" + phone + "%");
+        param.put("operator", operator);
         return rechargeDao.getRechargeHisRangeWithPhone(param);
     }
 
-    public List<Map<String, Object>> getRechargeHisRangeWithoutPhone(String startTime, String endTime) {
-        Map<String, Object> param = new HashMap<>(2);
+    public List<Map<String, Object>> getRechargeHisRangeWithoutPhone(String startTime, String endTime,String operator) {
+        Map<String, Object> param = new HashMap<>(3);
         param.put("start_time", startTime);
         param.put("end_time", endTime);
+        param.put("operator", operator);
         return rechargeDao.getRechargeHisRangeWithoutPhone(param);
     }
 }

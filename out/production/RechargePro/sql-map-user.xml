@@ -13,7 +13,30 @@
         <result property="portrate_id" column="portrate_id"/>
         <result property="port_id" column="port_id"/>
         <result property="device_id" column="device_id"/>
+        <result property="is_admin" column="is_admin"/>
     </resultMap>
+
+    <resultMap id="getSubAccounts" class="java.util.HashMap">
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+    </resultMap>
+
+    <select id="userDao.getAdminPassword" resultClass="String">
+        <![CDATA[
+        SELECT password
+        FROM user
+        WHERE is_admin = 1
+        ]]>
+    </select>
+
+    <select id="userDao.getSubUsername" resultClass="String">
+        <![CDATA[
+        select username
+        from user
+        ]]>
+
+    </select>
+
 
     <select id="userDao.isUserExist" resultClass="int">
 		<![CDATA[
@@ -33,7 +56,8 @@
             sector_id,
             portrate_id,
             port_id,
-            device_id
+            device_id,
+            is_admin
         FROM user
         WHERE username = #username#
         ]]>
@@ -47,11 +71,27 @@
         ]]>
     </update>
 
+    <update id="userDao.updateSubSectorOrder">
+        <![CDATA[
+        update user
+        set sector_id = #sector_id#
+        WHERE is_admin = 0
+        ]]>
+    </update>
+
     <update id="userDao.updatePortrateOrder">
         <![CDATA[
         update user
         set portrate_id = #portrate_id#
         WHERE user_id = #user_id# and username = #username#
+        ]]>
+    </update>
+
+    <update id="userDao.updateSubPortrateOrder">
+        <![CDATA[
+        update user
+        set portrate_id = #portrate_id#
+        WHERE is_admin = 0
         ]]>
     </update>
 
@@ -63,6 +103,14 @@
         ]]>
     </update>
 
+    <update id="userDao.updateSubPortOrder">
+        <![CDATA[
+        update user
+        set port_id = #port_id#
+        WHERE is_admin = 0
+        ]]>
+    </update>
+
     <update id="userDao.updatePassword">
         <![CDATA[
         update user
@@ -70,6 +118,24 @@
         WHERE user_id = #user_id# and username = #username#
         ]]>
     </update>
+
+    <update id="userDao.updateSubPassword">
+        <![CDATA[
+        update user
+        set password = #password#
+        WHERE username = #username# and is_admin = 0
+        ]]>
+    </update>
+
+    <update id="userDao.updateSubUserPasswd">
+        <![CDATA[
+        update user
+        set username = #username#,
+            password = #password#
+        WHERE username = #formerUsername# and is_admin = 0
+        ]]>
+    </update>
+
 
     <update id="userDao.updateUsername">
         <![CDATA[
@@ -86,6 +152,50 @@
         WHERE user_id = #user_id# and username = #username#
         ]]>
     </update>
+
+    <update id="userDao.updateSubSystemPassword">
+        <![CDATA[
+        update user
+        set system_password = #system_password#
+        WHERE is_admin = 0
+        ]]>
+    </update>
+
+    <insert id="userDao.addSubAccount">
+        <![CDATA[
+        INSERT INTO user
+        (username, password, system_password, is_admin, portrate_id, port_id, device_id, sector_id)
+        VALUES
+            (#username#, #password#, #system_password#, #is_admin#, #portrate_id#, #port_id#, #device_id#, #sector_id#)
+        ]]>
+    </insert>
+
+    <select id="userDao.getSubAccountsNum" resultClass="int">
+         <![CDATA[
+        select count(user_id)
+        from user
+        where is_admin = 0;
+        ]]>
+    </select>
+
+    <select id="userDao.getSubAccountsInfo" resultMap="getSubAccounts">
+        <![CDATA[
+        select
+            username,
+            password
+        from user
+        where is_admin = 0
+        order by user_id
+            asc
+        ]]>
+    </select>
+
+    <delete id="userDao.deleteUser">
+        <![CDATA[
+        delete from user
+        where user.username = #username# and is_admin = 0
+        ]]>
+    </delete>
 
 
 </sqlMap>

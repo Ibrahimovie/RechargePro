@@ -23,7 +23,7 @@ public class SystemPasswdSettingFrame extends JFrame {
         initComponents(user);
         this.user = user;
         this.setSize(320, 270);
-        this.setTitle("系统密码设置");
+        this.setTitle("刷卡机密码设置");
         this.getRootPane().setDefaultButton(confirmButton);
         Image icon = Toolkit.getDefaultToolkit().getImage("resources/dk_logo.png");
         this.setIconImage(icon);
@@ -40,6 +40,7 @@ public class SystemPasswdSettingFrame extends JFrame {
                 if (newPassword.equals(checkPassword)) {
                     user.setSystemPassword(newPassword);
                     ServiceImpl.getInstance().updateSystemPassword(user.getUserId(), user.getUserName(), newPassword);
+                    ServiceImpl.getInstance().updateSubSystemPassword(newPassword);
                     JOptionPane.showMessageDialog(null, "系统密码设置成功！");
                     this.dispose();
                 } else {

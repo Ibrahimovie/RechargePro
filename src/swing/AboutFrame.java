@@ -44,7 +44,7 @@ public class AboutFrame extends JFrame {
         name.setBounds(50, 90, name.getPreferredSize().width, name.getPreferredSize().height);
         contentPane.add(name);
 
-        version.setText("软件版本: version 1.0");
+        version.setText("软件版本: version 1.5");
         version.setFont(new Font("Dialog", Font.PLAIN, 12));
         version.setBounds(50, 130, version.getPreferredSize().width, version.getPreferredSize().height);
         contentPane.add(version);

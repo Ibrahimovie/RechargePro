@@ -1,6 +1,7 @@
 package swing;
 
 import bean.*;
+import service.impl.ServiceImpl;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -36,10 +37,12 @@ public class SystemPasswdFrame extends JFrame {
     }
 
     private void confirmButtonActionPerformed(ActionEvent e) {
-        char[] passwd = this.passwordText.getPassword();
+        char[] passwd = passwordText.getPassword();
         String password = String.valueOf(passwd);
-        System.out.println("system passwd : " + this.user.getSystemPassword());
-        if (user.getSystemPassword().equals(password)) {
+        String adminPassword = ServiceImpl.getInstance().getAdminPassword();
+//        System.out.println("input passwd : " + password);
+//        System.out.println("admin passwd : " + adminPassword);
+        if (adminPassword.equals(password)) {
             try {
                 Thread.sleep(200L);
             } catch (InterruptedException e2) {
@@ -71,14 +74,20 @@ public class SystemPasswdFrame extends JFrame {
         contentPane.setLayout(null);
 
         JLabel attentionLabel = new JLabel();
-        attentionLabel.setText("请输入系统密码 : ");
+        attentionLabel.setText("请输入管理员密码 : ");
         attentionLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 18));
         contentPane.add(attentionLabel);
         attentionLabel.setBounds(new Rectangle(new Point(15, 50), attentionLabel.getPreferredSize()));
 
+        JLabel tipLabel = new JLabel();
+        tipLabel.setText("(管理员登录密码)");
+        tipLabel.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
+        contentPane.add(tipLabel);
+        tipLabel.setBounds(new Rectangle(new Point(15, 75), tipLabel.getPreferredSize()));
+
         passwordText = new JPasswordField();
         contentPane.add(passwordText);
-        passwordText.setBounds(70, 95, 210, passwordText.getPreferredSize().height);
+        passwordText.setBounds(70, 110, 210, passwordText.getPreferredSize().height);
 
         confirmButton = new JButton();
         confirmButton.setText("确定");
@@ -87,7 +96,7 @@ public class SystemPasswdFrame extends JFrame {
         confirmButton.setBorder(BorderFactory.createRaisedBevelBorder());
         confirmButton.addActionListener(this::confirmButtonActionPerformed);
         contentPane.add(confirmButton);
-        confirmButton.setBounds(100, 155, 70, 30);
+        confirmButton.setBounds(100, 160, 70, 30);
 
         JButton cancelButton = new JButton();
         cancelButton.setText("取消");
@@ -96,7 +105,7 @@ public class SystemPasswdFrame extends JFrame {
         cancelButton.setBorder(BorderFactory.createRaisedBevelBorder());
         cancelButton.addActionListener(this::cancelButtonActionPerformed);
         contentPane.add(cancelButton);
-        cancelButton.setBounds(180, 155, 70, 30);
+        cancelButton.setBounds(180, 160, 70, 30);
 
         Dimension preferredSize = new Dimension();
         for (int i = 0; i < contentPane.getComponentCount(); i++) {
@@ -104,7 +113,7 @@ public class SystemPasswdFrame extends JFrame {
             preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
             preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
         }
-        final Insets insets = contentPane.getInsets();
+        Insets insets = contentPane.getInsets();
         preferredSize.width += insets.right;
         preferredSize.height += insets.bottom;
         contentPane.setMinimumSize(preferredSize);

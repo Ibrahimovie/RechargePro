@@ -32,6 +32,7 @@ public class SectorFrame extends JFrame {
         int selectOrder = comboBox1.getSelectedIndex();
         user.setSectorOrder(selectOrder);
         ServiceImpl.getInstance().updateSectorOrder(user.getUserId(), user.getUserName(), selectOrder);
+        ServiceImpl.getInstance().updateSubSectorOrder(selectOrder);
         JOptionPane.showMessageDialog(null, "设置成功！");
         this.dispose();
     }

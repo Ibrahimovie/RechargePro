@@ -13,10 +13,8 @@ import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * @author kingfans
@@ -56,24 +54,28 @@ public class HisTableFrame extends JFrame {
     private void initComponents(int n, List<Map<String, Object>> history) {
         DecimalFormat df = new DecimalFormat("0.0");
         JScrollPane scrollPane1 = new JScrollPane();
-        String[] columnNames = {"卡号", "手机号", "姓名", "卡类型", "充值时间", "充值金额", "余额", "有效天数", "充电时间", "扣款费率", "最大功率"};
-        Object[][] obj = new Object[n][11];
+        String[] columnNames = {"操作工号", "卡号", "手机号", "姓名", "卡类型", "充值时间", "充值金额", "余额", "有效天数", "充电时间", "扣款费率", "最大功率"};
+        Object[][] obj = new Object[n][12];
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < 11; j++) {
+            for (int j = 0; j < 12; j++) {
                 switch (j) {
                     case 0:
+                        String operator = String.valueOf(history.get(i).get("operator"));
+                        obj[i][j] = operator;
+                        break;
+                    case 1:
                         String cardNumber = String.valueOf(history.get(i).get("card_number"));
                         obj[i][j] = cardNumber;
                         break;
-                    case 1:
+                    case 2:
                         String phone = String.valueOf(history.get(i).get("phone"));
                         obj[i][j] = phone;
                         break;
-                    case 2:
+                    case 3:
                         String username = String.valueOf(history.get(i).get("username"));
                         obj[i][j] = username;
                         break;
-                    case 3:
+                    case 4:
                         int cardType = (int) history.get(i).get("card_type");
                         switch (cardType) {
                             case 0:
@@ -92,31 +94,31 @@ public class HisTableFrame extends JFrame {
                                 break;
                         }
                         break;
-                    case 4:
+                    case 5:
                         String nowTime = String.valueOf(history.get(i).get("now_time"));
                         obj[i][j] = nowTime;
                         break;
-                    case 5:
+                    case 6:
                         int topUp = (int) history.get(i).get("top_up");
                         obj[i][j] = df.format(topUp / 10.0f);
                         break;
-                    case 6:
+                    case 7:
                         int balance = (int) history.get(i).get("balance");
                         obj[i][j] = df.format(balance / 10.0f);
                         break;
-                    case 7:
+                    case 8:
                         String validDay = String.valueOf(history.get(i).get("valid_day"));
                         obj[i][j] = validDay;
                         break;
-                    case 8:
+                    case 9:
                         int rechargeTime = (int) history.get(i).get("recharge_time");
                         obj[i][j] = df.format(rechargeTime / 10.0f);
                         break;
-                    case 9:
+                    case 10:
                         int payRate = (int) history.get(i).get("pay_rate");
                         obj[i][j] = df.format(payRate / 10.0f);
                         break;
-                    case 10:
+                    case 11:
                         int powerRate = (int) history.get(i).get("power_rate");
                         obj[i][j] = df.format(powerRate / 100.0f);
                         break;
@@ -127,18 +129,18 @@ public class HisTableFrame extends JFrame {
             }
         }
 //        JTable table1 = new JTable(obj, columnNames);
-        MyTable table1 = new MyTable(obj,columnNames);
+        MyTable table1 = new MyTable(obj, columnNames);
 
         TableColumn column;
         int columns = table1.getColumnCount();
         for (int i = 0; i < columns; i++) {
             column = table1.getColumnModel().getColumn(i);
-            if (i == 4) {
-                column.setPreferredWidth(600);
-            } else if (i == 7 || i == 8 || i == 9 || i == 10) {
-                column.setPreferredWidth(200);
+            if (i == 5) {
+                column.setPreferredWidth(560);
+            } else if (i == 8 || i == 9 || i == 10 || i == 11) {
+                column.setPreferredWidth(230);
             } else {
-                column.setPreferredWidth(300);
+                column.setPreferredWidth(280);
             }
         }
 
@@ -172,24 +174,44 @@ public class HisTableFrame extends JFrame {
         final DatePicker endTime = getDatePicker(234);
         contentPane.add(endTime);
 
+        JLabel operatorLabel = new JLabel();
+        operatorLabel.setText("操作工号 : ");
+        operatorLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
+        contentPane.add(operatorLabel);
+        operatorLabel.setBounds(345, 12, 70, operatorLabel.getPreferredSize().height);
+
+        JComboBox operatorChooser = new JComboBox();
+        ArrayList<String> operators = ServiceImpl.getInstance().getSubUsername();
+        operators.add(0, "默认");
+        String[] operatorArray = operators.toArray(new String[0]);
+        operatorChooser.setModel(new DefaultComboBoxModel<>(operatorArray));
+        contentPane.add(operatorChooser);
+        operatorChooser.setBounds(410, 12, 70, operatorChooser.getPreferredSize().height);
+
+
         JLabel phoneLabel = new JLabel();
         phoneLabel.setText("手机号 : ");
         phoneLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
         contentPane.add(phoneLabel);
-        phoneLabel.setBounds(345, 12, 60, phoneLabel.getPreferredSize().height);
+        phoneLabel.setBounds(500, 12, 60, phoneLabel.getPreferredSize().height);
 
         JTextField phoneText = new JTextField();
         contentPane.add(phoneText);
-        phoneText.setBounds(400, 12, 100, phoneText.getPreferredSize().height);
+        phoneText.setBounds(555, 12, 100, phoneText.getPreferredSize().height);
 
         JButton queryButton = new JButton("筛选");
         queryButton.setFont(new Font("Dialog", Font.PLAIN, 12));
         contentPane.add(queryButton);
-        queryButton.setBounds(540, 8, 60, queryButton.getPreferredSize().height);
+        queryButton.setBounds(695, 8, 60, queryButton.getPreferredSize().height);
         queryButton.setBackground(new Color(180, 205, 205));
         queryButton.setBorder(BorderFactory.createRaisedBevelBorder());
 
         queryButton.addActionListener(e -> {
+            int operatorIndex = operatorChooser.getSelectedIndex();
+            String operator = null;
+            if (operatorIndex != 0) {
+                operator = (String) operatorChooser.getSelectedItem();
+            }
             SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
             Date date1 = (Date) startTime.getValue();
             String startDate = sdf.format(date1) + " 00:00:00";
@@ -198,11 +220,11 @@ public class HisTableFrame extends JFrame {
             String phone = phoneText.getText();
             if (date2.after(date1) || date1 == date2) {
                 if (phone == null || "".equals(phone)) {
-                    count = ServiceImpl.getInstance().getRechargeCountRangeWithoutPhone(startDate, endDate);
-                    his = ServiceImpl.getInstance().getRechargeHisRangeWithoutPhone(startDate, endDate);
+                    count = ServiceImpl.getInstance().getRechargeCountRangeWithoutPhone(startDate, endDate, operator);
+                    his = ServiceImpl.getInstance().getRechargeHisRangeWithoutPhone(startDate, endDate,operator);
                 } else {
-                    count = ServiceImpl.getInstance().getRechargeCountRangeWithPhone(startDate, endDate, phone);
-                    his = ServiceImpl.getInstance().getRechargeHisRangeWithPhone(startDate, endDate, phone);
+                    count = ServiceImpl.getInstance().getRechargeCountRangeWithPhone(startDate, endDate, phone,operator);
+                    his = ServiceImpl.getInstance().getRechargeHisRangeWithPhone(startDate, endDate, phone,operator);
                 }
                 new HisTableFrame(count, his, rechargeFrame);
                 this.dispose();
@@ -214,31 +236,35 @@ public class HisTableFrame extends JFrame {
         JButton exportButton = new JButton("导出");
         exportButton.setFont(new Font("Dialog", Font.PLAIN, 12));
         contentPane.add(exportButton);
-        exportButton.setBounds(620, 8, 60, exportButton.getPreferredSize().height);
+        exportButton.setBounds(765, 8, 60, exportButton.getPreferredSize().height);
         exportButton.setBackground(new Color(180, 205, 205));
         exportButton.setBorder(BorderFactory.createRaisedBevelBorder());
         exportButton.addActionListener(e -> {
             SimpleDateFormat sdf2 = new SimpleDateFormat("YYYYMMddHHmmss");
-            String[] title = new String[]{"卡号", "手机号", "姓名", "卡类型", "充值时间", "充值金额", "余额", "有效天数", "充电时间", "扣款费率", "最大功率"};
+            String[] title = new String[]{"操作工号", "卡号", "手机号", "姓名", "卡类型", "充值时间", "充值金额", "余额", "有效天数", "充电时间", "扣款费率", "最大功率"};
             String fileName = "充值记录表" + sdf2.format(new Date()) + ".xls";
             String sheetName = "充值记录表";
-            String[][] objects = new String[n][11];
+            String[][] objects = new String[n][12];
             for (int i = 0; i < n; i++) {
-                for (int j = 0; j < 11; j++) {
+                for (int j = 0; j < 12; j++) {
                     switch (j) {
                         case 0:
+                            String operator = String.valueOf(history.get(i).get("operator"));
+                            objects[i][j] = operator;
+                            break;
+                        case 1:
                             String cardNumber = String.valueOf(history.get(i).get("card_number"));
                             objects[i][j] = cardNumber;
                             break;
-                        case 1:
+                        case 2:
                             String phone = String.valueOf(history.get(i).get("phone"));
                             objects[i][j] = phone;
                             break;
-                        case 2:
+                        case 3:
                             String username = String.valueOf(history.get(i).get("username"));
                             objects[i][j] = username;
                             break;
-                        case 3:
+                        case 4:
                             int cardType = (int) history.get(i).get("card_type");
                             switch (cardType) {
                                 case 0:
@@ -257,31 +283,31 @@ public class HisTableFrame extends JFrame {
                                     break;
                             }
                             break;
-                        case 4:
+                        case 5:
                             String nowTime = String.valueOf(history.get(i).get("now_time"));
                             objects[i][j] = nowTime;
                             break;
-                        case 5:
+                        case 6:
                             int topUp = (int) history.get(i).get("top_up");
                             objects[i][j] = df.format(topUp / 10.0f);
                             break;
-                        case 6:
+                        case 7:
                             int balance = (int) history.get(i).get("balance");
                             objects[i][j] = df.format(balance / 10.0f);
                             break;
-                        case 7:
+                        case 8:
                             String validDay = String.valueOf(history.get(i).get("valid_day"));
                             objects[i][j] = validDay;
                             break;
-                        case 8:
+                        case 9:
                             int rechargeTime = (int) history.get(i).get("recharge_time");
                             objects[i][j] = df.format(rechargeTime / 10.0f);
                             break;
-                        case 9:
+                        case 10:
                             int payRate = (int) history.get(i).get("pay_rate");
                             objects[i][j] = df.format(payRate / 10.0f);
                             break;
-                        case 10:
+                        case 11:
                             int powerRate = (int) history.get(i).get("power_rate");
                             objects[i][j] = df.format(powerRate / 100.0f);
                             break;

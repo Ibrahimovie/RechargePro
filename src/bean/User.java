@@ -14,8 +14,10 @@ public class User {
     private int deviceOrder;
     private int hasSerialPort;
     private int isDeviceConnected;
+    private int isAdmin;
 
-    public User(int userId, String userName, String password, String systemPassword, int sectorOrder, int portrateOrder, int portOrder, int deviceOrder, int hasSerialPort, int isDeviceConnected) {
+    public User(int userId, String userName, String password, String systemPassword, int sectorOrder, int portrateOrder, int portOrder,
+                int deviceOrder, int hasSerialPort, int isDeviceConnected, int isAdmin) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
@@ -26,6 +28,15 @@ public class User {
         this.deviceOrder = deviceOrder;
         this.hasSerialPort = hasSerialPort;
         this.isDeviceConnected = isDeviceConnected;
+        this.isAdmin = isAdmin;
+    }
+
+    public int getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(int isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     public void setUserName(String userName) {
