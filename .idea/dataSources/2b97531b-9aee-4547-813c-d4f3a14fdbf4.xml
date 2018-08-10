@@ -93,7 +93,6 @@
     </column>
     <index id="23" parent="6" name="card_info_card_number_uindex">
       <ColNames>card_number</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <key id="24" parent="6">
@@ -259,7 +258,6 @@
     </column>
     <index id="55" parent="10" name="user_username_uindex">
       <ColNames>username</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <key id="56" parent="10">

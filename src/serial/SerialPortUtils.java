@@ -88,6 +88,11 @@ public class SerialPortUtils {
         OutputStream out = null;
         try {
             out = serialPort.getOutputStream();
+            System.out.println("向串口写入:");
+            for (byte aByte : order) {
+                System.out.print(Integer.toHexString(aByte & 0xFF) + " ");
+            }
+            System.out.println();
             out.write(order);
             out.flush();
         } catch (IOException e) {
@@ -104,7 +109,7 @@ public class SerialPortUtils {
         }
     }
 
-    public static byte[] readFromPort(final SerialPort serialPort, final RechargeFrame frame) throws
+    public static byte[] readFromPort(SerialPort serialPort, RechargeFrame frame) throws
             ReadDataFromSerialPortFailure, SerialPortInputStreamCloseFailure {
         InputStream in = null;
         byte[] bytes = null;
@@ -172,12 +177,13 @@ public class SerialPortUtils {
         }
 
         @Override
-        public void serialEvent(final SerialPortEvent serialPortEvent) {
+        public synchronized void serialEvent(SerialPortEvent serialPortEvent) {
             switch (serialPortEvent.getEventType()) {
                 case SerialPortEvent.DATA_AVAILABLE:
                     byte[] b = null;
                     try {
                         b = SerialPortUtils.readFromPort(serialPort, frame);
+
                     } catch (ReadDataFromSerialPortFailure | SerialPortInputStreamCloseFailure readDataFromSerialPortFailure) {
                         readDataFromSerialPortFailure.printStackTrace();
                         serialPort.close();
@@ -191,7 +197,8 @@ public class SerialPortUtils {
                             int rev_byte_p = 0;
                             int last_p = 0;
                             while (true) {
-                                if (this.RX_buf[rev_byte_p] == (byte) 0xaa && this.RX_buf[rev_byte_p + 1] == (byte) 0xc3 && this.RX_buf[rev_byte_p + this.RX_buf[rev_byte_p + 2] + 3] == (byte) 0xbb) {
+                                if (this.RX_buf[rev_byte_p] == (byte) 0xaa && this.RX_buf[rev_byte_p + 1] == (byte) 0xc3
+                                        && this.RX_buf[rev_byte_p + this.RX_buf[rev_byte_p + 2] + 3] == (byte) 0xbb) {
                                     final byte[] bytes = subBytes(this.RX_buf, rev_byte_p, this.RX_buf[rev_byte_p + 2] + 4);
                                     if ((bytes[4] & 0xFF) != 0x02) {
                                         System.out.println("收到完整数据 :");

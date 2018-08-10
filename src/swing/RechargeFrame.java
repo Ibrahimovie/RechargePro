@@ -135,6 +135,7 @@ public class RechargeFrame extends JFrame {
         if (serialPort != null) {
             String systemPassword = user.getSystemPassword();
             try {
+                System.out.println("查询。。。 ");
                 SerialPortUtils.sendToPort(serialPort, CommandUtils.queryCommand(systemPassword));
             } catch (SendDataToSerialPortFailure | SerialPortOutputStreamCloseFailure sendDataToSerialPortFailure) {
                 sendDataToSerialPortFailure.printStackTrace();
@@ -244,7 +245,7 @@ public class RechargeFrame extends JFrame {
         settingMenu.add(loginPasswdMenuItem);
 
         JMenuItem systemPasswdMenuItem = new JMenuItem();
-        systemPasswdMenuItem.setText("刷卡机密码设置");
+        systemPasswdMenuItem.setText("刷卡机密码");
         systemPasswdMenuItem.setFont(new Font("Dialog", Font.PLAIN, 12));
         systemPasswdMenuItem.addActionListener(this::systemPasswdMenuItemActionPerformed);
         settingMenu.add(systemPasswdMenuItem);
