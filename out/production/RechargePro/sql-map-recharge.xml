@@ -22,10 +22,10 @@
     <insert id="rechargeDao.addRechargeHis">
         <![CDATA[
         INSERT INTO recharge_his
-        (card_number, username, phone, card_type, balance, top_up, valid_day, recharge_time, pay_rate, power_rate, now_time, operator)
+        (card_number, username, phone, card_type, balance, top_up, valid_day, recharge_time, pay_rate, power_rate, now_time, operator, community)
         VALUES
             (#card_number#, #username#, #phone#, #card_type#, #balance#, #top_up#, #valid_day#, #recharge_time#,
-                            #pay_rate#, #power_rate#, #now_time#, #operator#)
+                            #pay_rate#, #power_rate#, #now_time#, #operator#, #community#)
         ]]>
     </insert>
 

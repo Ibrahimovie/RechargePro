@@ -13,15 +13,22 @@ import swing.*;
 public class StatusCheckJob implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
+        RechargeFrame frame = FrameManager.getFrameByName("recharge");
         if (PortManager.getSerialPort() != null) {
             LoginFrame.STATUS_COUNT++;
             if (LoginFrame.STATUS_COUNT >= 9) {
-                RechargeFrame frame = FrameManager.getFrameByName("recharge");
-                System.out.println("status count reached 9 !!!");
+                System.out.println("port status count reached 9 !!!");
                 frame.deviceStatusText.setText("连接异常");
                 frame.deviceStatusText.setForeground(Color.red);
                 LoginFrame.STATUS_COUNT = 0;
             }
+        }
+        LoginFrame.SERVER_STATUS_COUNT++;
+        if (LoginFrame.SERVER_STATUS_COUNT >= 3) {
+            System.out.println("server status count reached 3 !!!");
+            frame.serverStatusText.setText("离线");
+            frame.serverStatusText.setForeground(Color.red);
+            LoginFrame.SERVER_STATUS_COUNT = 0;
         }
     }
 }

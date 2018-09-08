@@ -15,9 +15,10 @@ public class User {
     private int hasSerialPort;
     private int isDeviceConnected;
     private int isAdmin;
+    private String community;
 
     public User(int userId, String userName, String password, String systemPassword, int sectorOrder, int portrateOrder, int portOrder,
-                int deviceOrder, int hasSerialPort, int isDeviceConnected, int isAdmin) {
+                int deviceOrder, int hasSerialPort, int isDeviceConnected, int isAdmin, String community) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
@@ -29,6 +30,7 @@ public class User {
         this.hasSerialPort = hasSerialPort;
         this.isDeviceConnected = isDeviceConnected;
         this.isAdmin = isAdmin;
+        this.community = community;
     }
 
     public int getIsAdmin() {
@@ -115,6 +117,14 @@ public class User {
         this.isDeviceConnected = isDeviceConnected;
     }
 
+    public String getCommunity() {
+        return community;
+    }
+
+    public void setCommunity(String community) {
+        this.community = community;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -128,6 +138,8 @@ public class User {
                 ", deviceOrder=" + deviceOrder +
                 ", hasSerialPort=" + hasSerialPort +
                 ", isDeviceConnected=" + isDeviceConnected +
+                ", isAdmin=" + isAdmin +
+                ", community='" + community + '\'' +
                 '}';
     }
 }

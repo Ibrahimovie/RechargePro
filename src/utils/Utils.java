@@ -1,5 +1,7 @@
 package utils;
 
+import com.alibaba.fastjson.JSON;
+
 import java.util.*;
 import java.io.*;
 
@@ -65,7 +67,7 @@ public class Utils {
         return cardType;
     }
 
-    public static String getStringCardType(final int card) {
+    public static String getStringCardType(int card) {
         String cardType = null;
         switch (card) {
             case 0:
@@ -85,6 +87,8 @@ public class Utils {
         }
         return cardType;
     }
+
+
 
     public static int crc16(final byte[] buffer, int start, int count) {
 
@@ -121,4 +125,13 @@ public class Utils {
         byte[] bytes = {(byte) (i >> 8 & 0xFF), (byte) (i & 0xFF)};
         return (bytes[0] & 0xFF) | (bytes[1] & 0xFF) << 8;
     }
+
+    public static String MapToJsonString(Map<String, Object> map) {
+        return JSON.toJSON(map).toString();
+    }
+
+    public static Map<String, Object> StringToMap(String str) {
+        return JSON.parseObject(str, Map.class);
+    }
+
 }

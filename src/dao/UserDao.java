@@ -46,4 +46,10 @@ public interface UserDao {
 
     void deleteUser(Map<String, Object> params);
 
+    void updateCommunity(Map<String, Object> params);
+
+    void updateAllCommunity(Map<String, Object> params);
+
+    String getCommunity(Map<String, Object> params);
+
 }

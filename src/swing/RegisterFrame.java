@@ -2,13 +2,19 @@ package swing;
 
 import bean.*;
 
+import java.net.URLEncoder;
+import java.util.Objects;
 import java.util.regex.*;
 
 import bean.manager.*;
+import com.alibaba.fastjson.JSONObject;
 import commands.*;
 import serial.*;
 import exception.*;
 import gnu.io.*;
+import utils.Constants;
+import utils.HttpRequest;
+import utils.Utils;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -45,22 +51,22 @@ public class RegisterFrame extends JFrame {
         String PHONE_NUMBER_REG = "^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$";
         Pattern pattern = Pattern.compile(PHONE_NUMBER_REG);
         if (pattern.matcher(phoneInput).matches()) {
-            LoginFrame.REG_PHONE = phoneInput;
-            if (name != null && !"".equals(name.trim())) {
-                LoginFrame.REG_NAME = name;
-            }
-            SerialPort serialPort = PortManager.getSerialPort();
-            if (serialPort != null) {
-                String systemPassword = user.getSystemPassword();
-                try {
-                    SerialPortUtils.sendToPort(serialPort, CommandUtils.registerCommand(systemPassword, deviceType));
-                } catch (SendDataToSerialPortFailure | SerialPortOutputStreamCloseFailure sendDataToSerialPortFailure) {
-                    sendDataToSerialPortFailure.printStackTrace();
-                }
-            }
-            rechargeFrame.setEnabled(true);
-            rechargeFrame.tipLabel.setText("正在准备注册，请将卡片放至充值机");
-            this.dispose();
+//            String url = "http://47.96.87.126:8654/recharge/SmsVerifyServlet";
+//            HttpRequest hr = new HttpRequest();
+//            hr.addParam("phone", phoneInput);
+//            hr.setMethod("POST");
+//            hr.setURL(url);
+//            String resp = hr.Send();
+//            System.out.println(resp);
+//            JSONObject jsonObject = JSONObject.parseObject(resp);
+//            if ("0".equals(jsonObject.getString("code"))) {
+//                String verifyCode = jsonObject.getString("num");
+//                new VerifyFrame(user, verifyCode, rechargeFrame, this, phoneInput, name, deviceType);
+                new VerifyFrame(user, "123456", rechargeFrame, this, phoneInput, name, deviceType);
+                rechargeFrame.setEnabled(false);
+                this.setEnabled(false);
+//            }
+
         } else {
             LoginFrame.REG_PHONE = "-";
             JOptionPane.showMessageDialog(null, "请输入正确的手机号！");
@@ -101,7 +107,7 @@ public class RegisterFrame extends JFrame {
         deviceTypeChooser.setBounds(150, 120, 105, deviceTypeChooser.getPreferredSize().height);
 
         confirmButton = new JButton();
-        confirmButton.setText("确定");
+        confirmButton.setText("验证");
         confirmButton.addActionListener(this::confirmButtonActionPerformed);
         contentPane.add(confirmButton);
         confirmButton.setBounds(60, 180, 70, 30);

@@ -197,5 +197,28 @@
         ]]>
     </delete>
 
+    <update id="userDao.updateCommunity">
+        <![CDATA[
+        update user
+        set community = #community#
+        WHERE username = #username#
+        ]]>
+    </update>
+
+    <update id="userDao.updateAllCommunity">
+        <![CDATA[
+        update user
+        set community = #community#
+        ]]>
+    </update>
+
+    <select id="userDao.getCommunity" resultClass="String">
+         <![CDATA[
+        select community
+        from user
+        where username = #username#;
+        ]]>
+    </select>
+
 
 </sqlMap>

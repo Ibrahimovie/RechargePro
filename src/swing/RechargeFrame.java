@@ -2,6 +2,8 @@ package swing;
 
 import bean.*;
 import bean.manager.*;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import commands.*;
 import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
@@ -17,6 +19,9 @@ import job.*;
 import org.quartz.*;
 
 import javax.swing.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
 import java.awt.*;
 import java.util.List;
@@ -28,6 +33,7 @@ public class RechargeFrame extends JFrame {
     private User user;
     private JComboBox<String> portChooser;
     public JLabel deviceStatusText;
+    public JLabel serverStatusText;
     public JPanel CardInfoPanel;
     public JLabel cardNumText;
     public JLabel cardTypeText;
@@ -135,8 +141,8 @@ public class RechargeFrame extends JFrame {
         if (serialPort != null) {
             String systemPassword = user.getSystemPassword();
             try {
-                System.out.println("查询。。。 ");
                 SerialPortUtils.sendToPort(serialPort, CommandUtils.queryCommand(systemPassword));
+
             } catch (SendDataToSerialPortFailure | SerialPortOutputStreamCloseFailure sendDataToSerialPortFailure) {
                 sendDataToSerialPortFailure.printStackTrace();
             }
@@ -169,10 +175,33 @@ public class RechargeFrame extends JFrame {
     }
 
     private void rechargeHisButtonActionPerformed(ActionEvent e) {
-        int n = ServiceImpl.getInstance().getRechargeCount();
-        List<Map<String, Object>> his = ServiceImpl.getInstance().getRechargeHisAll();
+//        int n = ServiceImpl.getInstance().getRechargeCount();
+//        List<Map<String, Object>> his = ServiceImpl.getInstance().getRechargeHisAll();
+        Map<String, String> map = new HashMap<>(2);
+        map.put("action", "getRechargeHisAll");
+        try {
+            map.put("community", URLEncoder.encode(user.getCommunity(), "utf-8"));
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        }
+        String rechargeAllJson = HttpUtils.toServlet(map, "RechargeHisServlet");
+        JSONObject jsonObject = JSONObject.parseObject(rechargeAllJson);
+        int n = 0;
+        List<Map<String, Object>> his = null;
+        try {
+            String hist = URLDecoder.decode(jsonObject.getString("reharge_his"), "utf-8");
+            JSONObject object = JSONObject.parseObject(hist);
+            JSONArray jsonArray = (JSONArray) object.get("his");
+            n = object.getInteger("count");
+            his = new ArrayList<>();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                his.add((Map<String, Object>) jsonArray.get(i));
+            }
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        }
         this.setEnabled(false);
-        new HisTableFrame(n, his, this);
+        new HisTableFrame(user, n, his, this);
     }
 
     private void aboutMenuItemActionPerformed(ActionEvent e) {
@@ -245,7 +274,7 @@ public class RechargeFrame extends JFrame {
         settingMenu.add(loginPasswdMenuItem);
 
         JMenuItem systemPasswdMenuItem = new JMenuItem();
-        systemPasswdMenuItem.setText("刷卡机密码");
+        systemPasswdMenuItem.setText("刷卡器密码");
         systemPasswdMenuItem.setFont(new Font("Dialog", Font.PLAIN, 12));
         systemPasswdMenuItem.addActionListener(this::systemPasswdMenuItemActionPerformed);
         settingMenu.add(systemPasswdMenuItem);
@@ -391,9 +420,9 @@ public class RechargeFrame extends JFrame {
         contentPane.add(deviceStatusText);
         deviceStatusText.setBounds(99, 88, deviceStatusText.getPreferredSize().width, 22);
 
-        JLabel serverStatusText = new JLabel();
-        serverStatusText.setText("在线");
-        serverStatusText.setForeground(Color.blue);
+        serverStatusText = new JLabel();
+        serverStatusText.setText("离线");
+        serverStatusText.setForeground(Color.red);
         serverStatusText.setFont(new Font("Dialog", Font.PLAIN, 12));
         contentPane.add(serverStatusText);
         serverStatusText.setBounds(new Rectangle(new Point(105, 135), serverStatusText.getPreferredSize()));

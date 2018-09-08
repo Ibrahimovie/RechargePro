@@ -114,4 +114,19 @@ public class UserDaoImpl implements UserDao {
     public void deleteUser(Map<String, Object> params) {
         sqlMapClientTemplate.delete("userDao.deleteUser", params);
     }
+
+    @Override
+    public void updateCommunity(Map<String, Object> params) {
+        sqlMapClientTemplate.update("userDao.updateCommunity", params);
+    }
+
+    @Override
+    public void updateAllCommunity(Map<String, Object> params) {
+        sqlMapClientTemplate.update("userDao.updateAllCommunity", params);
+    }
+
+    @Override
+    public String getCommunity(Map<String, Object> params) {
+        return (String) sqlMapClientTemplate.queryForObject("userDao.getCommunity", params);
+    }
 }

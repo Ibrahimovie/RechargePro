@@ -162,6 +162,25 @@ public class ServiceImpl implements Service {
         userDao.deleteUser(param);
     }
 
+    public void updateCommunity(String username, String community) {
+        Map<String, Object> param = new HashMap<>(2);
+        param.put("username", username);
+        param.put("community", community);
+        userDao.updateCommunity(param);
+    }
+
+    public void updateAllCommunity(String community) {
+        Map<String, Object> param = new HashMap<>(1);
+        param.put("community", community);
+        userDao.updateAllCommunity(param);
+    }
+
+    public String getCommunity(String username) {
+        Map<String, Object> param = new HashMap<>(1);
+        param.put("username", username);
+        return userDao.getCommunity(param);
+    }
+
     //CARD DAO
     public boolean isCardExist(String cardNum) {
         Map<String, Object> param = new HashMap<>(1);
@@ -263,7 +282,7 @@ public class ServiceImpl implements Service {
 
     //RECHARGE DAO
     public void addRechargeHis(String cardNum, String username, String phone, int cardType, int balance, int topUp,
-                               int validDay, int rechargeTime, int payRate, int powerRate, String time, String operator) {
+                               int validDay, int rechargeTime, int payRate, int powerRate, String time, String operator, String community) {
         Map<String, Object> param = new HashMap<>(11);
         param.put("card_number", cardNum);
         param.put("username", username);
@@ -277,6 +296,7 @@ public class ServiceImpl implements Service {
         param.put("power_rate", powerRate);
         param.put("now_time", time);
         param.put("operator", operator);
+        param.put("community", community);
         rechargeDao.addRechargeHis(param);
     }
 
@@ -284,7 +304,12 @@ public class ServiceImpl implements Service {
         return rechargeDao.getRechargeCount();
     }
 
-    public int getRechargeCountRangeWithPhone(String startTime, String endTime, String phone,String operator) {
+    public List<Map<String, Object>> getRechargeHisAll() {
+        return rechargeDao.getRechargeHisAll();
+    }
+
+
+    public int getRechargeCountRangeWithPhone(String startTime, String endTime, String phone, String operator) {
         Map<String, Object> param = new HashMap<>(4);
         param.put("start_time", startTime);
         param.put("end_time", endTime);
@@ -292,6 +317,17 @@ public class ServiceImpl implements Service {
         param.put("operator", operator);
         return rechargeDao.getRechargeCountRangeWithPhone(param);
     }
+
+
+    public List<Map<String, Object>> getRechargeHisRangeWithPhone(String startTime, String endTime, String phone, String operator) {
+        Map<String, Object> param = new HashMap<>(4);
+        param.put("start_time", startTime);
+        param.put("end_time", endTime);
+        param.put("phone", "%" + phone + "%");
+        param.put("operator", operator);
+        return rechargeDao.getRechargeHisRangeWithPhone(param);
+    }
+
 
     public int getRechargeCountRangeWithoutPhone(String startTime, String endTime, String operator) {
         Map<String, Object> param = new HashMap<>(3);
@@ -301,20 +337,8 @@ public class ServiceImpl implements Service {
         return rechargeDao.getRechargeCountRangeWithoutPhone(param);
     }
 
-    public List<Map<String, Object>> getRechargeHisAll() {
-        return rechargeDao.getRechargeHisAll();
-    }
 
-    public List<Map<String, Object>> getRechargeHisRangeWithPhone(String startTime, String endTime, String phone,String operator) {
-        Map<String, Object> param = new HashMap<>(4);
-        param.put("start_time", startTime);
-        param.put("end_time", endTime);
-        param.put("phone", "%" + phone + "%");
-        param.put("operator", operator);
-        return rechargeDao.getRechargeHisRangeWithPhone(param);
-    }
-
-    public List<Map<String, Object>> getRechargeHisRangeWithoutPhone(String startTime, String endTime,String operator) {
+    public List<Map<String, Object>> getRechargeHisRangeWithoutPhone(String startTime, String endTime, String operator) {
         Map<String, Object> param = new HashMap<>(3);
         param.put("start_time", startTime);
         param.put("end_time", endTime);

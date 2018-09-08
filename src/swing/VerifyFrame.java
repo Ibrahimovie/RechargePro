@@ -1,26 +1,44 @@
 package swing;
 
-import bean.*;
+import bean.User;
+import bean.manager.PortManager;
+import commands.CommandUtils;
+import exception.SendDataToSerialPortFailure;
+import exception.SerialPortOutputStreamCloseFailure;
+import gnu.io.SerialPort;
+import serial.SerialPortUtils;
 import service.impl.ServiceImpl;
 
-import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
- * @author kingfans
+ * @Author: kingfans
+ * @Date: 2018/8/30
  */
-public class SystemPasswdFrame extends JFrame {
+public class VerifyFrame extends JFrame {
+
     private User user;
+    private String verifyCode;
+    private String phone;
+    private String name;
+    private int deviceType;
     private RechargeFrame rechargeFrame;
-    private JFrame waitingFrame;
-    private JPasswordField passwordText;
+    private RegisterFrame registerFrame;
+    private JTextField codeText;
     private JButton confirmButton;
 
-    public SystemPasswdFrame(User user, RechargeFrame rechargeFrame, JFrame waitingFrame) {
+    public VerifyFrame(User user, String verifyCode, RechargeFrame rechargeFrame, RegisterFrame registerFrame, String phone, String name, int deviceType) {
         this.user = user;
+        this.verifyCode = verifyCode;
+        this.phone = phone;
+        this.name = name;
+        this.deviceType = deviceType;
         this.rechargeFrame = rechargeFrame;
-        this.waitingFrame = waitingFrame;
+        this.registerFrame = registerFrame;
         initComponents();
         this.setSize(315, 260);
         this.setLocationRelativeTo(null);
@@ -31,33 +49,44 @@ public class SystemPasswdFrame extends JFrame {
     }
 
     private void cancelButtonActionPerformed(ActionEvent e) {
+        registerFrame.setEnabled(true);
         rechargeFrame.setEnabled(true);
-        waitingFrame.dispose();
         this.dispose();
     }
 
     private void confirmButtonActionPerformed(ActionEvent e) {
-        char[] passwd = passwordText.getPassword();
-        String password = String.valueOf(passwd);
-        String adminPassword = ServiceImpl.getInstance().getAdminPassword();
-        if (adminPassword.equals(password)) {
-            try {
-                Thread.sleep(200L);
-            } catch (InterruptedException e2) {
-                e2.printStackTrace();
+
+        String codeInput = codeText.getText();
+        if (verifyCode.equals(codeInput)) {
+            LoginFrame.REG_PHONE = phone;
+            if (name != null && !"".equals(name.trim())) {
+                LoginFrame.REG_NAME = name;
             }
-            waitingFrame.setVisible(true);
+            SerialPort serialPort = PortManager.getSerialPort();
+            if (serialPort != null) {
+                String systemPassword = user.getSystemPassword();
+                try {
+                    SerialPortUtils.sendToPort(serialPort, CommandUtils.registerCommand(systemPassword, deviceType));
+                } catch (SendDataToSerialPortFailure | SerialPortOutputStreamCloseFailure sendDataToSerialPortFailure) {
+                    sendDataToSerialPortFailure.printStackTrace();
+                }
+            }
             rechargeFrame.setEnabled(true);
+            rechargeFrame.tipLabel.setText("正在准备注册，请将卡片放至充值机");
             this.dispose();
+            registerFrame.dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "密码错误！");
-            rechargeFrame.setEnabled(true);
-            this.dispose();
+            JOptionPane.showMessageDialog(null, "验证码错误！");
+            codeText.setText("");
+            codeText.requestFocus();
+//            rechargeFrame.setEnabled(true);
+//            registerFrame.setEnabled(true);
+//            this.dispose();
         }
     }
 
-    private void systemPasswdWindowClosing(WindowEvent e) {
-        waitingFrame.dispose();
+    private void verifyWindowClosing(WindowEvent e) {
+        registerFrame.setEnabled(true);
         rechargeFrame.setEnabled(true);
     }
 
@@ -65,27 +94,21 @@ public class SystemPasswdFrame extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                SystemPasswdFrame.this.systemPasswdWindowClosing(e);
+                VerifyFrame.this.verifyWindowClosing(e);
             }
         });
         Container contentPane = this.getContentPane();
         contentPane.setLayout(null);
 
         JLabel attentionLabel = new JLabel();
-        attentionLabel.setText("请输入管理员密码 : ");
+        attentionLabel.setText("请输入短信验证码 : ");
         attentionLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 18));
         contentPane.add(attentionLabel);
         attentionLabel.setBounds(new Rectangle(new Point(15, 50), attentionLabel.getPreferredSize()));
 
-        JLabel tipLabel = new JLabel();
-        tipLabel.setText("(管理员登录密码)");
-        tipLabel.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
-        contentPane.add(tipLabel);
-        tipLabel.setBounds(new Rectangle(new Point(15, 75), tipLabel.getPreferredSize()));
-
-        passwordText = new JPasswordField();
-        contentPane.add(passwordText);
-        passwordText.setBounds(70, 110, 210, passwordText.getPreferredSize().height);
+        codeText = new JTextField();
+        contentPane.add(codeText);
+        codeText.setBounds(70, 110, 210, codeText.getPreferredSize().height);
 
         confirmButton = new JButton();
         confirmButton.setText("确定");

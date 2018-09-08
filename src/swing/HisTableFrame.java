@@ -1,9 +1,13 @@
 package swing;
 
+import bean.User;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.eltima.components.ui.DatePicker;
 import excel.ExcelUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import service.impl.ServiceImpl;
+import utils.HttpUtils;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
@@ -11,6 +15,9 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -23,13 +30,15 @@ public class HisTableFrame extends JFrame {
     private RechargeFrame rechargeFrame;
     private int count;
     private List<Map<String, Object>> his;
+    private User user;
 
-    public HisTableFrame(int count, List<Map<String, Object>> his, RechargeFrame rechargeFrame) {
+    public HisTableFrame(User user, int count, List<Map<String, Object>> his, RechargeFrame rechargeFrame) {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException | IllegalAccessException e) {
             e.printStackTrace();
         }
+        this.user = user;
         this.count = count;
         this.his = his;
         this.rechargeFrame = rechargeFrame;
@@ -220,13 +229,66 @@ public class HisTableFrame extends JFrame {
             String phone = phoneText.getText();
             if (date2.after(date1) || date1 == date2) {
                 if (phone == null || "".equals(phone)) {
-                    count = ServiceImpl.getInstance().getRechargeCountRangeWithoutPhone(startDate, endDate, operator);
-                    his = ServiceImpl.getInstance().getRechargeHisRangeWithoutPhone(startDate, endDate,operator);
+//                    count = ServiceImpl.getInstance().getRechargeCountRangeWithoutPhone(startDate, endDate, operator);
+//                    his = ServiceImpl.getInstance().getRechargeHisRangeWithoutPhone(startDate, endDate, operator);
+                    Map<String, String> map = new HashMap<>();
+                    map.put("action", "getRechargeHisWithoutPhone");
+                    map.put("start_time", startDate);
+                    map.put("end_time", endDate);
+                    try {
+                        if (null != operator) {
+                            map.put("operator", URLEncoder.encode(operator, "utf-8"));
+                        }
+                        map.put("community", URLEncoder.encode(user.getCommunity(), "utf-8"));
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                    }
+                    String rechargeAllJson = HttpUtils.toServlet(map, "RechargeHisServlet");
+                    JSONObject jsonObject = JSONObject.parseObject(rechargeAllJson);
+                    try {
+                        String hist = URLDecoder.decode(jsonObject.getString("reharge_his"), "utf-8");
+                        JSONObject object = JSONObject.parseObject(hist);
+                        JSONArray jsonArray = (JSONArray) object.get("his");
+                        count = object.getInteger("count");
+                        his = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.size(); i++) {
+                            his.add((Map<String, Object>) jsonArray.get(i));
+                        }
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                    }
                 } else {
-                    count = ServiceImpl.getInstance().getRechargeCountRangeWithPhone(startDate, endDate, phone,operator);
-                    his = ServiceImpl.getInstance().getRechargeHisRangeWithPhone(startDate, endDate, phone,operator);
+//                    count = ServiceImpl.getInstance().getRechargeCountRangeWithPhone(startDate, endDate, phone, operator);
+//                    his = ServiceImpl.getInstance().getRechargeHisRangeWithPhone(startDate, endDate, phone, operator);
+                    Map<String, String> map = new HashMap<>();
+                    map.put("action", "getRechargeHisWithPhone");
+                    map.put("start_time", startDate);
+                    map.put("end_time", endDate);
+                    map.put("phone", phone);
+                    try {
+                        if (null != operator) {
+                            map.put("operator", URLEncoder.encode(operator, "utf-8"));
+                        }
+                        map.put("community", URLEncoder.encode(user.getCommunity(), "utf-8"));
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                    }
+                    String rechargeAllJson = HttpUtils.toServlet(map, "RechargeHisServlet");
+                    JSONObject jsonObject = JSONObject.parseObject(rechargeAllJson);
+                    try {
+                        String hist = URLDecoder.decode(jsonObject.getString("reharge_his"), "utf-8");
+                        JSONObject object = JSONObject.parseObject(hist);
+                        JSONArray jsonArray = (JSONArray) object.get("his");
+                        count = object.getInteger("count");
+                        his = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.size(); i++) {
+                            his.add((Map<String, Object>) jsonArray.get(i));
+                        }
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                    }
                 }
-                new HisTableFrame(count, his, rechargeFrame);
+                new HisTableFrame(user, count, his, rechargeFrame);
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "请输入正确的时间范围！");
