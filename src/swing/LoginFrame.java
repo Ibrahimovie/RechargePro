@@ -23,6 +23,7 @@ public class LoginFrame extends JFrame {
     public static int STATUS_COUNT = 0;
     public static int SERVER_STATUS_COUNT = 0;
     public static int IS_RECHARGE = 0;
+    public static int IS_UNCLIAMED = 0;
     public static String REG_PHONE = "-";
     public static String REG_NAME = "-";
     public static int IS_FIRSTTIME = 1;

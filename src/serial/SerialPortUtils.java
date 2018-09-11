@@ -13,6 +13,7 @@ import service.impl.ServiceImpl;
 import swing.LoginFrame;
 import swing.QueryToRechargeFrame;
 import swing.RechargeFrame;
+import swing.UnclaimedFrame;
 import utils.HttpRequest;
 import utils.HttpUtils;
 import utils.Utils;
@@ -239,7 +240,7 @@ public class SerialPortUtils {
                                                     int crc2 = ((bytes[28] & 0xFF) << 8 | (bytes[27] & 0xFF));
                                                     int crcCheck2 = Utils.crc16(bytes, 3, bytes.length - 6);
                                                     if (crc2 == crcCheck2) {
-                                                        if (LoginFrame.IS_RECHARGE == 0) {
+                                                        if (LoginFrame.IS_RECHARGE != 1 && LoginFrame.IS_UNCLIAMED != 1) {
                                                             int cardStatus = (bytes[4] & 0xFF);
                                                             if (cardStatus == 1) {
                                                                 int balance = ((bytes[8] & 0xFF) << 8 | (bytes[9] & 0xFF));
@@ -400,7 +401,7 @@ public class SerialPortUtils {
                                                                 JOptionPane.showMessageDialog(null, "此卡为新卡！");
                                                             }
                                                             LoginFrame.IS_FIRSTTIME = 0;
-                                                        } else if (LoginFrame.IS_RECHARGE == 1) {
+                                                        } else if (LoginFrame.IS_RECHARGE == 1 && LoginFrame.IS_UNCLIAMED != 1) {
                                                             int cardStatus = (bytes[4] & 0xFF);
                                                             if (cardStatus == 1) {
                                                                 String cardNum = Integer.toHexString((bytes[23] & 0xFF) << 24 | (bytes[24] & 0xFF) << 16 | (bytes[25] & 0xFF) << 8 | (bytes[26] & 0xFF));
@@ -470,6 +471,38 @@ public class SerialPortUtils {
                                                                         LoginFrame.IS_RECHARGE = 0;
                                                                     }
                                                                 }
+                                                            }
+                                                        } else if (LoginFrame.IS_RECHARGE != 1 && LoginFrame.IS_UNCLIAMED == 1) {
+                                                            int cardStatus = (bytes[4] & 0xFF);
+                                                            if (cardStatus == 1) {
+                                                                String cardNum = Integer.toHexString((bytes[23] & 0xFF) << 24 | (bytes[24] & 0xFF) << 16 | (bytes[25] & 0xFF) << 8 | (bytes[26] & 0xFF));
+                                                                int formerBalance = ((bytes[8] & 0xFF) << 8 | (bytes[9] & 0xFF));
+
+                                                                int deviceType = (bytes[5] & 0xFF);
+                                                                int lastTime = ((bytes[10] & 0xFF) << 8 | (bytes[11] & 0xFF));
+                                                                int startTime = ((bytes[14] & 0xFF) << 8 | (bytes[15] & 0xFF));
+                                                                int validDay = (bytes[17] & 0xFF);
+                                                                int chargeTime = (bytes[18] & 0xFF);
+                                                                int payRate = (bytes[19] & 0xFF);
+                                                                int powerRate = (bytes[21] & 0xFF);
+                                                                int isReturn = (bytes[22] & 0xFF);
+
+
+                                                                Map<String, String> map = new HashMap<>();
+                                                                map.put("action", "getPrechargeBalance");
+                                                                map.put("card_number", cardNum);
+                                                                String resp = HttpUtils.toServlet(map, "CardInfoServlet");
+                                                                JSONObject jsonObject = JSONObject.parseObject(resp);
+                                                                int preBalance = jsonObject.getIntValue("pre_balance");
+
+                                                                frame.tipLabel.setText("请输入充值相关参数");
+                                                                new UnclaimedFrame(frame, cardNum, preBalance, formerBalance, deviceType, lastTime,
+                                                                        startTime, validDay, chargeTime, payRate, powerRate, isReturn);
+                                                                frame.setEnabled(false);
+
+                                                            } else if (cardStatus == 4) {
+                                                                //新卡
+
                                                             }
                                                         }
                                                     } else {
@@ -571,9 +604,6 @@ public class SerialPortUtils {
                                                                 if ("-1".equals(phone)) {
                                                                     phone = "-";
                                                                 }
-//                                                                ServiceImpl.getInstance().addRechargeHis(cardNum, username, phone, card.getCardType(), balance, card.getTopUp(),
-//                                                                        card.getValidDay(), card.getRechargeTime(), card.getPayRate(), card.getPowerRate(), nowTime, UserManager.getUser().getUserName(),
-//                                                                        UserManager.getUser().getCommunity());
 
                                                                 try {
                                                                     Map<String, String> map = new HashMap<>(13);
@@ -642,7 +672,6 @@ public class SerialPortUtils {
                                                             JOptionPane.showMessageDialog(null, "充值成功！卡内余额：" + df.format(balance / 10.0f), "充值提示", JOptionPane.INFORMATION_MESSAGE);
                                                             if (CardManager.getCardByNum(cardNum) != null) {
                                                                 Card card = CardManager.getCardByNum(cardNum);
-
                                                                 try {
                                                                     Map<String, String> map = new HashMap<>(7);
                                                                     map.put("action", "updateCardInfo");
@@ -653,6 +682,13 @@ public class SerialPortUtils {
                                                                     map.put("pay_rate", String.valueOf(card.getPayRate()));
                                                                     map.put("power_rate", String.valueOf(card.getPowerRate()));
                                                                     HttpUtils.toServlet(map, "CardInfoServlet");
+
+                                                                    Map<String, String> map2 = new HashMap<>(4);
+                                                                    map2.put("action", "updateBalance");
+                                                                    map2.put("card_number", cardNum);
+                                                                    map2.put("option", "subtract");
+                                                                    map2.put("money", String.valueOf(card.getTopUp() / 10));
+                                                                    HttpUtils.toServlet(map2, "CardInfoServlet");
                                                                 } catch (UnsupportedEncodingException e) {
                                                                     e.printStackTrace();
                                                                 }

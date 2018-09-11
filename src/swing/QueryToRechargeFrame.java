@@ -63,7 +63,7 @@ public class QueryToRechargeFrame extends JFrame {
     }
 
     private void confirmButtonActionPerformed(ActionEvent e) {
-        String regEx = "^[0-9]+([.][0-9]{1}){0,1}$";
+        String regEx = "^[0-9]+([.][0-9]{1}){0,1}$";//一位小数或整数
         Pattern pattern = Pattern.compile(regEx);
         if (deviceType == 0) {
             String moneyInput = moneyText.getText();

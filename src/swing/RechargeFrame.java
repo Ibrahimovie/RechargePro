@@ -164,6 +164,21 @@ public class RechargeFrame extends JFrame {
         }
     }
 
+    private void unclaimedButtonActionPerformed(ActionEvent e) {
+        LoginFrame.IS_UNCLIAMED = 1;
+        tipLabel.setText("准备领取圈存，请将卡放至充值机");
+        SerialPort serialPort = PortManager.getSerialPort();
+        if (serialPort != null) {
+            String systemPassword = user.getSystemPassword();
+            try {
+                SerialPortUtils.sendToPort(serialPort, CommandUtils.queryCommand(systemPassword));
+            } catch (SendDataToSerialPortFailure | SerialPortOutputStreamCloseFailure sendDataToSerialPortFailure) {
+                sendDataToSerialPortFailure.printStackTrace();
+            }
+        }
+    }
+
+
     private void registerButtonActionPerformed(ActionEvent e) {
         try {
             Thread.sleep(500L);
@@ -203,6 +218,7 @@ public class RechargeFrame extends JFrame {
         this.setEnabled(false);
         new HisTableFrame(user, n, his, this);
     }
+
 
     private void aboutMenuItemActionPerformed(ActionEvent e) {
         new AboutFrame();
@@ -413,6 +429,15 @@ public class RechargeFrame extends JFrame {
         rechargeHisButton.setBackground(new Color(180, 205, 205));
         rechargeHisButton.setBorder(BorderFactory.createRaisedBevelBorder());
 
+        JButton unclaimedButton = new JButton();
+        unclaimedButton.setText("圈存领取");
+        unclaimedButton.setFont(new Font("Dialog", Font.PLAIN, 12));
+        unclaimedButton.addActionListener(this::unclaimedButtonActionPerformed);
+        contentPane.add(unclaimedButton);
+        unclaimedButton.setBounds(30, 460, 88, unclaimedButton.getPreferredSize().height);
+        unclaimedButton.setBackground(new Color(180, 205, 205));
+        unclaimedButton.setBorder(BorderFactory.createRaisedBevelBorder());
+
         deviceStatusText = new JLabel();
         deviceStatusText.setText("连接异常");
         deviceStatusText.setForeground(Color.red);
@@ -481,11 +506,11 @@ public class RechargeFrame extends JFrame {
         separator8.setBounds(50, 225, 105, 5);
         separator9.setForeground(Color.lightGray);
         contentPane.add(separator9);
-        separator9.setBounds(0, 475, 155, 5);
+        separator9.setBounds(0, 515, 155, 5);
         separator10.setOrientation(SwingConstants.VERTICAL);
         separator10.setForeground(Color.lightGray);
         contentPane.add(separator10);
-        separator10.setBounds(155, 225, 5, 250);
+        separator10.setBounds(155, 225, 5, 290);
 
 
         JSeparator separator11 = new JSeparator();

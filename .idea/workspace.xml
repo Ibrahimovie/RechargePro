@@ -6,59 +6,25 @@
     </artifacts-to-build>
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/serial/SerialPortUtils.java" line="212" />
+    <bookmark url="file://$PROJECT_DIR$/src/serial/SerialPortUtils.java" line="213" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1b3df59-7c25-4711-b592-3ada313821af" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/job/ServerConnectionJob.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/swing/CommunityFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/swing/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/swing/VerifyFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/HttpRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/HttpUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/RechargePro_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/RechargePro_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/2b97531b-9aee-4547-813c-d4f3a14fdbf4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/2b97531b-9aee-4547-813c-d4f3a14fdbf4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/swing/UnclaimedFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/commons-logging-1.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/bean/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/bean/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/dao/UserDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/dao/UserDao.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/dao/impl/UserDaoImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/dao/impl/UserDaoImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/job/Schedule.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/job/Schedule.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/job/StatusCheckJob.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/job/StatusCheckJob.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RechargePro.iml" beforeDir="false" afterPath="$PROJECT_DIR$/RechargePro.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/RechargePro/serial/SerialPortUtils$SerialListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/serial/SerialPortUtils$SerialListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/RechargePro/serial/SerialPortUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/serial/SerialPortUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/service/impl/ServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/service/impl/ServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/sql-map-recharge.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/sql-map-recharge.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/sql-map-user.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/sql-map-user.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/swing/HisTableFrame$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/swing/HisTableFrame$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/swing/HisTableFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/swing/HisTableFrame.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/RechargePro/swing/LoginFrame$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/swing/LoginFrame$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/RechargePro/swing/LoginFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/swing/LoginFrame.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/RechargePro/swing/RechargeFrame$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/swing/RechargeFrame$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/RechargePro/swing/RechargeFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/swing/RechargeFrame.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/swing/RegisterFrame$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/swing/RegisterFrame$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/swing/RegisterFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/swing/RegisterFrame.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/swing/SystemPasswdFrame$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/swing/SystemPasswdFrame$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/swing/SystemPasswdFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/swing/SystemPasswdFrame.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RechargePro/utils/Utils.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RechargePro/utils/Utils.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rechargeDB" beforeDir="false" afterPath="$PROJECT_DIR$/rechargeDB" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/sql-map-recharge.xml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sql-map-recharge.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/sql-map-user.xml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sql-map-user.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bean/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bean/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/UserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao/impl/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/impl/UserDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/job/Schedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/job/Schedule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/job/StatusCheckJob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/job/StatusCheckJob.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/serial/SerialPortUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/serial/SerialPortUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/impl/ServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl/ServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/swing/HisTableFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/swing/HisTableFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/swing/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/swing/LoginFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/swing/QueryToRechargeFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/swing/QueryToRechargeFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/swing/RechargeFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/swing/RechargeFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/swing/RegisterFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/swing/RegisterFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/swing/SystemPasswdFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/swing/SystemPasswdFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Utils.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -69,6 +35,9 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/RechargePro$UnclaimedFrame.ic" NAME="UnclaimedFrame Coverage Results" MODIFIED="1536633205586" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>swing.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/RechargePro$LoginFrame.ic" NAME="LoginFrame Coverage Results" MODIFIED="1532052783582" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>swing.*</FILTER>
     </SUITE>
@@ -123,10 +92,34 @@
       <file leaf-file-name="RechargeFrame.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/swing/RechargeFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4425">
-              <caret line="201" column="9" selection-start-line="201" selection-start-column="9" selection-end-line="201" selection-end-column="9" />
+            <state relative-caret-position="442">
+              <caret line="177" column="9" selection-start-line="177" selection-start-column="9" selection-end-line="177" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SerialPortUtils.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/serial/SerialPortUtils.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="685" column="112" lean-forward="true" selection-start-line="685" selection-start-column="112" selection-end-line="685" selection-end-column="112" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Card.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/bean/Card.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="189">
+              <caret line="103" column="19" lean-forward="true" selection-start-line="103" selection-start-column="19" selection-end-line="103" selection-end-column="19" />
+              <folding>
+                <element signature="e#2047#2048#0" expanded="true" />
+                <element signature="e#2080#2081#0" expanded="true" />
+                <element signature="e#2119#2120#0" expanded="true" />
+                <element signature="e#2153#2154#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -135,69 +128,62 @@
       <file leaf-file-name="HisTableFrame.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/swing/HisTableFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6075">
-              <caret line="266" column="44" selection-start-line="266" selection-start-column="44" selection-end-line="266" selection-end-column="44" />
+            <state relative-caret-position="641">
+              <caret line="246" column="84" selection-start-line="233" selection-start-column="20" selection-end-line="246" selection-end-column="84" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CommunityFrame.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/swing/CommunityFrame.java">
+      <file leaf-file-name="QueryToRechargeFrame.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/swing/QueryToRechargeFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="925">
-              <caret line="64" column="29" selection-start-line="64" selection-start-column="29" selection-end-line="64" selection-end-column="29" />
+            <state relative-caret-position="180">
+              <caret line="73" column="127" selection-start-line="73" selection-start-column="95" selection-end-line="73" selection-end-column="127" />
+              <folding>
+                <element signature="e#16880#17044#0" expanded="true" />
+                <element signature="e#17043#17044#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServiceImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/service/impl/ServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="283" column="23" lean-forward="true" selection-start-line="283" selection-start-column="23" selection-end-line="283" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CommandUtils.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/commands/CommandUtils.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-78">
+              <caret line="81" column="25" selection-start-line="81" selection-start-column="25" selection-end-line="81" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SystemPasswdSettingFrame.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/swing/SystemPasswdSettingFrame.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="297">
+              <caret line="37" column="30" selection-start-line="37" selection-start-column="30" selection-end-line="37" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UnclaimedFrame.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/swing/UnclaimedFrame.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="71" column="61" lean-forward="true" selection-start-line="71" selection-start-column="61" selection-end-line="71" selection-end-column="61" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1315#1480#0" expanded="true" />
+                <element signature="e#1479#1480#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HttpUtils.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/utils/HttpUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="21" selection-start-line="21" selection-end-line="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="user" pinned="false" current-in-tab="false">
-        <entry file="das://2b97531b-9aee-4547-813c-d4f3a14fdbf4/schema/main/table/user">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserDaoImpl.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dao/impl/UserDaoImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2900">
-              <caret line="123" column="64" selection-start-line="123" selection-start-column="64" selection-end-line="123" selection-end-column="64" />
-              <folding>
-                <element signature="e#3556#3557#0" expanded="true" />
-                <element signature="e#3629#3630#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="user" pinned="false" current-in-tab="false">
-        <entry file="das://1a88dd00-ea48-4fa0-b19a-0dbf5675423e/schema/main/table/user">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sql-map-user.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/sql-map-user.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5250">
-              <caret line="210" column="35" selection-start-line="210" selection-start-column="35" selection-end-line="210" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -205,17 +191,8 @@
       <file leaf-file-name="LoginFrame.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/swing/LoginFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1100">
-              <caret line="44" selection-start-line="44" selection-end-line="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/swing/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="21" selection-start-line="21" selection-end-line="21" />
+            <state relative-caret-position="364">
+              <caret line="166" column="68" selection-start-line="154" selection-start-column="8" selection-end-line="170" selection-end-column="72" />
             </state>
           </provider>
         </entry>
@@ -231,11 +208,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>userDao.updateSubSectorOrder</find>
-      <find>userDao.updateSubPortrateOrder</find>
-      <find>userDao.updateSubPortOrder</find>
-      <find>userDao.updateSystemPassword</find>
-      <find>userDao.isUserExist</find>
       <find>充值</find>
       <find>getSystemPassword</find>
       <find>userDao.getAdminPassword</find>
@@ -261,6 +233,11 @@
       <find>his</find>
       <find>system.out</find>
       <find>system.out.pri</find>
+      <find>JSeparator</find>
+      <find>Pattern.compile</find>
+      <find>matches</find>
+      <find>addRechargeHis</find>
+      <find>updateCardInfo</find>
     </findStrings>
     <replaceStrings>
       <replace>PORTNAME</replace>
@@ -280,7 +257,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/sqlite/SqliteConnectionManager.java" />
         <option value="$PROJECT_DIR$/src/utils/ApplicationContextHolder.java" />
         <option value="$PROJECT_DIR$/src/utils/Constants.java" />
         <option value="$PROJECT_DIR$/src/commands/CommandUtils.java" />
@@ -295,7 +271,6 @@
         <option value="$PROJECT_DIR$/src/swing/JTextFieldHintListener.java" />
         <option value="$PROJECT_DIR$/src/swing/MyTable.java" />
         <option value="$PROJECT_DIR$/src/sqlite/SqliteExecution.java" />
-        <option value="$PROJECT_DIR$/src/swing/QueryToRechargeFrame.java" />
         <option value="$PROJECT_DIR$/src/swing/addAccountFrame.java" />
         <option value="$PROJECT_DIR$/src/swing/test.jfd" />
         <option value="$PROJECT_DIR$/src/swing/AddAccountFrame.java" />
@@ -318,19 +293,21 @@
         <option value="$PROJECT_DIR$/src/bean/User.java" />
         <option value="$PROJECT_DIR$/resources/sql-map-recharge.xml" />
         <option value="$PROJECT_DIR$/src/job/Schedule.java" />
-        <option value="$PROJECT_DIR$/src/serial/SerialPortUtils.java" />
         <option value="$PROJECT_DIR$/src/job/StatusCheckJob.java" />
         <option value="$PROJECT_DIR$/src/job/ServerConnectionJob.java" />
         <option value="$PROJECT_DIR$/src/service/impl/ServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/dao/UserDao.java" />
         <option value="$PROJECT_DIR$/src/dao/impl/UserDaoImpl.java" />
         <option value="$PROJECT_DIR$/resources/sql-map-user.xml" />
-        <option value="$PROJECT_DIR$/src/swing/RechargeFrame.java" />
         <option value="$PROJECT_DIR$/src/swing/HisTableFrame.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
-        <option value="$PROJECT_DIR$/src/swing/LoginFrame.java" />
         <option value="$PROJECT_DIR$/src/swing/CommunityFrame.java" />
         <option value="$PROJECT_DIR$/src/swing/Main.java" />
+        <option value="$PROJECT_DIR$/src/swing/LoginFrame.java" />
+        <option value="$PROJECT_DIR$/src/swing/RechargeFrame.java" />
+        <option value="$PROJECT_DIR$/src/serial/SerialPortUtils.java" />
+        <option value="$PROJECT_DIR$/src/swing/QueryToRechargeFrame.java" />
+        <option value="$PROJECT_DIR$/src/swing/UnclaimedFrame.java" />
       </list>
     </option>
   </component>
@@ -344,10 +321,10 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="266" />
-    <option name="y" value="87" />
-    <option name="width" value="1476" />
-    <option name="height" value="1062" />
+    <option name="x" value="475" />
+    <option name="y" value="33" />
+    <option name="width" value="1344" />
+    <option name="height" value="958" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -365,26 +342,88 @@
             <path>
               <item name="RechargePro" type="b2602c69:ProjectViewProjectNode" />
               <item name="RechargePro" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RechargePro" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RechargePro" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RechargePro" type="b2602c69:ProjectViewProjectNode" />
               <item name="RechargePro" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
+              <item name="bean" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RechargePro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RechargePro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="commands" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RechargePro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RechargePro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="dao" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RechargePro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RechargePro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="excel" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RechargePro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RechargePro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="exception" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RechargePro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RechargePro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="job" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RechargePro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RechargePro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="META-INF" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RechargePro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RechargePro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="serial" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RechargePro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RechargePro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RechargePro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RechargePro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+              <item name="impl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RechargePro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RechargePro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="sqlite" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RechargePro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RechargePro" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="swing" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="AndroidView" />
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -392,10 +431,10 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="Sqlite (Xerial)&#10;Amazon Redshift" />
     <property name="database.console.LAST_STATE" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../recharge_server" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
@@ -459,6 +498,17 @@
       <module name="RechargePro" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
+    <configuration name="UnclaimedFrame" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="swing.UnclaimedFrame" />
+      <module name="RechargePro" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="swing.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+    </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
@@ -504,10 +554,12 @@
       <item itemvalue="Application.LoginFrame" />
       <item itemvalue="Application.CommunityFrame" />
       <item itemvalue="Application.Main" />
+      <item itemvalue="Application.UnclaimedFrame" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.UnclaimedFrame" />
         <item itemvalue="Application.LoginFrame" />
         <item itemvalue="Application.CommunityFrame" />
       </list>
@@ -579,7 +631,9 @@
       <workItem from="1536106871391" duration="24446000" />
       <workItem from="1536192521315" duration="23677000" />
       <workItem from="1536279637415" duration="3896000" />
-      <workItem from="1536365734358" duration="2034000" />
+      <workItem from="1536365734358" duration="2820000" />
+      <workItem from="1536542878475" duration="5355000" />
+      <workItem from="1536626629529" duration="21427000" />
     </task>
     <task id="LOCAL-00001" summary="充值默认输入">
       <created>1531906721653</created>
@@ -609,46 +663,54 @@
       <option name="project" value="LOCAL" />
       <updated>1533890282763</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="与服务器连接">
+      <created>1536393612115</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1536393612115</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="306596000" />
+    <option name="totallyTimeSpent" value="334164000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Palette&#9;" order="3" />
-      <window_info id="Image Layers" order="2" />
-      <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.35550708" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Spring" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.25736097" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.119936034" />
-      <window_info anchor="right" id="Database" order="3" visible="true" weight="0.06716418" />
+      <window_info anchor="right" id="Database" order="3" weight="0.06716418" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
-      <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Messages" order="8" weight="0.34351146" />
+      <window_info anchor="right" id="Palette&#9;" order="3" />
+      <window_info id="Image Layers" order="2" />
+      <window_info anchor="right" id="Capture Analysis" order="3" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.35550708" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="right" id="Coverage" order="4" side_tool="true" weight="0.32942432" />
+      <window_info anchor="bottom" id="Spring" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.2570806" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.122068234" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3293348" />
+      <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="8" weight="0.34450403" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Database Console" order="8" weight="0.32819384" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="right" id="Coverage" order="4" side_tool="true" weight="0.3294714" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3293348" />
     </layout>
     <layout-to-restore>
       <window_info id="Designer" order="2" />
@@ -693,7 +755,8 @@
     <MESSAGE value="充值默认输入" />
     <MESSAGE value="多账号管理" />
     <MESSAGE value="第一次查询无响应" />
-    <option name="LAST_COMMIT_MESSAGE" value="第一次查询无响应" />
+    <MESSAGE value="与服务器连接" />
+    <option name="LAST_COMMIT_MESSAGE" value="与服务器连接" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -701,41 +764,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/sql-map-card.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2900">
-          <caret line="116" selection-start-line="110" selection-start-column="4" selection-end-line="116" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/config.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="4" column="12" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dao/UserDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="14" selection-start-line="14" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/sql-map-user.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="700">
-          <caret line="28" column="11" selection-start-line="28" selection-start-column="11" selection-end-line="28" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/ApplicationContextHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/sql-map-config.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -822,24 +850,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/bean/Card.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="das://1a88dd00-ea48-4fa0-b19a-0dbf5675423e/schema/main/table/recharge_his.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="25">
           <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/swing/QueryToRechargeFrame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2800">
-          <caret line="125" column="20" selection-start-line="125" selection-start-column="20" selection-end-line="125" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -930,13 +944,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/serial/SerialPortUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="229" column="99" lean-forward="true" selection-start-line="229" selection-start-column="56" selection-end-line="231" selection-end-column="84" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/job/StatusCheckJob.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="400">
@@ -958,13 +965,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/service/impl/ServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="168" column="29" selection-start-line="168" selection-start-column="29" selection-end-line="168" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/dao/UserDao.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1125">
@@ -972,52 +972,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/dao/impl/UserDaoImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2900">
-          <caret line="123" column="64" selection-start-line="123" selection-start-column="64" selection-end-line="123" selection-end-column="64" />
-          <folding>
-            <element signature="e#3556#3557#0" expanded="true" />
-            <element signature="e#3629#3630#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/sql-map-user.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5250">
           <caret line="210" column="35" selection-start-line="210" selection-start-column="35" selection-end-line="210" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://1a88dd00-ea48-4fa0-b19a-0dbf5675423e/schema/main/table/user">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/swing/RechargeFrame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4425">
-          <caret line="201" column="9" selection-start-line="201" selection-start-column="9" selection-end-line="201" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/swing/HisTableFrame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6075">
-          <caret line="266" column="44" selection-start-line="266" selection-start-column="44" selection-end-line="266" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/swing/LoginFrame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1100">
-          <caret line="44" selection-start-line="44" selection-end-line="44" />
         </state>
       </provider>
     </entry>
@@ -1037,7 +995,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/swing/CommunityFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="925">
+        <state relative-caret-position="1050">
           <caret line="64" column="29" selection-start-line="64" selection-start-column="29" selection-end-line="64" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1045,10 +1003,130 @@
         </state>
       </provider>
     </entry>
+    <entry file="das://1a88dd00-ea48-4fa0-b19a-0dbf5675423e/schema/main/table/user">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dao/impl/UserDaoImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2900">
+          <caret line="123" column="64" selection-start-line="123" selection-start-column="64" selection-end-line="123" selection-end-column="64" />
+          <folding>
+            <element signature="e#3556#3557#0" expanded="true" />
+            <element signature="e#3629#3630#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/swing/AboutFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-275">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/swing/PortrateFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/utils/HttpUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
+        <state relative-caret-position="250">
+          <caret line="10" column="26" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/swing/LoginFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="166" column="68" selection-start-line="154" selection-start-column="8" selection-end-line="170" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/swing/SystemPasswdSettingFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="37" column="30" selection-start-line="37" selection-start-column="30" selection-end-line="37" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/swing/HisTableFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="641">
+          <caret line="246" column="84" selection-start-line="233" selection-start-column="20" selection-end-line="246" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/commands/CommandUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-78">
+          <caret line="81" column="25" selection-start-line="81" selection-start-column="25" selection-end-line="81" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/service/impl/ServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="283" column="23" lean-forward="true" selection-start-line="283" selection-start-column="23" selection-end-line="283" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/bean/Card.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="103" column="19" lean-forward="true" selection-start-line="103" selection-start-column="19" selection-end-line="103" selection-end-column="19" />
+          <folding>
+            <element signature="e#2047#2048#0" expanded="true" />
+            <element signature="e#2080#2081#0" expanded="true" />
+            <element signature="e#2119#2120#0" expanded="true" />
+            <element signature="e#2153#2154#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/swing/RechargeFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="177" column="9" selection-start-line="177" selection-start-column="9" selection-end-line="177" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/serial/SerialPortUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="685" column="112" lean-forward="true" selection-start-line="685" selection-start-column="112" selection-end-line="685" selection-end-column="112" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/swing/QueryToRechargeFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="73" column="127" selection-start-line="73" selection-start-column="95" selection-end-line="73" selection-end-column="127" />
+          <folding>
+            <element signature="e#16880#17044#0" expanded="true" />
+            <element signature="e#17043#17044#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/swing/UnclaimedFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="71" column="61" lean-forward="true" selection-start-line="71" selection-start-column="61" selection-end-line="71" selection-end-column="61" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1315#1480#0" expanded="true" />
+            <element signature="e#1479#1480#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1154,7 +1232,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
