@@ -258,8 +258,6 @@ public class HisTableFrame extends JFrame {
                         e1.printStackTrace();
                     }
                 } else {
-//                    count = ServiceImpl.getInstance().getRechargeCountRangeWithPhone(startDate, endDate, phone, operator);
-//                    his = ServiceImpl.getInstance().getRechargeHisRangeWithPhone(startDate, endDate, phone, operator);
                     Map<String, String> map = new HashMap<>();
                     map.put("action", "getRechargeHisWithPhone");
                     map.put("start_time", startDate);

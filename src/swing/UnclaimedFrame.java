@@ -10,6 +10,7 @@ import exception.SendDataToSerialPortFailure;
 import exception.SerialPortOutputStreamCloseFailure;
 import gnu.io.SerialPort;
 import serial.SerialPortUtils;
+import service.impl.ServiceImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,10 +39,13 @@ public class UnclaimedFrame extends JFrame {
     private int powerRate;
     private int isReturn;
     private JTextField input;
+    private JButton confirmButton;
     private DecimalFormat df;
 
     public UnclaimedFrame(RechargeFrame rechargeFrame, String cardNum, int preBalance, int formerBalance, int deviceType, int lastTime,
                           int startTime, int validDay, int rechargeTime, int payRate, int powerRate, int isReturn) {
+        System.out.println("UnclaimedFrame ! " + cardNum + " , " + preBalance + " , " + formerBalance + " , " + deviceType + " , "
+                + lastTime + " , " + startTime + " , " + validDay + " , " + rechargeTime + " , " + payRate + " , " + powerRate + " , " + isReturn);
         this.frame = rechargeFrame;
         this.cardNum = cardNum;
         this.preBalance = preBalance;
@@ -61,6 +65,7 @@ public class UnclaimedFrame extends JFrame {
         Image icon = Toolkit.getDefaultToolkit().getImage("resources/dk_logo.png");
         this.setIconImage(icon);
         this.setLocationRelativeTo(null);
+        this.getRootPane().setDefaultButton(confirmButton);
         this.setVisible(true);
     }
 
@@ -75,7 +80,7 @@ public class UnclaimedFrame extends JFrame {
                 input.setText("");
                 input.requestFocus();
             } else {
-                System.out.println("hiahiahiahia : formerBalance / 10.0f = " + (formerBalance / 10.0f));
+//                System.out.println("hiahiahiahia : formerBalance / 10.0f = " + (formerBalance / 10.0f));
                 if (moneyInputInt + (formerBalance / 10.0f) > 5000) {
                     JOptionPane.showMessageDialog(null, "卡内余额不得超过5000元！");
                     input.setText("");
@@ -93,12 +98,23 @@ public class UnclaimedFrame extends JFrame {
                             sendDataToSerialPortFailure.printStackTrace();
                         }
                     }
+                    int cardType = ServiceImpl.getInstance().getCardTypeByNum(cardNum);
                     if (CardManager.getCardByNum(cardNum) != null) {
                         Card card = CardManager.getCardByNum(cardNum);
                         card.setTopUp(moneyInputInt * 10);
+                        card.setValidDay(validDay);
+                        card.setCardType(cardType);
+                        card.setRechargeTime(rechargeTime);
+                        card.setPayRate(payRate);
+                        card.setPowerRate(powerRate);
                     } else {
                         Card card = new Card(cardNum);
                         card.setTopUp(moneyInputInt * 10);
+                        card.setValidDay(validDay);
+                        card.setCardType(cardType);
+                        card.setRechargeTime(rechargeTime);
+                        card.setPayRate(payRate);
+                        card.setPowerRate(powerRate);
                         CardManager.addCard(cardNum, card);
                     }
                     frame.setEnabled(true);
@@ -175,7 +191,7 @@ public class UnclaimedFrame extends JFrame {
         input.setBounds(120, 130, 160, 35);
 
 
-        JButton confirmButton = new JButton();
+        confirmButton = new JButton();
         confirmButton.setText("确定");
         confirmButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         confirmButton.addActionListener(this::confirmActionPerformed);

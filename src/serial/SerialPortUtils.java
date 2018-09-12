@@ -487,6 +487,8 @@ public class SerialPortUtils {
                                                                 int powerRate = (bytes[21] & 0xFF);
                                                                 int isReturn = (bytes[22] & 0xFF);
 
+                                                                System.out.println("领取圈存！" + deviceType + "," + lastTime + "," + startTime + ","
+                                                                        + validDay + "," + chargeTime + "," + payRate + "," + powerRate + "," + isReturn);
 
                                                                 Map<String, String> map = new HashMap<>();
                                                                 map.put("action", "getPrechargeBalance");

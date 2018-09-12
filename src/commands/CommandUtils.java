@@ -80,6 +80,8 @@ public class CommandUtils {
     }
 
     public static byte[] rechargeCommand(int deviceType, int money, int lastTime, int startTime, int validDay, int rechargeTime, int payRate, int powerRate, int isReturn, String password) {
+        System.out.println("rechargeCommand ! " + deviceType + " , " + money + " , " + lastTime + " , " + startTime + " , " + validDay + " , "
+                + rechargeTime + " , " + payRate + " , " + powerRate + " , " + isReturn + " , " + password);
         byte[] moneyByte = Utils.intToByteArray2(money);
         byte[] startTimeByte = Utils.intToByteArray2(startTime);
         byte[] b = new byte[33];
