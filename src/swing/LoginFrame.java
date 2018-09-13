@@ -101,35 +101,6 @@ public class LoginFrame extends JFrame {
         Container contentPane = this.getContentPane();
         contentPane.setLayout(null);
 
-//        JLabel communityLabel = new JLabel();
-//        communityLabel.setText("小区 : ");
-//        communityLabel.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
-//        contentPane.add(communityLabel);
-//        communityLabel.setBounds(160, 130, 78, communityLabel.getPreferredSize().height);
-
-//        communityChooser = new JComboBox();
-//        Map<String, String> map = new HashMap<>(1);
-//        map.put("action", "getCommunities");
-//        String resp = HttpUtils.toServlet(map, "CommunityServlet");
-//        JSONObject jsonObject = JSONObject.parseObject(resp);
-//        String communities;
-//        ArrayList<String> arrayList = null;
-//        try {
-//            communities = URLDecoder.decode(jsonObject.getString("community"), "utf-8");
-//            List<String> lis = Arrays.asList(communities.split(","));
-//            arrayList = new ArrayList(lis);
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-//        arrayList.add(0, "请选择");
-//        String[] communityArray = arrayList.toArray(new String[0]);
-//        communityChooser.setModel(new DefaultComboBoxModel<>(communityArray));
-//        communityChooser.addItemListener(this::communityChooserItemStateChanged);
-//        contentPane.add(communityChooser);
-//        communityChooser.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
-//        communityChooser.setBounds(225, 125, 130, 30);
-
-
         JLabel userLabel = new JLabel();
         userLabel.setText("账号 : ");
         userLabel.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));

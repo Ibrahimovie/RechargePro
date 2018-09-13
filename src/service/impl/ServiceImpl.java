@@ -135,8 +135,8 @@ public class ServiceImpl implements Service {
     }
 
     public void addSubAccount(String username, String password, String systemPassword, int isAdmin, int portrateId,
-                              int portId, int deviceId, int sectorId) {
-        Map<String, Object> param = new HashMap<>(8);
+                              int portId, int deviceId, int sectorId, String community) {
+        Map<String, Object> param = new HashMap<>(9);
         param.put("username", username);
         param.put("password", password);
         param.put("system_password", systemPassword);
@@ -145,6 +145,7 @@ public class ServiceImpl implements Service {
         param.put("port_id", portId);
         param.put("device_id", deviceId);
         param.put("sector_id", sectorId);
+        param.put("community", community);
         userDao.addSubAccount(param);
     }
 

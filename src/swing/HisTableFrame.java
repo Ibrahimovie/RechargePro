@@ -137,7 +137,6 @@ public class HisTableFrame extends JFrame {
                 }
             }
         }
-//        JTable table1 = new JTable(obj, columnNames);
         MyTable table1 = new MyTable(obj, columnNames);
 
         TableColumn column;
@@ -246,7 +245,7 @@ public class HisTableFrame extends JFrame {
                     String rechargeAllJson = HttpUtils.toServlet(map, "RechargeHisServlet");
                     JSONObject jsonObject = JSONObject.parseObject(rechargeAllJson);
                     try {
-                        String hist = URLDecoder.decode(jsonObject.getString("reharge_his"), "utf-8");
+                        String hist = URLDecoder.decode(jsonObject.getString("recharge_his"), "utf-8");
                         JSONObject object = JSONObject.parseObject(hist);
                         JSONArray jsonArray = (JSONArray) object.get("his");
                         count = object.getInteger("count");
@@ -274,7 +273,7 @@ public class HisTableFrame extends JFrame {
                     String rechargeAllJson = HttpUtils.toServlet(map, "RechargeHisServlet");
                     JSONObject jsonObject = JSONObject.parseObject(rechargeAllJson);
                     try {
-                        String hist = URLDecoder.decode(jsonObject.getString("reharge_his"), "utf-8");
+                        String hist = URLDecoder.decode(jsonObject.getString("recharge_his"), "utf-8");
                         JSONObject object = JSONObject.parseObject(hist);
                         JSONArray jsonArray = (JSONArray) object.get("his");
                         count = object.getInteger("count");

@@ -8,6 +8,7 @@ import service.impl.ServiceImpl;
  */
 public class Main {
     public static void main(String[] args) {
+        //查询sqlite是否已选择小区
         String community = ServiceImpl.getInstance().getCommunity("admin");
         System.out.println("query community : " + community);
         if (!"".equals(community.trim()) && community != null && !"-".equals(community)) {

@@ -190,8 +190,6 @@ public class RechargeFrame extends JFrame {
     }
 
     private void rechargeHisButtonActionPerformed(ActionEvent e) {
-//        int n = ServiceImpl.getInstance().getRechargeCount();
-//        List<Map<String, Object>> his = ServiceImpl.getInstance().getRechargeHisAll();
         Map<String, String> map = new HashMap<>(2);
         map.put("action", "getRechargeHisAll");
         try {
@@ -204,7 +202,7 @@ public class RechargeFrame extends JFrame {
         int n = 0;
         List<Map<String, Object>> his = null;
         try {
-            String hist = URLDecoder.decode(jsonObject.getString("reharge_his"), "utf-8");
+            String hist = URLDecoder.decode(jsonObject.getString("recharge_his"), "utf-8");
             JSONObject object = JSONObject.parseObject(hist);
             JSONArray jsonArray = (JSONArray) object.get("his");
             n = object.getInteger("count");

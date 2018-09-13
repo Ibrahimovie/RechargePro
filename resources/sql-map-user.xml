@@ -164,9 +164,10 @@
     <insert id="userDao.addSubAccount">
         <![CDATA[
         INSERT INTO user
-        (username, password, system_password, is_admin, portrate_id, port_id, device_id, sector_id)
+        (username, password, system_password, is_admin, portrate_id, port_id, device_id, sector_id, community)
         VALUES
-            (#username#, #password#, #system_password#, #is_admin#, #portrate_id#, #port_id#, #device_id#, #sector_id#)
+            (#username#, #password#, #system_password#, #is_admin#, #portrate_id#, #port_id#, #device_id#, #sector_id#,
+             #community#)
         ]]>
     </insert>
 

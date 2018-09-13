@@ -496,15 +496,19 @@ public class SerialPortUtils {
                                                                 String resp = HttpUtils.toServlet(map, "CardInfoServlet");
                                                                 JSONObject jsonObject = JSONObject.parseObject(resp);
                                                                 int preBalance = jsonObject.getIntValue("pre_balance");
-
-                                                                frame.tipLabel.setText("请输入充值相关参数");
-                                                                new UnclaimedFrame(frame, cardNum, preBalance, formerBalance, deviceType, lastTime,
-                                                                        startTime, validDay, chargeTime, payRate, powerRate, isReturn);
-                                                                frame.setEnabled(false);
+                                                                if (preBalance != -1) {
+                                                                    frame.tipLabel.setText("请输入充值相关参数");
+                                                                    new UnclaimedFrame(frame, cardNum, preBalance, formerBalance, deviceType, lastTime,
+                                                                            startTime, validDay, chargeTime, payRate, powerRate, isReturn);
+                                                                    frame.setEnabled(false);
+                                                                } else {
+                                                                    JOptionPane.showMessageDialog(null, "服务器上无该卡信息！");
+                                                                }
 
                                                             } else if (cardStatus == 4) {
                                                                 //新卡
-
+                                                                JOptionPane.showMessageDialog(null, "此卡为新卡！请前往充值界面进行初始化");
+                                                                LoginFrame.IS_UNCLIAMED = 0;
                                                             }
                                                         }
                                                     } else {

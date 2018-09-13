@@ -32,7 +32,7 @@ public class HttpRequest {
     public HttpRequest() {
         httpClient = new HttpClient(new MultiThreadedHttpConnectionManager());
         httpClient.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "UTF-8");
-        int socketTimeout = 20000;
+        int socketTimeout = 5000;
         httpClient.getParams().setIntParameter("http.socket.timeout", socketTimeout);
         int connTimeout = 5000;
         httpClient.getParams().setIntParameter("http.connection.timeout", connTimeout);

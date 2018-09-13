@@ -41,7 +41,7 @@ public class AddAccountFrame extends JFrame {
                     if (!"".equals(newPassword.trim()) && !"".equals(checkPassword.trim())) {
                         if (newPassword.equals(checkPassword)) {
                             ServiceImpl.getInstance().addSubAccount(username, newPassword, user.getSystemPassword(), 0,
-                                    user.getPortrateOrder(), user.getPortOrder(), user.getDeviceOrder(), user.getSectorOrder());
+                                    user.getPortrateOrder(), user.getPortOrder(), user.getDeviceOrder(), user.getSectorOrder(), user.getCommunity());
                             JOptionPane.showMessageDialog(null, "添加账号 " + username + " 成功! ");
                             this.dispose();
                         } else {
