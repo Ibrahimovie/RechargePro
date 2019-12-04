@@ -46,7 +46,7 @@ public class LoginPasswdSettingFrame extends JFrame {
                             if (newPassword.equals(checkPassword)) {
                                 user.setPassword(newPassword);
                                 ServiceImpl.getInstance().updatePassword(user.getUserId(), user.getUserName(), newPassword);
-                                JOptionPane.showMessageDialog(null, "登录密码设置成功！请重新登录");
+                                JOptionPane.showMessageDialog(null, "登录密码设置成功！请重新登录", "提示", JOptionPane.INFORMATION_MESSAGE);
                                 this.dispose();
                                 UserManager.removeUser();
                                 PortManager.removePort();
@@ -54,29 +54,29 @@ public class LoginPasswdSettingFrame extends JFrame {
                                 FrameManager.removeFrame("recharge");
                                 new LoginFrame();
                             } else {
-                                JOptionPane.showMessageDialog(null, "密码输入不一致！");
+                                JOptionPane.showMessageDialog(null, "密码输入不一致！", "提示", JOptionPane.WARNING_MESSAGE);
                                 newPasswdText.setText("");
                                 checkPasswdText.setText("");
                                 newPasswdText.requestFocus();
                             }
                         } else {
-                            JOptionPane.showMessageDialog(null, "请输入正确的密码格式！");
+                            JOptionPane.showMessageDialog(null, "请输入正确的密码格式！", "提示", JOptionPane.WARNING_MESSAGE);
                             newPasswdText.setText("");
                             checkPasswdText.setText("");
                             newPasswdText.requestFocus();
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "请输入新密码！");
+                        JOptionPane.showMessageDialog(null, "请输入新密码！", "提示", JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "原密码错误！");
+                    JOptionPane.showMessageDialog(null, "原密码错误！", "提示", JOptionPane.WARNING_MESSAGE);
                     formerPasswdText.setText("");
                     newPasswdText.setText("");
                     checkPasswdText.setText("");
                     formerPasswdText.requestFocus();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "请输入原密码！");
+                JOptionPane.showMessageDialog(null, "请输入原密码！", "提示", JOptionPane.WARNING_MESSAGE);
             }
         } else {
             String username = userText.getText();
@@ -94,7 +94,7 @@ public class LoginPasswdSettingFrame extends JFrame {
                                 }
                                 user.setPassword(newPassword);
                                 ServiceImpl.getInstance().updatePassword(user.getUserId(), user.getUserName(), newPassword);
-                                JOptionPane.showMessageDialog(null, "登录密码设置成功！请重新登录");
+                                JOptionPane.showMessageDialog(null, "登录密码设置成功！请重新登录", "提示", JOptionPane.INFORMATION_MESSAGE);
                                 this.dispose();
                                 UserManager.removeUser();
                                 PortManager.removePort();
@@ -102,29 +102,29 @@ public class LoginPasswdSettingFrame extends JFrame {
                                 FrameManager.removeFrame("recharge");
                                 new LoginFrame();
                             } else {
-                                JOptionPane.showMessageDialog(null, "密码输入不一致！");
+                                JOptionPane.showMessageDialog(null, "密码输入不一致！", "提示", JOptionPane.WARNING_MESSAGE);
                                 newPasswdText.setText("");
                                 checkPasswdText.setText("");
                                 newPasswdText.requestFocus();
                             }
                         } else {
-                            JOptionPane.showMessageDialog(null, "请输入正确的密码格式！");
+                            JOptionPane.showMessageDialog(null, "请输入正确的密码格式！", "提示", JOptionPane.WARNING_MESSAGE);
                             newPasswdText.setText("");
                             checkPasswdText.setText("");
                             newPasswdText.requestFocus();
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "请输入新密码！");
+                        JOptionPane.showMessageDialog(null, "请输入新密码！", "提示", JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "原密码错误！");
+                    JOptionPane.showMessageDialog(null, "原密码错误！", "提示", JOptionPane.WARNING_MESSAGE);
                     formerPasswdText.setText("");
                     newPasswdText.setText("");
                     checkPasswdText.setText("");
                     formerPasswdText.requestFocus();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "请输入原密码！");
+                JOptionPane.showMessageDialog(null, "请输入原密码！", "提示", JOptionPane.WARNING_MESSAGE);
             }
         }
 
@@ -143,12 +143,12 @@ public class LoginPasswdSettingFrame extends JFrame {
         label4.setText("设置用户名 : ");
         label4.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
         contentPane.add(label4);
-        label4.setBounds(new Rectangle(new Point(30, 50), label4.getPreferredSize()));
+        label4.setBounds(new Rectangle(new Point(35, 45), label4.getPreferredSize()));
 
 
         userText = new JTextField();
         contentPane.add(userText);
-        userText.setBounds(110, 45, 130, userText.getPreferredSize().height);
+        userText.setBounds(115, 45, 130, userText.getPreferredSize().height);
         if (user.getIsAdmin() == 1) {
             userText.setEditable(false);
         } else {
@@ -160,31 +160,31 @@ public class LoginPasswdSettingFrame extends JFrame {
         label1.setText("原密码 ：");
         label1.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
         contentPane.add(label1);
-        label1.setBounds(40, 90, 55, 20);
+        label1.setBounds(45, 85, 55, 20);
 
         JLabel label2 = new JLabel();
         label2.setText("新密码 ：");
         label2.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
         contentPane.add(label2);
-        label2.setBounds(new Rectangle(new Point(40, 135), label2.getPreferredSize()));
+        label2.setBounds(new Rectangle(new Point(45, 130), label2.getPreferredSize()));
 
         formerPasswdText = new JPasswordField();
         contentPane.add(formerPasswdText);
-        formerPasswdText.setBounds(110, 85, 130, formerPasswdText.getPreferredSize().height);
+        formerPasswdText.setBounds(115, 85, 130, formerPasswdText.getPreferredSize().height);
 
         newPasswdText = new JPasswordField();
         contentPane.add(this.newPasswdText);
-        newPasswdText.setBounds(110, 130, 130, newPasswdText.getPreferredSize().height);
+        newPasswdText.setBounds(115, 130, 130, newPasswdText.getPreferredSize().height);
 
         JLabel label3 = new JLabel();
         label3.setText("确认密码 ：");
         label3.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
         contentPane.add(label3);
-        label3.setBounds(new Rectangle(new Point(35, 180), label3.getPreferredSize()));
+        label3.setBounds(new Rectangle(new Point(40, 175), label3.getPreferredSize()));
 
         checkPasswdText = new JPasswordField();
         contentPane.add(checkPasswdText);
-        checkPasswdText.setBounds(110, 175, 130, checkPasswdText.getPreferredSize().height);
+        checkPasswdText.setBounds(115, 175, 130, checkPasswdText.getPreferredSize().height);
 
 
         confirmButton = new JButton();
@@ -192,7 +192,7 @@ public class LoginPasswdSettingFrame extends JFrame {
         confirmButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         confirmButton.addActionListener(this::confirmButtonActionPerformed);
         contentPane.add(confirmButton);
-        confirmButton.setBounds(75, 235, 70, 30);
+        confirmButton.setBounds(65, 230, 70, 30);
         confirmButton.setBackground(new Color(180, 205, 205));
         confirmButton.setBorder(BorderFactory.createRaisedBevelBorder());
 
@@ -203,7 +203,7 @@ public class LoginPasswdSettingFrame extends JFrame {
         cancelButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         cancelButton.addActionListener(this::cancelButtonActionPerformed);
         contentPane.add(cancelButton);
-        cancelButton.setBounds(165, 235, 70, 30);
+        cancelButton.setBounds(155, 230, 70, 30);
         cancelButton.setBackground(new Color(180, 205, 205));
         cancelButton.setBorder(BorderFactory.createRaisedBevelBorder());
 

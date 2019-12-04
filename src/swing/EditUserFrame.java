@@ -41,8 +41,6 @@ public class EditUserFrame extends JFrame {
 
     private void confirmButtonActionPerformed(ActionEvent e) {
         String username = userText.getText();
-        System.out.println("uuuuuusername = " + username);
-        System.out.println("former username = " + formerUsername);
         if (username.equals(formerUsername)) {
             if (newPasswdText.getPassword() != null && checkPasswdText.getPassword() != null) {
                 String newPassword = String.valueOf(newPasswdText.getPassword());
@@ -50,23 +48,23 @@ public class EditUserFrame extends JFrame {
                 if (!"".equals(newPassword.trim()) && !"".equals(checkPassword.trim())) {
                     if (newPassword.equals(checkPassword)) {
                         ServiceImpl.getInstance().updateSubPassword(username, newPassword);
-                        JOptionPane.showMessageDialog(null, "账号设置成功");
+                        JOptionPane.showMessageDialog(null, "账号设置成功", "提示", JOptionPane.INFORMATION_MESSAGE);
                         frame.setEnabled(true);
                         this.dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "密码输入不一致！");
+                        JOptionPane.showMessageDialog(null, "密码输入不一致！", "提示", JOptionPane.WARNING_MESSAGE);
                         newPasswdText.setText("");
                         checkPasswdText.setText("");
                         newPasswdText.requestFocus();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "请输入正确的密码格式！");
+                    JOptionPane.showMessageDialog(null, "请输入正确的密码格式！", "提示", JOptionPane.WARNING_MESSAGE);
                     newPasswdText.setText("");
                     checkPasswdText.setText("");
                     newPasswdText.requestFocus();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "请输入新密码！");
+                JOptionPane.showMessageDialog(null, "请输入新密码！", "提示", JOptionPane.WARNING_MESSAGE);
                 newPasswdText.setText("");
                 checkPasswdText.setText("");
                 newPasswdText.requestFocus();
@@ -79,26 +77,26 @@ public class EditUserFrame extends JFrame {
                     if (!"".equals(newPassword.trim()) && !"".equals(checkPassword.trim())) {
                         if (newPassword.equals(checkPassword)) {
                             ServiceImpl.getInstance().updateSubUserPasswd(formerUsername, username, newPassword);
-                            JOptionPane.showMessageDialog(null, "账号设置成功");
+                            JOptionPane.showMessageDialog(null, "账号设置成功", "提示", JOptionPane.INFORMATION_MESSAGE);
                             frame.setEnabled(true);
                             this.dispose();
                         } else {
-                            JOptionPane.showMessageDialog(null, "密码输入不一致！");
+                            JOptionPane.showMessageDialog(null, "密码输入不一致！", "提示", JOptionPane.WARNING_MESSAGE);
                             newPasswdText.setText("");
                             checkPasswdText.setText("");
                             newPasswdText.requestFocus();
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "请输入正确的密码格式！");
+                        JOptionPane.showMessageDialog(null, "请输入正确的密码格式！", "提示", JOptionPane.WARNING_MESSAGE);
                         newPasswdText.setText("");
                         checkPasswdText.setText("");
                         newPasswdText.requestFocus();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "请输入新密码！");
+                    JOptionPane.showMessageDialog(null, "请输入新密码！", "提示", JOptionPane.WARNING_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "用户名已存在，请选择其他用户名！");
+                JOptionPane.showMessageDialog(null, "用户名已存在，请选择其他用户名！", "提示", JOptionPane.WARNING_MESSAGE);
                 userText.addFocusListener(new JTextFieldHintListener(userText, formerUsername));
                 newPasswdText.setText("");
                 checkPasswdText.setText("");
@@ -134,9 +132,9 @@ public class EditUserFrame extends JFrame {
 
         JLabel label4 = new JLabel();
         label4.setText("用户名  : ");
-        label4.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
+        label4.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 14));
         contentPane.add(label4);
-        label4.setBounds(new Rectangle(new Point(40, 50), label4.getPreferredSize()));
+        label4.setBounds(new Rectangle(new Point(40, 45), label4.getPreferredSize()));
 
         userText = new JTextField();
         contentPane.add(userText);
@@ -145,9 +143,9 @@ public class EditUserFrame extends JFrame {
 
         JLabel label2 = new JLabel();
         label2.setText("新密码  : ");
-        label2.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
+        label2.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 14));
         contentPane.add(label2);
-        label2.setBounds(new Rectangle(new Point(40, 105), label2.getPreferredSize()));
+        label2.setBounds(new Rectangle(new Point(40, 100), label2.getPreferredSize()));
 
         newPasswdText = new JPasswordField();
         contentPane.add(this.newPasswdText);
@@ -155,9 +153,9 @@ public class EditUserFrame extends JFrame {
 
         JLabel label3 = new JLabel();
         label3.setText("确认密码 : ");
-        label3.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
+        label3.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 14));
         contentPane.add(label3);
-        label3.setBounds(new Rectangle(new Point(35, 160), label3.getPreferredSize()));
+        label3.setBounds(new Rectangle(new Point(35, 155), label3.getPreferredSize()));
 
         checkPasswdText = new JPasswordField();
         contentPane.add(checkPasswdText);

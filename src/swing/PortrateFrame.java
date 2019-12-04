@@ -20,7 +20,7 @@ public class PortrateFrame extends JFrame {
     public PortrateFrame(User user) {
         initComponents(user);
         this.user = user;
-        this.setSize(230, 240);
+        this.setSize(230, 220);
         this.setTitle("波特率");
         this.getRootPane().setDefaultButton(button1);
         Image icon = Toolkit.getDefaultToolkit().getImage("resources/dk_logo.png");
@@ -33,7 +33,7 @@ public class PortrateFrame extends JFrame {
         user.setPortrateOrder(selectOrder);
         ServiceImpl.getInstance().updatePortrateOrder(user.getUserId(), user.getUserName(), selectOrder);
         ServiceImpl.getInstance().updateSubPortrateOrder(selectOrder);
-        JOptionPane.showMessageDialog(null, "设置成功！");
+        JOptionPane.showMessageDialog(null, "设置成功！", "提示", JOptionPane.INFORMATION_MESSAGE);
         this.dispose();
     }
 
@@ -46,11 +46,17 @@ public class PortrateFrame extends JFrame {
         Container contentPane = this.getContentPane();
         contentPane.setLayout(null);
 
+        JLabel label = new JLabel();
+        label.setText("设置波特率");
+        label.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
+        contentPane.add(label);
+        label.setBounds(35, 38, 60, 30);
+
         comboBox1 = new JComboBox<>();
         comboBox1.setModel(new DefaultComboBoxModel<>(new String[]{"115200", "57600", "38400", "19200", "9600"}));
         comboBox1.setSelectedIndex(user.getPortrateOrder());
         contentPane.add(comboBox1);
-        comboBox1.setBounds(35, 55, 70, 25);
+        comboBox1.setBounds(105, 40, 70, 25);
 
         button1 = new JButton();
         button1.setText("确定");
@@ -59,7 +65,7 @@ public class PortrateFrame extends JFrame {
         button1.setBorder(BorderFactory.createRaisedBevelBorder());
         button1.addActionListener(this::confirmButtonActionPerformed);
         contentPane.add(button1);
-        button1.setBounds(30, 115, 70, 30);
+        button1.setBounds(30, 105, 70, 30);
 
         JButton button2 = new JButton();
         button2.setText("取消");
@@ -68,7 +74,7 @@ public class PortrateFrame extends JFrame {
         button2.setBorder(BorderFactory.createRaisedBevelBorder());
         button2.addActionListener(this::cancelButtonActionPerformed);
         contentPane.add(button2);
-        button2.setBounds(110, 115, 70, 30);
+        button2.setBounds(110, 105, 70, 30);
 
         Dimension preferredSize = new Dimension();
         for (int i = 0; i < contentPane.getComponentCount(); i++) {

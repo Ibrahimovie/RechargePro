@@ -42,7 +42,7 @@ public class AddAccountFrame extends JFrame {
                         if (newPassword.equals(checkPassword)) {
                             ServiceImpl.getInstance().addSubAccount(username, newPassword, user.getSystemPassword(), 0,
                                     user.getPortrateOrder(), user.getPortOrder(), user.getDeviceOrder(), user.getSectorOrder(), user.getCommunity());
-                            JOptionPane.showMessageDialog(null, "添加账号 " + username + " 成功! ");
+                            JOptionPane.showMessageDialog(null, "添加账号  " + username + " 成功! ");
                             this.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "密码输入不一致！");

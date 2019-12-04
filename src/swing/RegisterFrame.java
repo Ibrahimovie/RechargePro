@@ -2,23 +2,26 @@ package swing;
 
 import bean.*;
 
-import java.net.URLEncoder;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.*;
 
-import bean.manager.*;
+import bean.manager.PortManager;
 import com.alibaba.fastjson.JSONObject;
-import commands.*;
-import serial.*;
+import commands.CommandUtils;
 import exception.*;
-import gnu.io.*;
-import utils.Constants;
-import utils.HttpRequest;
+import gnu.io.SerialPort;
+import gnu.io.UnsupportedCommOperationException;
+import serial.SerialPortUtils;
+import service.impl.ServiceImpl;
+import utils.HttpUtils;
 import utils.Utils;
 
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
+
+import static swing.LoginFrame.LOGIN_TIME;
 
 /**
  * @author kingfans
@@ -27,15 +30,17 @@ public class RegisterFrame extends JFrame {
     private User user;
     private RechargeFrame rechargeFrame;
     private JComboBox<String> deviceTypeChooser;
+    private JComboBox<String> needChooser;
     private JTextField phoneText;
     private JTextField nameText;
     private JButton confirmButton;
+
 
     public RegisterFrame(User user, RechargeFrame rechargeFrame) {
         initComponents(user);
         this.user = user;
         this.rechargeFrame = rechargeFrame;
-        this.setSize(300, 290);
+        this.setSize(300, 320);
         this.setTitle("注册");
         this.getRootPane().setDefaultButton(confirmButton);
         Image icon = Toolkit.getDefaultToolkit().getImage("resources/dk_logo.png");
@@ -44,35 +49,36 @@ public class RegisterFrame extends JFrame {
         this.setVisible(true);
     }
 
+
+//    private void needChooserItemStateChanged(ItemEvent e) {
+//        if (e.getStateChange() == ItemEvent.SELECTED) {
+//            if (needChooser.getSelectedIndex() == 0) {
+//                phoneText.setEditable(false);
+//            } else {
+//                phoneText.setEditable(true);
+//            }
+//        }
+//    }
+
     private void confirmButtonActionPerformed(ActionEvent e) {
+        //不需要手机号
         int deviceType = deviceTypeChooser.getSelectedIndex();
         String name = nameText.getText();
-        String phoneInput = phoneText.getText();
-        String PHONE_NUMBER_REG = "^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$";
-        Pattern pattern = Pattern.compile(PHONE_NUMBER_REG);
-        if (pattern.matcher(phoneInput).matches()) {
-//            String url = "http://47.96.87.126:8654/recharge/SmsVerifyServlet";
-//            HttpRequest hr = new HttpRequest();
-//            hr.addParam("phone", phoneInput);
-//            hr.setMethod("POST");
-//            hr.setURL(url);
-//            String resp = hr.Send();
-//            System.out.println(resp);
-//            JSONObject jsonObject = JSONObject.parseObject(resp);
-//            if ("0".equals(jsonObject.getString("code"))) {
-//                String verifyCode = jsonObject.getString("num");
-//                new VerifyFrame(user, verifyCode, rechargeFrame, this, phoneInput, name, deviceType);
-                new VerifyFrame(user, "123456", rechargeFrame, this, phoneInput, name, deviceType);
-                rechargeFrame.setEnabled(false);
-                this.setEnabled(false);
-//            }
-
-        } else {
-            LoginFrame.REG_PHONE = "-";
-            JOptionPane.showMessageDialog(null, "请输入正确的手机号！");
-            phoneText.setText("");
-            phoneText.requestFocus();
+        if (name != null && !"".equals(name.trim())) {
+            LoginFrame.REG_NAME = name;
         }
+        SerialPort serialPort = PortManager.getSerialPort();
+        if (serialPort != null) {
+            String systemPassword = user.getSystemPassword();
+            try {
+                SerialPortUtils.sendToPort(serialPort, CommandUtils.registerCommand(systemPassword, deviceType));
+            } catch (SendDataToSerialPortFailure | SerialPortOutputStreamCloseFailure sendDataToSerialPortFailure) {
+                sendDataToSerialPortFailure.printStackTrace();
+            }
+        }
+        rechargeFrame.tipLabel.setText("正在准备注册，请将卡片放至充值机");
+        rechargeFrame.setEnabled(true);
+        this.dispose();
     }
 
     private void cancelButtonActionPerformed(ActionEvent e) {
@@ -95,22 +101,33 @@ public class RegisterFrame extends JFrame {
         Container contentPane = this.getContentPane();
         contentPane.setLayout(null);
 
+        JLabel nameLabel = new JLabel();
+        nameLabel.setText("姓名(选填) : ");
+        nameLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
+        contentPane.add(nameLabel);
+        nameLabel.setBounds(new Rectangle(new Point(40, 30), nameLabel.getPreferredSize()));
+
+        nameText = new JTextField();
+        contentPane.add(nameText);
+        nameText.setBounds(130, 30, 110, nameText.getPreferredSize().height);
+
         JLabel label1 = new JLabel();
-        label1.setText("  设备类型       ：");
+        label1.setText("设备类型 : ");
         label1.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
         contentPane.add(label1);
-        label1.setBounds(new Rectangle(new Point(35, 125), label1.getPreferredSize()));
+        label1.setBounds(new Rectangle(new Point(40, 78), label1.getPreferredSize()));
 
         deviceTypeChooser = new JComboBox<>();
         deviceTypeChooser.setModel(new DefaultComboBoxModel<>(new String[]{"Q10/CDZ", "Q20"}));
         contentPane.add(deviceTypeChooser);
-        deviceTypeChooser.setBounds(150, 120, 105, deviceTypeChooser.getPreferredSize().height);
+        deviceTypeChooser.setBounds(130, 75, 110, deviceTypeChooser.getPreferredSize().height);
+
 
         confirmButton = new JButton();
-        confirmButton.setText("验证");
+        confirmButton.setText("确定");
         confirmButton.addActionListener(this::confirmButtonActionPerformed);
         contentPane.add(confirmButton);
-        confirmButton.setBounds(60, 180, 70, 30);
+        confirmButton.setBounds(60, 220, 70, 30);
         confirmButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         confirmButton.setBackground(new Color(180, 205, 205));
         confirmButton.setBorder(BorderFactory.createRaisedBevelBorder());
@@ -119,30 +136,11 @@ public class RegisterFrame extends JFrame {
         cancelButton.setText("取消");
         cancelButton.addActionListener(this::cancelButtonActionPerformed);
         contentPane.add(cancelButton);
-        cancelButton.setBounds(155, 180, 70, 30);
+        cancelButton.setBounds(155, 220, 70, 30);
         cancelButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         cancelButton.setBackground(new Color(180, 205, 205));
         cancelButton.setBorder(BorderFactory.createRaisedBevelBorder());
 
-        JLabel phoneLabel = new JLabel();
-        phoneLabel.setText(" 手机号码 （必填）：");
-        phoneLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
-        contentPane.add(phoneLabel);
-        phoneLabel.setBounds(new Rectangle(new Point(25, 80), phoneLabel.getPreferredSize()));
-
-        phoneText = new JTextField();
-        contentPane.add(phoneText);
-        phoneText.setBounds(150, 75, 110, phoneText.getPreferredSize().height);
-
-        JLabel nameLabel = new JLabel();
-        nameLabel.setText("  姓名（选填）     ：");
-        nameLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
-        contentPane.add(nameLabel);
-        nameLabel.setBounds(new Rectangle(new Point(25, 35), nameLabel.getPreferredSize()));
-
-        nameText = new JTextField();
-        contentPane.add(nameText);
-        nameText.setBounds(150, 30, 110, nameText.getPreferredSize().height);
 
         Dimension preferredSize = new Dimension();
         for (int i = 0; i < contentPane.getComponentCount(); i++) {

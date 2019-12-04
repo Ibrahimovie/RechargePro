@@ -23,6 +23,7 @@ public class SystemPasswdFrame extends JFrame {
         this.waitingFrame = waitingFrame;
         initComponents();
         this.setSize(315, 260);
+        this.setTitle("提示");
         this.setLocationRelativeTo(null);
         this.getRootPane().setDefaultButton(confirmButton);
         Image icon = Toolkit.getDefaultToolkit().getImage("resources/dk_logo.png");
@@ -75,17 +76,17 @@ public class SystemPasswdFrame extends JFrame {
         attentionLabel.setText("请输入管理员密码 : ");
         attentionLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 18));
         contentPane.add(attentionLabel);
-        attentionLabel.setBounds(new Rectangle(new Point(15, 50), attentionLabel.getPreferredSize()));
+        attentionLabel.setBounds(new Rectangle(new Point(70, 40), attentionLabel.getPreferredSize()));
 
         JLabel tipLabel = new JLabel();
         tipLabel.setText("(管理员登录密码)");
         tipLabel.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         contentPane.add(tipLabel);
-        tipLabel.setBounds(new Rectangle(new Point(15, 75), tipLabel.getPreferredSize()));
+        tipLabel.setBounds(new Rectangle(new Point(93, 75), tipLabel.getPreferredSize()));
 
         passwordText = new JPasswordField();
         contentPane.add(passwordText);
-        passwordText.setBounds(70, 110, 210, passwordText.getPreferredSize().height);
+        passwordText.setBounds(70, 110, 160, passwordText.getPreferredSize().height);
 
         confirmButton = new JButton();
         confirmButton.setText("确定");
@@ -94,7 +95,7 @@ public class SystemPasswdFrame extends JFrame {
         confirmButton.setBorder(BorderFactory.createRaisedBevelBorder());
         confirmButton.addActionListener(this::confirmButtonActionPerformed);
         contentPane.add(confirmButton);
-        confirmButton.setBounds(100, 160, 70, 30);
+        confirmButton.setBounds(70, 150, 70, 30);
 
         JButton cancelButton = new JButton();
         cancelButton.setText("取消");
@@ -103,7 +104,7 @@ public class SystemPasswdFrame extends JFrame {
         cancelButton.setBorder(BorderFactory.createRaisedBevelBorder());
         cancelButton.addActionListener(this::cancelButtonActionPerformed);
         contentPane.add(cancelButton);
-        cancelButton.setBounds(180, 160, 70, 30);
+        cancelButton.setBounds(160, 150, 70, 30);
 
         Dimension preferredSize = new Dimension();
         for (int i = 0; i < contentPane.getComponentCount(); i++) {

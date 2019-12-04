@@ -10,6 +10,7 @@ import service.impl.ServiceImpl;
 import utils.HttpUtils;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -19,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -31,8 +33,11 @@ public class HisTableFrame extends JFrame {
     private int count;
     private List<Map<String, Object>> his;
     private User user;
+    private int totalAmount;
+    private String dateStart;
+    private String dateEnd;
 
-    public HisTableFrame(User user, int count, List<Map<String, Object>> his, RechargeFrame rechargeFrame) {
+    public HisTableFrame(User user, int count, List<Map<String, Object>> his, RechargeFrame rechargeFrame, int totalAmount, String dateStart, String dateEnd) {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException | IllegalAccessException e) {
@@ -42,6 +47,9 @@ public class HisTableFrame extends JFrame {
         this.count = count;
         this.his = his;
         this.rechargeFrame = rechargeFrame;
+        this.totalAmount = totalAmount;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
         initComponents(count, his);
         this.setSize(1000, 680);
         this.setTitle("充值记录");
@@ -161,6 +169,8 @@ public class HisTableFrame extends JFrame {
 
         Container contentPane = this.getContentPane();
         contentPane.setLayout(null);
+
+
         scrollPane1.setViewportView(table1);
         contentPane.add(scrollPane1);
 
@@ -171,7 +181,7 @@ public class HisTableFrame extends JFrame {
         startTimeLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
         contentPane.add(startTimeLabel);
         startTimeLabel.setBounds(10, 12, 70, startTimeLabel.getPreferredSize().height);
-        final DatePicker startTime = getDatePicker(72);
+        final DatePicker startTime = getDatePicker(72, dateStart);
         contentPane.add(startTime);
 
         JLabel endTimeLabel = new JLabel();
@@ -179,7 +189,7 @@ public class HisTableFrame extends JFrame {
         endTimeLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
         contentPane.add(endTimeLabel);
         endTimeLabel.setBounds(172, 12, 70, endTimeLabel.getPreferredSize().height);
-        final DatePicker endTime = getDatePicker(234);
+        final DatePicker endTime = getDatePicker(234, dateEnd);
         contentPane.add(endTime);
 
         JLabel operatorLabel = new JLabel();
@@ -204,13 +214,14 @@ public class HisTableFrame extends JFrame {
         phoneLabel.setBounds(500, 12, 60, phoneLabel.getPreferredSize().height);
 
         JTextField phoneText = new JTextField();
+        phoneText.setEditable(false);
         contentPane.add(phoneText);
         phoneText.setBounds(555, 12, 100, phoneText.getPreferredSize().height);
 
         JButton queryButton = new JButton("筛选");
         queryButton.setFont(new Font("Dialog", Font.PLAIN, 12));
         contentPane.add(queryButton);
-        queryButton.setBounds(695, 8, 60, queryButton.getPreferredSize().height);
+        queryButton.setBounds(680, 8, 60, queryButton.getPreferredSize().height);
         queryButton.setBackground(new Color(180, 205, 205));
         queryButton.setBorder(BorderFactory.createRaisedBevelBorder());
 
@@ -220,7 +231,7 @@ public class HisTableFrame extends JFrame {
             if (operatorIndex != 0) {
                 operator = (String) operatorChooser.getSelectedItem();
             }
-            SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date date1 = (Date) startTime.getValue();
             String startDate = sdf.format(date1) + " 00:00:00";
             Date date2 = (Date) endTime.getValue();
@@ -228,10 +239,7 @@ public class HisTableFrame extends JFrame {
             String phone = phoneText.getText();
             if (date2.after(date1) || date1 == date2) {
                 if (phone == null || "".equals(phone)) {
-//                    count = ServiceImpl.getInstance().getRechargeCountRangeWithoutPhone(startDate, endDate, operator);
-//                    his = ServiceImpl.getInstance().getRechargeHisRangeWithoutPhone(startDate, endDate, operator);
-                    Map<String, String> map = new HashMap<>();
-                    map.put("action", "getRechargeHisWithoutPhone");
+                    Map<String, String> map = new HashMap<>(3);
                     map.put("start_time", startDate);
                     map.put("end_time", endDate);
                     try {
@@ -242,50 +250,70 @@ public class HisTableFrame extends JFrame {
                     } catch (UnsupportedEncodingException e1) {
                         e1.printStackTrace();
                     }
-                    String rechargeAllJson = HttpUtils.toServlet(map, "RechargeHisServlet");
-                    JSONObject jsonObject = JSONObject.parseObject(rechargeAllJson);
-                    try {
-                        String hist = URLDecoder.decode(jsonObject.getString("recharge_his"), "utf-8");
-                        JSONObject object = JSONObject.parseObject(hist);
-                        JSONArray jsonArray = (JSONArray) object.get("his");
-                        count = object.getInteger("count");
-                        his = new ArrayList<>();
-                        for (int i = 0; i < jsonArray.size(); i++) {
-                            his.add((Map<String, Object>) jsonArray.get(i));
-                        }
-                    } catch (UnsupportedEncodingException e1) {
-                        e1.printStackTrace();
+
+                    count = ServiceImpl.getInstance().getRechargeCountRangeWithoutPhone(startDate, endDate, operator);
+                    his = ServiceImpl.getInstance().getRechargeHisRangeWithoutPhone(startDate, endDate, operator);
+                    totalAmount = 0;
+                    for (int i = 0; i < his.size(); i++) {
+                        Map<String, Object> map1 = his.get(i);
+                        int a = (int) map1.get("top_up");
+                        totalAmount += a;
                     }
+
+
+//                    String rechargeAllJson = HttpUtils.toServlet(map, "recharge", "getRechargeHisWithoutPhone");
+//                    JSONObject jsonObject = JSONObject.parseObject(rechargeAllJson);
+//                    try {
+//                        String hist = URLDecoder.decode(jsonObject.getString("recharge_his"), "utf-8");
+//                        JSONObject object = JSONObject.parseObject(hist);
+//                        JSONArray jsonArray = (JSONArray) object.get("his");
+//                        count = object.getInteger("count");
+//                        his = new ArrayList<>();
+//                        totalAmount = 0;
+//                        for (int i = 0; i < jsonArray.size(); i++) {
+//                            Map<String, Object> map1 = (Map<String, Object>) jsonArray.get(i);
+//                            int a = (int) map1.get("top_up");
+//                            totalAmount += a;
+//                            his.add(map1);
+//                        }
+//                    } catch (UnsupportedEncodingException e1) {
+//                        e1.printStackTrace();
+//                    }
                 } else {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("action", "getRechargeHisWithPhone");
-                    map.put("start_time", startDate);
-                    map.put("end_time", endDate);
-                    map.put("phone", phone);
-                    try {
-                        if (null != operator) {
-                            map.put("operator", URLEncoder.encode(operator, "utf-8"));
-                        }
-                        map.put("community", URLEncoder.encode(user.getCommunity(), "utf-8"));
-                    } catch (UnsupportedEncodingException e1) {
-                        e1.printStackTrace();
-                    }
-                    String rechargeAllJson = HttpUtils.toServlet(map, "RechargeHisServlet");
-                    JSONObject jsonObject = JSONObject.parseObject(rechargeAllJson);
-                    try {
-                        String hist = URLDecoder.decode(jsonObject.getString("recharge_his"), "utf-8");
-                        JSONObject object = JSONObject.parseObject(hist);
-                        JSONArray jsonArray = (JSONArray) object.get("his");
-                        count = object.getInteger("count");
-                        his = new ArrayList<>();
-                        for (int i = 0; i < jsonArray.size(); i++) {
-                            his.add((Map<String, Object>) jsonArray.get(i));
-                        }
-                    } catch (UnsupportedEncodingException e1) {
-                        e1.printStackTrace();
-                    }
+                    //进不到这里面
+//                    Map<String, String> map = new HashMap<>(4);
+//                    map.put("start_time", startDate);
+//                    map.put("end_time", endDate);
+//                    map.put("phone", phone);
+//                    try {
+//                        if (null != operator) {
+//                            map.put("operator", URLEncoder.encode(operator, "utf-8"));
+//                        }
+//                        map.put("community", URLEncoder.encode(user.getCommunity(), "utf-8"));
+//                    } catch (UnsupportedEncodingException e1) {
+//                        e1.printStackTrace();
+//                    }
+////                    String rechargeAllJson = HttpUtils.toServlet(map, "recharge", "getRechargeHisWithPhone");
+////                    JSONObject jsonObject = JSONObject.parseObject(rechargeAllJson);
+//
+//                    try {
+//                        String hist = URLDecoder.decode(jsonObject.getString("recharge_his"), "utf-8");
+//                        JSONObject object = JSONObject.parseObject(hist);
+//                        JSONArray jsonArray = (JSONArray) object.get("his");
+//                        count = object.getInteger("count");
+//                        his = new ArrayList<>();
+//                        totalAmount = 0;
+//                        for (int i = 0; i < jsonArray.size(); i++) {
+//                            Map<String, Object> map1 = (Map<String, Object>) jsonArray.get(i);
+//                            int topUp = (int) map1.get("top_up");
+//                            totalAmount += topUp;
+//                            his.add(map1);
+//                        }
+//                    } catch (UnsupportedEncodingException e1) {
+//                        e1.printStackTrace();
+//                    }
                 }
-                new HisTableFrame(user, count, his, rechargeFrame);
+                new HisTableFrame(user, count, his, rechargeFrame, totalAmount, sdf.format(date1), sdf.format(date2));
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "请输入正确的时间范围！");
@@ -295,7 +323,7 @@ public class HisTableFrame extends JFrame {
         JButton exportButton = new JButton("导出");
         exportButton.setFont(new Font("Dialog", Font.PLAIN, 12));
         contentPane.add(exportButton);
-        exportButton.setBounds(765, 8, 60, exportButton.getPreferredSize().height);
+        exportButton.setBounds(755, 8, 60, exportButton.getPreferredSize().height);
         exportButton.setBackground(new Color(180, 205, 205));
         exportButton.setBorder(BorderFactory.createRaisedBevelBorder());
         exportButton.addActionListener(e -> {
@@ -376,7 +404,8 @@ public class HisTableFrame extends JFrame {
                 }
             }
             Workbook wb = ExcelUtils.getHSSFWorkbook(sheetName, title, objects, null);
-            JFileChooser chooser = new JFileChooser("选择保存路径");
+            FileSystemView fsv = FileSystemView.getFileSystemView();
+            JFileChooser chooser = new JFileChooser(fsv.getHomeDirectory());
             chooser.setApproveButtonText("确定");
             chooser.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
             chooser.setDialogTitle("选择保存路径");
@@ -391,6 +420,20 @@ public class HisTableFrame extends JFrame {
                 e1.printStackTrace();
             }
         });
+
+        JLabel totalAmountLabel = new JLabel();
+        totalAmountLabel.setText("充值总金额 : ");
+        totalAmountLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
+        contentPane.add(totalAmountLabel);
+        totalAmountLabel.setBounds(840, 10, 80, totalAmountLabel.getPreferredSize().height);
+
+        JLabel totalAmountText = new JLabel();
+        totalAmountText.setText(df.format(totalAmount / 10.0f));
+        totalAmountText.setFont(new Font("Dialog", Font.PLAIN, 12));
+        totalAmountText.setForeground(Color.red);
+        contentPane.add(totalAmountText);
+        totalAmountText.setBounds(915, 10, 60, totalAmountLabel.getPreferredSize().height);
+
         Dimension preferredSize = new Dimension();
         for (int i2 = 0; i2 < contentPane.getComponentCount(); i2++) {
             Rectangle bounds = contentPane.getComponent(i2).getBounds();
@@ -406,9 +449,15 @@ public class HisTableFrame extends JFrame {
         this.setLocationRelativeTo(this.getOwner());
     }
 
-    private static DatePicker getDatePicker(int location) {
+    private static DatePicker getDatePicker(int location, String time) {
         String format = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
         Date date = new Date();
+        try {
+            date = sdf.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         Font font = new Font("Times New Roman", Font.PLAIN, 12);
         Dimension dimension = new Dimension(90, 24);
         DatePicker datePicker = new DatePicker(date, format, font, dimension);
@@ -417,4 +466,5 @@ public class HisTableFrame extends JFrame {
         datePicker.setTimePanleVisible(false);
         return datePicker;
     }
+
 }

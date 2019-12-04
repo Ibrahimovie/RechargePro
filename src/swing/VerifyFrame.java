@@ -79,9 +79,6 @@ public class VerifyFrame extends JFrame {
             JOptionPane.showMessageDialog(null, "验证码错误！");
             codeText.setText("");
             codeText.requestFocus();
-//            rechargeFrame.setEnabled(true);
-//            registerFrame.setEnabled(true);
-//            this.dispose();
         }
     }
 

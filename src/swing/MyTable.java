@@ -24,6 +24,7 @@ public class MyTable extends JTable {
         JTableHeader tableHeader = super.getTableHeader();
         tableHeader.setReorderingAllowed(false);
         DefaultTableCellRenderer hr = (DefaultTableCellRenderer) tableHeader.getDefaultRenderer();
+        hr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
         return tableHeader;
     }
 

@@ -9,14 +9,14 @@ import service.impl.ServiceImpl;
 public class Main {
     public static void main(String[] args) {
         //查询sqlite是否已选择小区
-        String community = ServiceImpl.getInstance().getCommunity("admin");
-        System.out.println("query community : " + community);
-        if (!"".equals(community.trim()) && community != null && !"-".equals(community)) {
-            System.out.println("已选择小区 : " + community);
-            new LoginFrame();
-        } else {
-            System.out.println("还未选择小区!");
-            new CommunityFrame();
-        }
+//        String community = ServiceImpl.getInstance().getCommunity("admin");
+//        System.out.println("查询出所在小区 : " + community);
+//        if (!"".equals(community.trim()) && community != null && !"-".equals(community)) {
+//            System.out.println("去登陆");
+        new LoginFrame();
+//        } else {
+//            System.out.println("先选择小区");
+//            new CommunityFrame();
+//        }
     }
 }

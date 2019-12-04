@@ -16,15 +16,22 @@ public class ServiceImpl implements Service {
     private static ServiceImpl service = new ServiceImpl();
 
     private ServiceImpl() {
+
     }
 
     private static ApplicationContext ctx = ApplicationContextHolder.getApplicationContext();
     private static UserDao userDao = (UserDao) ctx.getBean("userDao");
     private static CardDao cardDao = (CardDao) ctx.getBean("cardDao");
     private static RechargeDao rechargeDao = (RechargeDao) ctx.getBean("rechargeDao");
+    private static PushMsgDao pushMsgDao = (PushMsgDao) ctx.getBean("pushMsgDao");
+    private static UckImberOrtDao uckImberOrtDao = (UckImberOrtDao) ctx.getBean("uckImberOrtDao");
 
     public static ServiceImpl getInstance() {
         return service;
+    }
+
+    public Map<String, Object> getMap() {
+        return uckImberOrtDao.getMap();
     }
 
     //USER DAO
@@ -345,5 +352,24 @@ public class ServiceImpl implements Service {
         param.put("end_time", endTime);
         param.put("operator", operator);
         return rechargeDao.getRechargeHisRangeWithoutPhone(param);
+    }
+
+
+    //pushMsgDao
+    public void addPushMsg(String url, String content) {
+        Map<String, Object> param = new HashMap<>(2);
+        param.put("url", url);
+        param.put("content", content);
+        pushMsgDao.addPushMsg(param);
+    }
+
+    public List<Map<String, Object>> getPushMsgList() {
+        return pushMsgDao.getPushMsgList();
+    }
+
+    public void deletePushMsg(int id) {
+        Map<String, Object> param = new HashMap<>(1);
+        param.put("id", id);
+        pushMsgDao.deletePushMsg(param);
     }
 }

@@ -3,6 +3,8 @@ package swing;
 import javax.swing.*;
 import java.awt.*;
 
+import static swing.LoginFrame.SOFT_VERSION;
+
 /**
  * @author kingfans
  */
@@ -13,7 +15,6 @@ public class AboutFrame extends JFrame {
         this.setSize(400, 310);
         this.setTitle("关于我们");
         Image icon = Toolkit.getDefaultToolkit().getImage("resources/dk_logo.png");
-        System.out.println(icon.toString());
         this.setIconImage(icon);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -44,7 +45,7 @@ public class AboutFrame extends JFrame {
         name.setBounds(50, 90, name.getPreferredSize().width, name.getPreferredSize().height);
         contentPane.add(name);
 
-        version.setText("软件版本: version 1.5");
+        version.setText("软件版本: version " + SOFT_VERSION);
         version.setFont(new Font("Dialog", Font.PLAIN, 12));
         version.setBounds(50, 130, version.getPreferredSize().width, version.getPreferredSize().height);
         contentPane.add(version);

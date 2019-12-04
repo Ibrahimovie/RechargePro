@@ -8,8 +8,9 @@ import java.util.Map;
  */
 public class HttpUtils {
 
-    public static String toServlet(Map<String, String> params, String servletName) {
-        String url = "http://47.96.87.126:8654/recharge/" + servletName;
+    public static String toServlet(Map<String, String> params, String controllerMapping,
+                                   String methodMapping) {
+        String url = "https://recharge.hzdk.com:7764/" + controllerMapping + "/" + methodMapping;
         HttpRequest hr = new HttpRequest();
         if (params != null) {
             hr.addMap(params);
@@ -18,4 +19,6 @@ public class HttpUtils {
         hr.setURL(url);
         return hr.Send();
     }
+
+
 }

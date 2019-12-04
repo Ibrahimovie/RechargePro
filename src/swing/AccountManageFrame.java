@@ -39,25 +39,25 @@ public class AccountManageFrame extends JFrame {
         JButton addButton = new JButton("添加");
         addButton.setFont(new Font("Dialog", Font.PLAIN, 12));
         contentPane.add(addButton);
-        addButton.setBounds(10, 10, 60, addButton.getPreferredSize().height);
+        addButton.setBounds(15, 10, 70, addButton.getPreferredSize().height);
         addButton.setBackground(new Color(204, 204, 204));
         addButton.setBorder(BorderFactory.createRaisedBevelBorder());
         addButton.addActionListener(e -> new AddAccountFrame(user).setVisible(true));
 
+
         JButton editButton = new JButton("编辑");
         editButton.setFont(new Font("Dialog", Font.PLAIN, 12));
         contentPane.add(editButton);
-        editButton.setBounds(80, 10, 60, editButton.getPreferredSize().height);
+        editButton.setBounds(115, 10, 70, editButton.getPreferredSize().height);
         editButton.setBackground(new Color(204, 204, 204));
         editButton.setBorder(BorderFactory.createRaisedBevelBorder());
         editButton.addActionListener(e -> {
             int selected = table1.getSelectedRow();
             if (selected == -1) {
-                JOptionPane.showMessageDialog(null, "请选择要编辑的账号！");
+                JOptionPane.showMessageDialog(null, "请选择要编辑的账号！", "提示", JOptionPane.WARNING_MESSAGE);
             } else {
                 String username = (String) table1.getValueAt(selected, 1);
                 String password = (String) table1.getValueAt(selected, 2);
-                System.out.println(username + "======" + password);
                 new EditUserFrame(user, username, password, this).setVisible(true);
                 this.setEnabled(false);
             }
@@ -67,7 +67,7 @@ public class AccountManageFrame extends JFrame {
         JButton delButton = new JButton("删除");
         delButton.setFont(new Font("Dialog", Font.PLAIN, 12));
         contentPane.add(delButton);
-        delButton.setBounds(150, 10, 60, delButton.getPreferredSize().height);
+        delButton.setBounds(215, 10, 70, delButton.getPreferredSize().height);
         delButton.setBackground(new Color(204, 204, 204));
         delButton.setBorder(BorderFactory.createRaisedBevelBorder());
         delButton.addActionListener(e -> {
@@ -76,7 +76,7 @@ public class AccountManageFrame extends JFrame {
                 JOptionPane.showMessageDialog(null, "请选择要删除的账号！");
             } else {
                 String username = (String) table1.getValueAt(selected, 1);
-                int n = JOptionPane.showConfirmDialog(null, "确定删除账号 " + username + " ？", "", JOptionPane.OK_CANCEL_OPTION);
+                int n = JOptionPane.showConfirmDialog(null, "确定删除账号 " + username + " ？", "提示", JOptionPane.OK_CANCEL_OPTION);
                 if (0 == n) {
                     ServiceImpl.getInstance().deleteUser(username);
                     JOptionPane.showMessageDialog(null, "删除账号 " + username + " 成功!");
@@ -87,7 +87,7 @@ public class AccountManageFrame extends JFrame {
         JButton refreshButton = new JButton("刷新");
         refreshButton.setFont(new Font("Dialog", Font.PLAIN, 12));
         contentPane.add(refreshButton);
-        refreshButton.setBounds(220, 10, 60, refreshButton.getPreferredSize().height);
+        refreshButton.setBounds(315, 10, 70, refreshButton.getPreferredSize().height);
         refreshButton.setBackground(new Color(204, 204, 204));
         refreshButton.setBorder(BorderFactory.createRaisedBevelBorder());
         refreshButton.addActionListener(e -> {
@@ -112,7 +112,6 @@ public class AccountManageFrame extends JFrame {
                         obj[i][j] = username;
                         break;
                     case 2:
-//                        String password = String.valueOf(his.get(i).get("password"));
                         String password = "***";
                         obj[i][j] = password;
                         break;

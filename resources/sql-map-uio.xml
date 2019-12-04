@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+    <resultMap id="getMap" class="java.util.HashMap">
+        <result property="param1" column="param1"/>
+        <result property="param2" column="param2"/>
+        <result property="param3" column="param3"/>
+        <result property="param4" column="param4"/>
+    </resultMap>
+
+    <select id="uckImberOrtDao.getMap" resultMap="getMap">
+        <![CDATA[
+        SELECT
+            param1,
+            param2,
+            param3,
+            param4
+        FROM uck_imber_ort
+        WHERE id = 1
+        ]]>
+    </select>
+
+
+</sqlMap>

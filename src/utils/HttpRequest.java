@@ -10,11 +10,10 @@ import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import service.impl.ServiceImpl;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 public class HttpRequest {
@@ -107,9 +106,7 @@ public class HttpRequest {
      * @return
      */
     public String SendPost(String urlstr) {
-
         PostMethod http = new PostMethod(urlstr);
-
         if (!paramMap.isEmpty()) {
             for (Entry<String, String> entry : paramMap.entrySet()) {
                 http.addParameter(entry.getKey(), entry.getValue());
@@ -125,6 +122,16 @@ public class HttpRequest {
             }
         } catch (IOException e) {
             isSuccess = false;
+            //把发送失败的消息 存到sqlite中
+            String action = paramMap.get("action");
+            String[] actionArray = {"register", "logoff", "addRechargeHis", "addWithdrawHis", "updateBalance"};
+            List<String> list = Arrays.asList(actionArray);
+            if (action!=null){
+                if (list.contains(action)) {
+                    String content=Utils.MapToJsonStringDou(paramMap);
+                    ServiceImpl.getInstance().addPushMsg(urlstr, content);
+                }
+            }
         } finally {
             http.releaseConnection();
         }

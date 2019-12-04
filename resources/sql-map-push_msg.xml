@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+    <resultMap id="getPushMsgList" class="java.util.HashMap">
+        <result property="id" column="id"/>
+        <result property="url" column="url"/>
+        <result property="content" column="content"/>
+    </resultMap>
+
+    <insert id="pushMsgDao.addPushMsg">
+        <![CDATA[
+        INSERT INTO push_msg
+        (url, content)
+        VALUES
+            (#url#, #content#)
+        ]]>
+    </insert>
+
+    <select id="pushMsgDao.getPushMsgList" resultMap="getPushMsgList">
+        <![CDATA[
+        select
+            id,
+            url,
+            content
+        from push_msg
+        ]]>
+    </select>
+
+    <delete id="pushMsgDao.deletePushMsg">
+        <![CDATA[
+        delete from push_msg
+        where id = #id#
+        ]]>
+    </delete>
+
+</sqlMap>

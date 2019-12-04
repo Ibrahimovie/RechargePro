@@ -1,6 +1,7 @@
 package swing;
 
 import java.text.*;
+import java.util.Calendar;
 import java.util.regex.*;
 
 import commands.*;
@@ -31,6 +32,9 @@ public class QueryToRechargeFrame extends JFrame {
     private int formerRechargeTime;
     private int formerPayRate;
     private int formerPowerRate;
+    private int isMonthUnUse;
+    private int remainDay;
+    private String remainDayText;
     private JTextField moneyText;
     private JTextField validText;
     private JTextField rechargeText;
@@ -39,7 +43,7 @@ public class QueryToRechargeFrame extends JFrame {
     private DecimalFormat df;
 
     public QueryToRechargeFrame(RechargeFrame frame, String cardNum, int cardType, int deviceType, int lastTime, int startTime, int isReturn,
-                                int formerValidDay, int formerBalance, int formerRechargeTime, int formerPayRate, int formerPowerRate) {
+                                int formerValidDay, int formerBalance, int formerRechargeTime, int formerPayRate, int formerPowerRate, int isMonthUnUse, int remainDay) {
         this.frame = frame;
         this.cardNum = cardNum;
         this.cardType = cardType;
@@ -52,6 +56,8 @@ public class QueryToRechargeFrame extends JFrame {
         this.formerRechargeTime = formerRechargeTime;
         this.formerPayRate = formerPayRate;
         this.formerPowerRate = formerPowerRate;
+        this.isMonthUnUse = isMonthUnUse;
+        this.remainDay = remainDay;
         df = new DecimalFormat("0.0");
         initComponents(cardNum, cardType);
         this.setSize(510, 390);
@@ -63,14 +69,29 @@ public class QueryToRechargeFrame extends JFrame {
     }
 
     private void confirmButtonActionPerformed(ActionEvent e) {
+        int is_negative = 0;
         String regEx = "^[0-9]+([.][0-9]{1}){0,1}$";//一位小数或整数
         Pattern pattern = Pattern.compile(regEx);
         if (deviceType == 0) {
+            //deviceType为0，Q10卡
             String moneyInput = moneyText.getText();
+            if (moneyInput.contains("-")) {
+                moneyInput = moneyInput.replace("-", "");
+                is_negative = 1;
+            }
             if (pattern.matcher(moneyInput).matches()) {
-                int money = (int) (Double.parseDouble(moneyInput) * 10.0);
+                int money;
+                if (is_negative == 0) {
+                    money = (int) (Double.parseDouble(moneyInput) * 10.0);
+                } else {
+                    money = -(int) (Double.parseDouble(moneyInput) * 10.0);
+                }
                 if (money + formerBalance > 50000) {
                     JOptionPane.showMessageDialog(null, "账户余额不得超过5000元！");
+                    moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                    moneyText.requestFocus();
+                } else if (money + formerBalance < 0) {
+                    JOptionPane.showMessageDialog(null, "账户余额不得少于0元！");
                     moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
                     moneyText.requestFocus();
                 } else {
@@ -105,90 +126,550 @@ public class QueryToRechargeFrame extends JFrame {
                 moneyText.requestFocus();
             }
         } else if (cardType == 3) {
-            String moneyInput = moneyText.getText();
-            String validDayInput = (validText.getText()==null||"".equals(validText.getText().trim())||validText.getText().contains("当前"))? String.valueOf(formerValidDay) :validText.getText();
-            String rechargeTimeInput = (rechargeText.getText()==null||"".equals(rechargeText.getText().trim())||rechargeText.getText().contains("当前"))?df.format(formerRechargeTime / 10.0f):rechargeText.getText();
-            String payRateInput = (payRateText.getText()==null||"".equals(payRateText.getText().trim())||payRateText.getText().contains("当前"))?df.format(formerPayRate / 10.0f):payRateText.getText();
-            String powerRateInput = (powerRateText.getText()==null||"".equals(powerRateText.getText().trim())||powerRateText.getText().contains("当前"))?df.format(formerPowerRate / 100.0f):powerRateText.getText();
-            int money, validDay, rechargeTime, payRate, powerRate;
-            if (pattern.matcher(moneyInput).matches() && pattern.matcher(rechargeTimeInput).matches() && pattern.matcher(payRateInput).matches()
-                    && pattern.matcher(validDayInput).matches() && pattern.matcher(powerRateInput).matches()) {
-                money = (int) (Double.parseDouble(moneyInput) * 10.0);
-                if (money + formerBalance > 50000) {
-                    JOptionPane.showMessageDialog(null, "账户余额不得超过5000元！");
-                    moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
-                    validText.addFocusListener(new JTextFieldHintListener(validText, "当前：" + formerValidDay));
-                    rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
-                    payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
-                    powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
-                    moneyText.requestFocus();
-                } else {
-                    validDay = (int) Double.parseDouble(validDayInput);
-                    rechargeTime = (int) (Double.parseDouble(rechargeTimeInput) * 10.0);
-                    payRate = (int) (Double.parseDouble(payRateInput) * 10.0);
-                    powerRate = (int) (Double.parseDouble(powerRateInput) * 100.0);
-                    if (validDay > 200 || rechargeTime > 255 || payRate > 255 || powerRate > 200) {
+            System.out.println("包月卡的充值");
+            if (isMonthUnUse == 1) {
+                System.out.println("未激活卡");
+                String validTextText = validText.getText();
+                System.out.println("validText输入值 : " + validTextText);
+                if (validTextText == null || "".equals(validTextText.trim()) || validTextText.contains("剩余天数")) {
+                    System.out.println("默认充值0天");
+                    // 默认充值0天
+                    String moneyInput = moneyText.getText();
+                    System.out.println("moneyInput : " + moneyInput);
+                    if (moneyInput.contains("-")) {
+                        moneyInput = moneyInput.replace("-", "");
+                        is_negative = 1;
+                    }
+                    System.out.println("rechargeText.getText : " + rechargeText.getText());
+                    System.out.println("payRateText.getText : " + payRateText.getText());
+                    System.out.println("powerRateText.getText : " + powerRateText.getText());
+                    String validDayInput = String.valueOf(formerValidDay);
+                    String rechargeTimeInput = (rechargeText.getText() == null || "".equals(rechargeText.getText().trim()) || rechargeText.getText().contains("当前")) ? df.format(formerRechargeTime / 10.0f) : rechargeText.getText();
+                    String payRateInput = (payRateText.getText() == null || "".equals(payRateText.getText().trim()) || payRateText.getText().contains("当前")) ? df.format(formerPayRate / 10.0f) : payRateText.getText();
+                    String powerRateInput = (powerRateText.getText() == null || "".equals(powerRateText.getText().trim()) || powerRateText.getText().contains("当前")) ? df.format(formerPowerRate / 100.0f) : powerRateText.getText();
+                    int money, validDay, rechargeTime, payRate, powerRate;
+                    if (pattern.matcher(moneyInput).matches() && pattern.matcher(rechargeTimeInput).matches() && pattern.matcher(payRateInput).matches()
+                            && pattern.matcher(validDayInput).matches() && pattern.matcher(powerRateInput).matches()) {
+                        if (is_negative == 0) {
+                            money = (int) (Double.parseDouble(moneyInput) * 10.0);
+                        } else {
+                            money = -(int) (Double.parseDouble(moneyInput) * 10.0);
+                        }
+                        if (money + formerBalance > 50000) {
+                            JOptionPane.showMessageDialog(null, "账户余额不得超过5000元！");
+                            moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                            validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDay));
+                            rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                            payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                            powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                            moneyText.requestFocus();
+                        } else if (money + formerBalance < 0) {
+                            JOptionPane.showMessageDialog(null, "账户余额不得少于0元！");
+                            moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                            validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDay));
+                            rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                            payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                            powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                            moneyText.requestFocus();
+                        } else {
+                            validDay = (int) Double.parseDouble(validDayInput);
+                            rechargeTime = (int) (Double.parseDouble(rechargeTimeInput) * 10.0);
+                            payRate = (int) (Double.parseDouble(payRateInput) * 10.0);
+                            powerRate = (int) (Double.parseDouble(powerRateInput) * 100.0);
+                            if (validDay > 200 || rechargeTime > 255 || payRate > 255 || powerRate > 200) {
+                                JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
+                                moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                                validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDay));
+                                rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                                payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                                powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                                moneyText.requestFocus();
+                            } else {
+                                SerialPort serialPort = PortManager.getSerialPort();
+                                User user = UserManager.getUser();
+                                if (serialPort != null) {
+                                    String systemPassword = user.getSystemPassword();
+                                    frame.tipLabel.setText("请再次将卡片放至充值机");
+                                    try {
+                                        SerialPortUtils.sendToPort(serialPort, CommandUtils.rechargeCommand(deviceType, money, lastTime, startTime, validDay, rechargeTime, payRate, powerRate, isReturn, systemPassword));
+                                    } catch (SendDataToSerialPortFailure | SerialPortOutputStreamCloseFailure sendDataToSerialPortFailure) {
+                                        sendDataToSerialPortFailure.printStackTrace();
+                                    }
+                                }
+                                if (CardManager.getCardByNum(cardNum) != null) {
+                                    Card card = CardManager.getCardByNum(cardNum);
+                                    card.setCardType(cardType);
+                                    card.setValidDay(validDay);
+                                    card.setRechargeTime(rechargeTime);
+                                    card.setPayRate(payRate);
+                                    card.setPowerRate(powerRate);
+                                    card.setTopUp(money);
+                                } else {
+                                    Card card = new Card(cardNum);
+                                    card.setCardType(cardType);
+                                    card.setValidDay(validDay);
+                                    card.setRechargeTime(rechargeTime);
+                                    card.setPayRate(payRate);
+                                    card.setPowerRate(powerRate);
+                                    card.setTopUp(money);
+                                    CardManager.addCard(cardNum, card);
+                                }
+                                frame.setEnabled(true);
+                                LoginFrame.IS_RECHARGE = 0;
+                                this.dispose();
+                            }
+                        }
+                    } else {
                         JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
                         moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
-                        validText.addFocusListener(new JTextFieldHintListener(validText, "当前：" + formerValidDay));
+                        validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDay));
                         rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
                         payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
                         powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
                         moneyText.requestFocus();
-                    } else {
-                        SerialPort serialPort = PortManager.getSerialPort();
-                        User user = UserManager.getUser();
-                        if (serialPort != null) {
-                            String systemPassword = user.getSystemPassword();
-                            frame.tipLabel.setText("请再次将卡片放至充值机");
-                            try {
-                                SerialPortUtils.sendToPort(serialPort, CommandUtils.rechargeCommand(deviceType, money, lastTime, startTime, validDay, rechargeTime, payRate, powerRate, isReturn, systemPassword));
-                            } catch (SendDataToSerialPortFailure | SerialPortOutputStreamCloseFailure sendDataToSerialPortFailure) {
-                                sendDataToSerialPortFailure.printStackTrace();
-                            }
-
-                        }
-                        if (CardManager.getCardByNum(cardNum) != null) {
-                            Card card = CardManager.getCardByNum(cardNum);
-                            card.setCardType(cardType);
-                            card.setValidDay(validDay);
-                            card.setRechargeTime(rechargeTime);
-                            card.setPayRate(payRate);
-                            card.setPowerRate(powerRate);
-                            card.setTopUp(money);
+                    }
+                } else {
+                    System.out.println("需要充值" + validTextText + "天");
+                    String moneyInput = moneyText.getText();
+                    System.out.println("moneyInput : " + moneyInput);
+                    if (moneyInput.contains("-")) {
+                        moneyInput = moneyInput.replace("-", "");
+                        is_negative = 1;
+                    }
+                    int sum = formerValidDay + Integer.parseInt(validTextText);
+                    System.out.println("sum : " + sum);
+                    String validDayInput = String.valueOf(sum);
+                    System.out.println("最后的validDayInput ： " + validDayInput);
+                    String rechargeTimeInput = (rechargeText.getText() == null || "".equals(rechargeText.getText().trim()) || rechargeText.getText().contains("当前")) ? df.format(formerRechargeTime / 10.0f) : rechargeText.getText();
+                    String payRateInput = (payRateText.getText() == null || "".equals(payRateText.getText().trim()) || payRateText.getText().contains("当前")) ? df.format(formerPayRate / 10.0f) : payRateText.getText();
+                    String powerRateInput = (powerRateText.getText() == null || "".equals(powerRateText.getText().trim()) || powerRateText.getText().contains("当前")) ? df.format(formerPowerRate / 100.0f) : powerRateText.getText();
+                    int money, validDay, rechargeTime, payRate, powerRate;
+                    if (pattern.matcher(moneyInput).matches() && pattern.matcher(rechargeTimeInput).matches() && pattern.matcher(payRateInput).matches()
+                            && pattern.matcher(validDayInput).matches() && pattern.matcher(powerRateInput).matches()) {
+                        if (is_negative == 0) {
+                            money = (int) (Double.parseDouble(moneyInput) * 10.0);
                         } else {
-                            Card card = new Card(cardNum);
-                            card.setCardType(cardType);
-                            card.setValidDay(validDay);
-                            card.setRechargeTime(rechargeTime);
-                            card.setPayRate(payRate);
-                            card.setPowerRate(powerRate);
-                            card.setTopUp(money);
-                            CardManager.addCard(cardNum, card);
+                            money = -(int) (Double.parseDouble(moneyInput) * 10.0);
                         }
-                        frame.setEnabled(true);
-                        LoginFrame.IS_RECHARGE = 0;
-                        this.dispose();
+                        if (money + formerBalance > 50000) {
+                            JOptionPane.showMessageDialog(null, "账户余额不得超过5000元！");
+                            moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                            validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDayText));
+                            rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                            payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                            powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                            moneyText.requestFocus();
+                        } else if (money + formerBalance < 0) {
+                            JOptionPane.showMessageDialog(null, "账户余额不得少于0元！");
+                            moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                            validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDayText));
+                            rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                            payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                            powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                            moneyText.requestFocus();
+                        } else {
+                            validDay = (int) Double.parseDouble(validDayInput);
+                            rechargeTime = (int) (Double.parseDouble(rechargeTimeInput) * 10.0);
+                            payRate = (int) (Double.parseDouble(payRateInput) * 10.0);
+                            powerRate = (int) (Double.parseDouble(powerRateInput) * 100.0);
+                            if (validDay > 200 || rechargeTime > 255 || payRate > 255 || powerRate > 200) {
+                                JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
+                                moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                                validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDayText));
+                                rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                                payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                                powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                                moneyText.requestFocus();
+                            } else {
+                                SerialPort serialPort = PortManager.getSerialPort();
+                                User user = UserManager.getUser();
+                                if (serialPort != null) {
+                                    String systemPassword = user.getSystemPassword();
+                                    frame.tipLabel.setText("请再次将卡片放至充值机");
+                                    try {
+                                        SerialPortUtils.sendToPort(serialPort, CommandUtils.rechargeCommand(deviceType, money, lastTime, startTime, validDay, rechargeTime, payRate, powerRate, isReturn, systemPassword));
+                                    } catch (SendDataToSerialPortFailure | SerialPortOutputStreamCloseFailure sendDataToSerialPortFailure) {
+                                        sendDataToSerialPortFailure.printStackTrace();
+                                    }
+                                }
+                                if (CardManager.getCardByNum(cardNum) != null) {
+                                    Card card = CardManager.getCardByNum(cardNum);
+                                    card.setCardType(cardType);
+                                    card.setValidDay(validDay);
+                                    card.setRechargeTime(rechargeTime);
+                                    card.setPayRate(payRate);
+                                    card.setPowerRate(powerRate);
+                                    card.setTopUp(money);
+                                } else {
+                                    Card card = new Card(cardNum);
+                                    card.setCardType(cardType);
+                                    card.setValidDay(validDay);
+                                    card.setRechargeTime(rechargeTime);
+                                    card.setPayRate(payRate);
+                                    card.setPowerRate(powerRate);
+                                    card.setTopUp(money);
+                                    CardManager.addCard(cardNum, card);
+                                }
+                                frame.setEnabled(true);
+                                LoginFrame.IS_RECHARGE = 0;
+                                this.dispose();
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
+                        moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                        validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDayText));
+                        rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                        payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                        powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                        moneyText.requestFocus();
                     }
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
-                moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
-                validText.addFocusListener(new JTextFieldHintListener(validText, "当前：" + formerValidDay));
-                rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
-                payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
-                powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
-                moneyText.requestFocus();
+                System.out.println("已激活卡");
+                System.out.println("剩余天数 : " + remainDay);
+                String validTextText = validText.getText();
+                System.out.println("validText输入值 : " + validTextText);
+                if (validTextText == null || "".equals(validTextText.trim()) || validTextText.contains("剩余天数")) {
+                    System.out.println("默认充值0天");
+                    //默认充值0天
+                    String moneyInput = moneyText.getText();
+                    System.out.println("moneyInput : " + moneyInput);
+                    if (moneyInput.contains("-")) {
+                        moneyInput = moneyInput.replace("-", "");
+                        is_negative = 1;
+                    }
+                    System.out.println("rechargeText.getText : " + rechargeText.getText());
+                    System.out.println("payRateText.getText : " + payRateText.getText());
+                    System.out.println("powerRateText.getText : " + powerRateText.getText());
+                    String validDayInput = String.valueOf(formerValidDay);
+                    String rechargeTimeInput = (rechargeText.getText() == null || "".equals(rechargeText.getText().trim()) || rechargeText.getText().contains("当前")) ? df.format(formerRechargeTime / 10.0f) : rechargeText.getText();
+                    String payRateInput = (payRateText.getText() == null || "".equals(payRateText.getText().trim()) || payRateText.getText().contains("当前")) ? df.format(formerPayRate / 10.0f) : payRateText.getText();
+                    String powerRateInput = (powerRateText.getText() == null || "".equals(powerRateText.getText().trim()) || powerRateText.getText().contains("当前")) ? df.format(formerPowerRate / 100.0f) : powerRateText.getText();
+                    int money, validDay, rechargeTime, payRate, powerRate;
+                    if (pattern.matcher(moneyInput).matches() && pattern.matcher(rechargeTimeInput).matches() && pattern.matcher(payRateInput).matches()
+                            && pattern.matcher(validDayInput).matches() && pattern.matcher(powerRateInput).matches()) {
+                        if (is_negative == 0) {
+                            money = (int) (Double.parseDouble(moneyInput) * 10.0);
+                        } else {
+                            money = -(int) (Double.parseDouble(moneyInput) * 10.0);
+                        }
+                        if (money + formerBalance > 50000) {
+                            JOptionPane.showMessageDialog(null, "账户余额不得超过5000元！");
+                            moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                            validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDay));
+                            rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                            payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                            powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                            moneyText.requestFocus();
+                        } else if (money + formerBalance < 0) {
+                            JOptionPane.showMessageDialog(null, "账户余额不得少于0元！");
+                            moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                            validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDay));
+                            rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                            payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                            powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                            moneyText.requestFocus();
+                        } else {
+                            validDay = (int) Double.parseDouble(validDayInput);
+                            rechargeTime = (int) (Double.parseDouble(rechargeTimeInput) * 10.0);
+                            payRate = (int) (Double.parseDouble(payRateInput) * 10.0);
+                            powerRate = (int) (Double.parseDouble(powerRateInput) * 100.0);
+                            if (validDay > 200 || rechargeTime > 255 || payRate > 255 || powerRate > 200) {
+                                JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
+                                moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                                validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDay));
+                                rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                                payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                                powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                                moneyText.requestFocus();
+                            } else {
+                                SerialPort serialPort = PortManager.getSerialPort();
+                                User user = UserManager.getUser();
+                                if (serialPort != null) {
+                                    String systemPassword = user.getSystemPassword();
+                                    frame.tipLabel.setText("请再次将卡片放至充值机");
+                                    try {
+                                        SerialPortUtils.sendToPort(serialPort, CommandUtils.rechargeCommand(deviceType, money, lastTime, startTime, validDay, rechargeTime, payRate, powerRate, isReturn, systemPassword));
+                                    } catch (SendDataToSerialPortFailure | SerialPortOutputStreamCloseFailure sendDataToSerialPortFailure) {
+                                        sendDataToSerialPortFailure.printStackTrace();
+                                    }
+                                }
+                                if (CardManager.getCardByNum(cardNum) != null) {
+                                    Card card = CardManager.getCardByNum(cardNum);
+                                    card.setCardType(cardType);
+                                    card.setValidDay(validDay);
+                                    card.setRechargeTime(rechargeTime);
+                                    card.setPayRate(payRate);
+                                    card.setPowerRate(powerRate);
+                                    card.setTopUp(money);
+                                } else {
+                                    Card card = new Card(cardNum);
+                                    card.setCardType(cardType);
+                                    card.setValidDay(validDay);
+                                    card.setRechargeTime(rechargeTime);
+                                    card.setPayRate(payRate);
+                                    card.setPowerRate(powerRate);
+                                    card.setTopUp(money);
+                                    CardManager.addCard(cardNum, card);
+                                }
+                                frame.setEnabled(true);
+                                LoginFrame.IS_RECHARGE = 0;
+                                this.dispose();
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
+                        moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                        validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDay));
+                        rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                        payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                        powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                        moneyText.requestFocus();
+                    }
+                } else {
+                    System.out.println("需要充值" + validTextText + "天");
+                    if (remainDay <= 0) {
+                        System.out.println("卡已到期，remainDay可能为负数");
+                        //启用时间置为今天
+                        Calendar now = Calendar.getInstance();
+                        String yearStr = String.valueOf(now.get(Calendar.YEAR));
+                        int year = Integer.parseInt(yearStr.substring(2));
+                        int month = now.get(Calendar.MONTH) + 1;
+                        int day = now.get(Calendar.DAY_OF_MONTH);
+                        int newStartTime = (year << 9) | (month << 5) | day;
+                        String moneyInput = moneyText.getText();
+                        System.out.println("moneyInput : " + moneyInput);
+                        if (moneyInput.contains("-")) {
+                            moneyInput = moneyInput.replace("-", "");
+                            is_negative = 1;
+                        }
+                        System.out.println("rechargeText.getText : " + rechargeText.getText());
+                        System.out.println("payRateText.getText : " + payRateText.getText());
+                        System.out.println("powerRateText.getText : " + powerRateText.getText());
+                        String validDayInput = String.valueOf(validTextText);
+                        String rechargeTimeInput = (rechargeText.getText() == null || "".equals(rechargeText.getText().trim()) || rechargeText.getText().contains("当前")) ? df.format(formerRechargeTime / 10.0f) : rechargeText.getText();
+                        String payRateInput = (payRateText.getText() == null || "".equals(payRateText.getText().trim()) || payRateText.getText().contains("当前")) ? df.format(formerPayRate / 10.0f) : payRateText.getText();
+                        String powerRateInput = (powerRateText.getText() == null || "".equals(powerRateText.getText().trim()) || powerRateText.getText().contains("当前")) ? df.format(formerPowerRate / 100.0f) : powerRateText.getText();
+                        int money, validDay, rechargeTime, payRate, powerRate;
+                        if (pattern.matcher(moneyInput).matches() && pattern.matcher(rechargeTimeInput).matches() && pattern.matcher(payRateInput).matches()
+                                && pattern.matcher(validDayInput).matches() && pattern.matcher(powerRateInput).matches()) {
+                            if (is_negative == 0) {
+                                money = (int) (Double.parseDouble(moneyInput) * 10.0);
+                            } else {
+                                money = -(int) (Double.parseDouble(moneyInput) * 10.0);
+                            }
+                            if (money + formerBalance > 50000) {
+                                JOptionPane.showMessageDialog(null, "账户余额不得超过5000元！");
+                                moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                                validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDay));
+                                rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                                payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                                powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                                moneyText.requestFocus();
+                            } else if (money + formerBalance < 0) {
+                                JOptionPane.showMessageDialog(null, "账户余额不得少于0元！");
+                                moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                                validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDay));
+                                rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                                payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                                powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                                moneyText.requestFocus();
+                            } else {
+                                validDay = (int) Double.parseDouble(validDayInput);
+                                System.out.println("valid day : " + validDay);
+                                rechargeTime = (int) (Double.parseDouble(rechargeTimeInput) * 10.0);
+                                payRate = (int) (Double.parseDouble(payRateInput) * 10.0);
+                                powerRate = (int) (Double.parseDouble(powerRateInput) * 100.0);
+                                if (validDay > 200 || rechargeTime > 255 || payRate > 255 || powerRate > 200) {
+                                    JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
+                                    moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                                    validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDay));
+                                    rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                                    payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                                    powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                                    moneyText.requestFocus();
+                                } else {
+                                    SerialPort serialPort = PortManager.getSerialPort();
+                                    User user = UserManager.getUser();
+                                    if (serialPort != null) {
+                                        String systemPassword = user.getSystemPassword();
+                                        frame.tipLabel.setText("请再次将卡片放至充值机");
+                                        try {
+                                            SerialPortUtils.sendToPort(serialPort, CommandUtils.rechargeCommand(deviceType, money, lastTime, newStartTime, validDay, rechargeTime, payRate, powerRate, isReturn, systemPassword));
+                                        } catch (SendDataToSerialPortFailure | SerialPortOutputStreamCloseFailure sendDataToSerialPortFailure) {
+                                            sendDataToSerialPortFailure.printStackTrace();
+                                        }
+                                    }
+                                    if (CardManager.getCardByNum(cardNum) != null) {
+                                        Card card = CardManager.getCardByNum(cardNum);
+                                        card.setCardType(cardType);
+                                        card.setValidDay(validDay);
+                                        card.setRechargeTime(rechargeTime);
+                                        card.setPayRate(payRate);
+                                        card.setPowerRate(powerRate);
+                                        card.setTopUp(money);
+                                    } else {
+                                        Card card = new Card(cardNum);
+                                        card.setCardType(cardType);
+                                        card.setValidDay(validDay);
+                                        card.setRechargeTime(rechargeTime);
+                                        card.setPayRate(payRate);
+                                        card.setPowerRate(powerRate);
+                                        card.setTopUp(money);
+                                        CardManager.addCard(cardNum, card);
+                                    }
+                                    frame.setEnabled(true);
+                                    LoginFrame.IS_RECHARGE = 0;
+                                    this.dispose();
+                                }
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
+                            moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                            validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDay));
+                            rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                            payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                            powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                            moneyText.requestFocus();
+                        }
+                    } else {
+                        System.out.println("未过期，加天数");
+                        //启用时间置为今天
+                        Calendar now = Calendar.getInstance();
+                        String yearStr = String.valueOf(now.get(Calendar.YEAR));
+                        int year = Integer.parseInt(yearStr.substring(2));
+                        int month = now.get(Calendar.MONTH) + 1;
+                        int day = now.get(Calendar.DAY_OF_MONTH);
+                        int newStartTime = (year << 9) | (month << 5) | day;
+                        String moneyInput = moneyText.getText();
+                        System.out.println("moneyInput : " + moneyInput);
+                        if (moneyInput.contains("-")) {
+                            moneyInput = moneyInput.replace("-", "");
+                            is_negative = 1;
+                        }
+                        System.out.println("rechargeText.getText : " + rechargeText.getText());
+                        System.out.println("payRateText.getText : " + payRateText.getText());
+                        System.out.println("powerRateText.getText : " + powerRateText.getText());
+
+                        System.out.println("remainDay : " + remainDay);
+                        System.out.println("validTextText : " + Integer.parseInt(validTextText));
+                        int sum = remainDay + Integer.parseInt(validTextText);
+                        System.out.println("sum : " + sum);
+                        String validDayInput = String.valueOf(sum);
+                        System.out.println("最后的validDayInput ： " + validDayInput);
+                        String rechargeTimeInput = (rechargeText.getText() == null || "".equals(rechargeText.getText().trim()) || rechargeText.getText().contains("当前")) ? df.format(formerRechargeTime / 10.0f) : rechargeText.getText();
+                        String payRateInput = (payRateText.getText() == null || "".equals(payRateText.getText().trim()) || payRateText.getText().contains("当前")) ? df.format(formerPayRate / 10.0f) : payRateText.getText();
+                        String powerRateInput = (powerRateText.getText() == null || "".equals(powerRateText.getText().trim()) || powerRateText.getText().contains("当前")) ? df.format(formerPowerRate / 100.0f) : powerRateText.getText();
+                        int money, validDay, rechargeTime, payRate, powerRate;
+                        if (pattern.matcher(moneyInput).matches() && pattern.matcher(rechargeTimeInput).matches() && pattern.matcher(payRateInput).matches()
+                                && pattern.matcher(validDayInput).matches() && pattern.matcher(powerRateInput).matches()) {
+                            if (is_negative == 0) {
+                                money = (int) (Double.parseDouble(moneyInput) * 10.0);
+                            } else {
+                                money = -(int) (Double.parseDouble(moneyInput) * 10.0);
+                            }
+                            if (money + formerBalance > 50000) {
+                                JOptionPane.showMessageDialog(null, "账户余额不得超过5000元！");
+                                moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                                validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDayText));
+                                rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                                payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                                powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                                moneyText.requestFocus();
+                            } else if (money + formerBalance < 0) {
+                                JOptionPane.showMessageDialog(null, "账户余额不得少于0元！");
+                                moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                                validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDayText));
+                                rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                                payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                                powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                                moneyText.requestFocus();
+                            } else {
+                                validDay = (int) Double.parseDouble(validDayInput);
+                                rechargeTime = (int) (Double.parseDouble(rechargeTimeInput) * 10.0);
+                                payRate = (int) (Double.parseDouble(payRateInput) * 10.0);
+                                powerRate = (int) (Double.parseDouble(powerRateInput) * 100.0);
+                                if (validDay > 200 || rechargeTime > 255 || payRate > 255 || powerRate > 200) {
+                                    JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
+                                    moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                                    validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDayText));
+                                    rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                                    payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                                    powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                                    moneyText.requestFocus();
+                                } else {
+                                    SerialPort serialPort = PortManager.getSerialPort();
+                                    User user = UserManager.getUser();
+                                    if (serialPort != null) {
+                                        String systemPassword = user.getSystemPassword();
+                                        frame.tipLabel.setText("请再次将卡片放至充值机");
+                                        try {
+                                            SerialPortUtils.sendToPort(serialPort, CommandUtils.rechargeCommand(deviceType, money, lastTime, newStartTime, validDay, rechargeTime, payRate, powerRate, isReturn, systemPassword));
+                                        } catch (SendDataToSerialPortFailure | SerialPortOutputStreamCloseFailure sendDataToSerialPortFailure) {
+                                            sendDataToSerialPortFailure.printStackTrace();
+                                        }
+                                    }
+                                    if (CardManager.getCardByNum(cardNum) != null) {
+                                        Card card = CardManager.getCardByNum(cardNum);
+                                        card.setCardType(cardType);
+                                        card.setValidDay(validDay);
+                                        card.setRechargeTime(rechargeTime);
+                                        card.setPayRate(payRate);
+                                        card.setPowerRate(powerRate);
+                                        card.setTopUp(money);
+                                    } else {
+                                        Card card = new Card(cardNum);
+                                        card.setCardType(cardType);
+                                        card.setValidDay(validDay);
+                                        card.setRechargeTime(rechargeTime);
+                                        card.setPayRate(payRate);
+                                        card.setPowerRate(powerRate);
+                                        card.setTopUp(money);
+                                        CardManager.addCard(cardNum, card);
+                                    }
+                                    frame.setEnabled(true);
+                                    LoginFrame.IS_RECHARGE = 0;
+                                    this.dispose();
+                                }
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "请按照提示输入正确格式，且最多一位小数！");
+                            moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                            validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDayText));
+                            rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                            payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                            powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                            moneyText.requestFocus();
+                        }
+                    }
+                }
             }
         } else {
             String moneyInput = moneyText.getText();
-            String rechargeTimeInput = (rechargeText.getText()==null||"".equals(rechargeText.getText().trim())||rechargeText.getText().contains("当前"))?df.format(formerRechargeTime / 10.0f):rechargeText.getText();
-            String payRateInput = (payRateText.getText()==null||"".equals(payRateText.getText().trim())||payRateText.getText().contains("当前"))?df.format(formerPayRate / 10.0f):payRateText.getText();
-            String powerRateInput = (powerRateText.getText()==null||"".equals(powerRateText.getText().trim())||powerRateText.getText().contains("当前"))?df.format(formerPowerRate / 100.0f):powerRateText.getText();
+            if (moneyInput.contains("-")) {
+                moneyInput = moneyInput.replace("-", "");
+                is_negative = 1;
+            }
+            String rechargeTimeInput = (rechargeText.getText() == null || "".equals(rechargeText.getText().trim()) || rechargeText.getText().contains("当前")) ? df.format(formerRechargeTime / 10.0f) : rechargeText.getText();
+            String payRateInput = (payRateText.getText() == null || "".equals(payRateText.getText().trim()) || payRateText.getText().contains("当前")) ? df.format(formerPayRate / 10.0f) : payRateText.getText();
+            String powerRateInput = (powerRateText.getText() == null || "".equals(powerRateText.getText().trim()) || powerRateText.getText().contains("当前")) ? df.format(formerPowerRate / 100.0f) : powerRateText.getText();
             if (pattern.matcher(moneyInput).matches() && pattern.matcher(rechargeTimeInput).matches() && pattern.matcher(payRateInput).matches() && pattern.matcher(powerRateInput).matches()) {
-                int money = (int) (Double.parseDouble(moneyInput) * 10.0);
+                int money;
+                if (is_negative == 0) {
+                    money = (int) (Double.parseDouble(moneyInput) * 10.0);
+                } else {
+                    money = -(int) (Double.parseDouble(moneyInput) * 10.0);
+                }
                 if (money + formerBalance > 50000) {
                     JOptionPane.showMessageDialog(null, "账户余额不得超过5000元！");
+                    moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
+                    rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
+                    payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
+                    powerRateText.addFocusListener(new JTextFieldHintListener(powerRateText, "当前：" + df.format(formerPowerRate / 100.0f)));
+                    moneyText.requestFocus();
+                } else if (money + formerBalance < 0) {
+                    JOptionPane.showMessageDialog(null, "账户余额不得少于0元！");
                     moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
                     rechargeText.addFocusListener(new JTextFieldHintListener(rechargeText, "当前：" + df.format(formerRechargeTime / 10.0f)));
                     payRateText.addFocusListener(new JTextFieldHintListener(payRateText, "当前：" + df.format(formerPayRate / 10.0f)));
@@ -303,7 +784,7 @@ public class QueryToRechargeFrame extends JFrame {
         balanceLabel.setBounds(new Rectangle(new Point(180, 40), balanceLabel.getPreferredSize()));
 
         JLabel balanceText = new JLabel();
-        balanceText.setText(df.format(formerBalance/10.0f));
+        balanceText.setText(df.format(formerBalance / 10.0f));
         balanceText.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
         contentPane.add(balanceText);
         balanceText.setBounds(new Rectangle(new Point(240, 46), balanceText.getPreferredSize()));
@@ -338,7 +819,7 @@ public class QueryToRechargeFrame extends JFrame {
         moneyText.addFocusListener(new JTextFieldHintListener(moneyText, "卡内余额：" + df.format(formerBalance / 10.0f)));
 
         JLabel validLabel = new JLabel();
-        validLabel.setText("有效天数");
+        validLabel.setText("充值天数");
         validLabel.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
         contentPane.add(validLabel);
         validLabel.setBounds(new Rectangle(new Point(55, 170), validLabel.getPreferredSize()));
@@ -349,7 +830,13 @@ public class QueryToRechargeFrame extends JFrame {
         if (cardType == 0 || cardType == 1 || cardType == 2) {
             validText.setEditable(false);
         } else {
-            validText.addFocusListener(new JTextFieldHintListener(validText, "当前：" + formerValidDay));
+
+            if (remainDay < 0) {
+                remainDayText = "已到期";
+            } else {
+                remainDayText = String.valueOf(remainDay);
+            }
+            validText.addFocusListener(new JTextFieldHintListener(validText, "剩余天数：" + remainDayText));
             validText.setEditable(true);
         }
 

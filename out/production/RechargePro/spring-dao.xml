@@ -15,4 +15,12 @@
         <property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
     </bean>
 
+    <bean id="pushMsgDao" class="dao.impl.PushMsgDaoImpl">
+        <property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
+    </bean>
+
+    <bean id="uckImberOrtDao" class="dao.impl.UckImberOrtDaoImpl">
+        <property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
+    </bean>
+
 </beans>

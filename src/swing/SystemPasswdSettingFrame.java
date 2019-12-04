@@ -41,16 +41,16 @@ public class SystemPasswdSettingFrame extends JFrame {
                     user.setSystemPassword(newPassword);
                     ServiceImpl.getInstance().updateSystemPassword(user.getUserId(), user.getUserName(), newPassword);
                     ServiceImpl.getInstance().updateSubSystemPassword(newPassword);
-                    JOptionPane.showMessageDialog(null, "系统密码设置成功！");
+                    JOptionPane.showMessageDialog(null, "系统密码设置成功！", "提示", JOptionPane.INFORMATION_MESSAGE);
                     this.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null, "密码输入不一致！");
+                    JOptionPane.showMessageDialog(null, "密码输入不一致！", "提示", JOptionPane.WARNING_MESSAGE);
                     newPasswdText.setText("");
                     checkPasswdText.setText("");
                     newPasswdText.requestFocus();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "请输入8位数字格式的密码！");
+                JOptionPane.showMessageDialog(null, "请输入8位数字格式的密码！", "提示", JOptionPane.WARNING_MESSAGE);
                 newPasswdText.setText("");
                 checkPasswdText.setText("");
                 newPasswdText.requestFocus();
@@ -68,16 +68,16 @@ public class SystemPasswdSettingFrame extends JFrame {
         contentPane.setLayout(null);
 
         JLabel newPasswdLabel = new JLabel();
-        newPasswdLabel.setText("新密码");
-        newPasswdLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
+        newPasswdLabel.setText("新密码   : ");
+        newPasswdLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 14));
         contentPane.add(newPasswdLabel);
-        newPasswdLabel.setBounds(new Rectangle(new Point(60, 55), newPasswdLabel.getPreferredSize()));
+        newPasswdLabel.setBounds(new Rectangle(new Point(60, 50), newPasswdLabel.getPreferredSize()));
 
         JLabel checkPasswdLabel = new JLabel();
-        checkPasswdLabel.setText("确认密码");
-        checkPasswdLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
+        checkPasswdLabel.setText("确认密码 : ");
+        checkPasswdLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 14));
         contentPane.add(checkPasswdLabel);
-        checkPasswdLabel.setBounds(new Rectangle(new Point(55, 110), checkPasswdLabel.getPreferredSize()));
+        checkPasswdLabel.setBounds(new Rectangle(new Point(55, 105), checkPasswdLabel.getPreferredSize()));
 
         confirmButton = new JButton();
         confirmButton.setText("确认");

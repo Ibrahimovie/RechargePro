@@ -38,14 +38,12 @@ public class UnclaimedFrame extends JFrame {
     private int payRate;
     private int powerRate;
     private int isReturn;
-    private JTextField input;
+    //    private JTextField input;
     private JButton confirmButton;
     private DecimalFormat df;
 
     public UnclaimedFrame(RechargeFrame rechargeFrame, String cardNum, int preBalance, int formerBalance, int deviceType, int lastTime,
                           int startTime, int validDay, int rechargeTime, int payRate, int powerRate, int isReturn) {
-        System.out.println("UnclaimedFrame ! " + cardNum + " , " + preBalance + " , " + formerBalance + " , " + deviceType + " , "
-                + lastTime + " , " + startTime + " , " + validDay + " , " + rechargeTime + " , " + payRate + " , " + powerRate + " , " + isReturn);
         this.frame = rechargeFrame;
         this.cardNum = cardNum;
         this.preBalance = preBalance;
@@ -60,7 +58,7 @@ public class UnclaimedFrame extends JFrame {
         this.isReturn = isReturn;
         df = new DecimalFormat("0.0");
         initComponents();
-        this.setSize(430, 300);
+        this.setSize(360, 300);
         this.setTitle("圈存领取界面");
         Image icon = Toolkit.getDefaultToolkit().getImage("resources/dk_logo.png");
         this.setIconImage(icon);
@@ -70,77 +68,64 @@ public class UnclaimedFrame extends JFrame {
     }
 
     private void confirmActionPerformed(ActionEvent e) {
-        String moneyInput = input.getText();
-        String regEx = "^[0-9]*[1-9][0-9]*$";//正整数不包括0
-        Pattern pattern = Pattern.compile(regEx);
-        if (pattern.matcher(moneyInput).matches()) {
-            int moneyInputInt = Integer.parseInt(moneyInput);
-            if (moneyInputInt > preBalance) {
-                JOptionPane.showMessageDialog(null, "请输入不大于待领取金额的数字！");
-                input.setText("");
-                input.requestFocus();
-            } else {
-//                System.out.println("hiahiahiahia : formerBalance / 10.0f = " + (formerBalance / 10.0f));
-                if (moneyInputInt + (formerBalance / 10.0f) > 5000) {
-                    JOptionPane.showMessageDialog(null, "卡内余额不得超过5000元！");
-                    input.setText("");
-                    input.requestFocus();
-                } else {
-                    SerialPort serialPort = PortManager.getSerialPort();
-                    User user = UserManager.getUser();
-                    if (serialPort != null) {
-                        String systemPassword = user.getSystemPassword();
-                        frame.tipLabel.setText("请再次将卡片放至充值机");
-                        try {
-                            SerialPortUtils.sendToPort(serialPort, CommandUtils.rechargeCommand(deviceType, moneyInputInt * 10, lastTime,
-                                    startTime, validDay, rechargeTime, payRate, powerRate, isReturn, systemPassword));
-                        } catch (SendDataToSerialPortFailure | SerialPortOutputStreamCloseFailure sendDataToSerialPortFailure) {
-                            sendDataToSerialPortFailure.printStackTrace();
-                        }
-                    }
-                    int cardType = ServiceImpl.getInstance().getCardTypeByNum(cardNum);
-                    if (CardManager.getCardByNum(cardNum) != null) {
-                        Card card = CardManager.getCardByNum(cardNum);
-                        card.setTopUp(moneyInputInt * 10);
-                        card.setValidDay(validDay);
-                        card.setCardType(cardType);
-                        card.setRechargeTime(rechargeTime);
-                        card.setPayRate(payRate);
-                        card.setPowerRate(powerRate);
-                    } else {
-                        Card card = new Card(cardNum);
-                        card.setTopUp(moneyInputInt * 10);
-                        card.setValidDay(validDay);
-                        card.setCardType(cardType);
-                        card.setRechargeTime(rechargeTime);
-                        card.setPayRate(payRate);
-                        card.setPowerRate(powerRate);
-                        CardManager.addCard(cardNum, card);
-                    }
-                    frame.setEnabled(true);
-                    LoginFrame.IS_UNCLIAMED = 0;
-                    this.dispose();
-                }
-            }
+        if (preBalance == 0) {
+            JOptionPane.showMessageDialog(null, "无可领取金额！");
         } else {
-            JOptionPane.showMessageDialog(null, "请输入正确格式的金额！");
-            input.setText("");
-            input.requestFocus();
+            if (preBalance + (formerBalance / 10.0f) > 5000) {
+                JOptionPane.showMessageDialog(null, "卡内余额不得超过5000元！");
+            } else {
+                SerialPort serialPort = PortManager.getSerialPort();
+                User user = UserManager.getUser();
+                if (serialPort != null) {
+                    String systemPassword = user.getSystemPassword();
+                    frame.tipLabel.setText("请再次将卡片放至充值机");
+                    try {
+                        LoginFrame.PRE_HIS_MARK = 1;
+                        SerialPortUtils.sendToPort(serialPort, CommandUtils.rechargeCommand(deviceType, preBalance * 10, lastTime,
+                                startTime, validDay, rechargeTime, payRate, powerRate, isReturn, systemPassword));
+                    } catch (SendDataToSerialPortFailure | SerialPortOutputStreamCloseFailure sendDataToSerialPortFailure) {
+                        sendDataToSerialPortFailure.printStackTrace();
+                    }
+                }
+                int cardType = ServiceImpl.getInstance().getCardTypeByNum(cardNum);
+                if (CardManager.getCardByNum(cardNum) != null) {
+                    Card card = CardManager.getCardByNum(cardNum);
+                    card.setTopUp(preBalance * 10);
+                    card.setValidDay(validDay);
+                    card.setCardType(cardType);
+                    card.setRechargeTime(rechargeTime);
+                    card.setPayRate(payRate);
+                    card.setPowerRate(powerRate);
+                } else {
+                    Card card = new Card(cardNum);
+                    card.setTopUp(preBalance * 10);
+                    card.setValidDay(validDay);
+                    card.setCardType(cardType);
+                    card.setRechargeTime(rechargeTime);
+                    card.setPayRate(payRate);
+                    card.setPowerRate(powerRate);
+                    CardManager.addCard(cardNum, card);
+                }
+                frame.setEnabled(true);
+                LoginFrame.IS_RECHARGE = 0;
+                this.dispose();
+            }
         }
+
     }
 
 
     private void cancelActionPerformed(ActionEvent e) {
         frame.tipLabel.setText("欢迎使用得康充值系统");
         frame.setEnabled(true);
-        LoginFrame.IS_UNCLIAMED = 0;
+        LoginFrame.IS_RECHARGE = 0;
         this.dispose();
     }
 
     private void unclaimedWindowClosing(WindowEvent e) {
         frame.tipLabel.setText("欢迎使用得康充值系统");
         frame.setEnabled(true);
-        LoginFrame.IS_UNCLIAMED = 0;
+        LoginFrame.IS_RECHARGE = 0;
     }
 
     private void initComponents() {
@@ -155,48 +140,49 @@ public class UnclaimedFrame extends JFrame {
         Container contentPane = this.getContentPane();
         contentPane.setLayout(null);
 
-        JLabel preBalanceLabel = new JLabel();
-        preBalanceLabel.setText("待领取 : ");
-        preBalanceLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 20));
-        contentPane.add(preBalanceLabel);
-        preBalanceLabel.setBounds(new Rectangle(new Point(50, 40), preBalanceLabel.getPreferredSize()));
-
-        JLabel preBalanceText = new JLabel();
-        preBalanceText.setText(String.valueOf(preBalance));
-        preBalanceText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
-        contentPane.add(preBalanceText);
-        preBalanceText.setBounds(new Rectangle(new Point(130, 43), preBalanceText.getPreferredSize()));
-
         JLabel formerBalanceLabel = new JLabel();
         formerBalanceLabel.setText("卡内余额 : ");
         formerBalanceLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 20));
         contentPane.add(formerBalanceLabel);
-        formerBalanceLabel.setBounds(new Rectangle(new Point(210, 40), formerBalanceLabel.getPreferredSize()));
+        formerBalanceLabel.setBounds(new Rectangle(new Point(100, 40), formerBalanceLabel.getPreferredSize()));
 
         JLabel formerBalanceText = new JLabel();
         formerBalanceText.setText(String.valueOf(df.format(formerBalance / 10.0f)));
         formerBalanceText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
         contentPane.add(formerBalanceText);
-        formerBalanceText.setBounds(new Rectangle(new Point(310, 43), formerBalanceText.getPreferredSize()));
+        formerBalanceText.setBounds(new Rectangle(new Point(210, 43), formerBalanceText.getPreferredSize()));
+
+        JLabel preBalanceLabel = new JLabel();
+        preBalanceLabel.setText("待 领 取  : ");
+        preBalanceLabel.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 20));
+        contentPane.add(preBalanceLabel);
+        preBalanceLabel.setBounds(new Rectangle(new Point(100, 90), preBalanceLabel.getPreferredSize()));
+
+        JLabel preBalanceText = new JLabel();
+        preBalanceText.setText(String.valueOf(preBalance));
+        preBalanceText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
+        contentPane.add(preBalanceText);
+        preBalanceText.setBounds(new Rectangle(new Point(210, 93), preBalanceText.getPreferredSize()));
+
 
         JLabel title = new JLabel();
-        title.setText("请输入领取金额（正整数）  ");
+        title.setText("（暂仅支持全额领取）  ");
         title.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 14));
         contentPane.add(title);
-        title.setBounds(new Rectangle(new Point(120, 95), title.getPreferredSize()));
+        title.setBounds(new Rectangle(new Point(90, 130), title.getPreferredSize()));
 
-        input = new JTextField();
-        input.setFont(new Font("Dialog", Font.PLAIN, 14));
-        contentPane.add(input);
-        input.setBounds(120, 130, 160, 35);
+//        input = new JTextField();
+//        input.setFont(new Font("Dialog", Font.PLAIN, 14));
+//        contentPane.add(input);
+//        input.setBounds(120, 130, 160, 35);
 
 
         confirmButton = new JButton();
-        confirmButton.setText("确定");
+        confirmButton.setText("领取");
         confirmButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         confirmButton.addActionListener(this::confirmActionPerformed);
         contentPane.add(confirmButton);
-        confirmButton.setBounds(120, 185, 73, 35);
+        confirmButton.setBounds(90, 180, 73, 35);
         confirmButton.setBackground(new Color(180, 205, 205));
         confirmButton.setBorder(BorderFactory.createRaisedBevelBorder());
 
@@ -205,7 +191,7 @@ public class UnclaimedFrame extends JFrame {
         cancelButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         cancelButton.addActionListener(this::cancelActionPerformed);
         contentPane.add(cancelButton);
-        cancelButton.setBounds(205, 185, 73, 35);
+        cancelButton.setBounds(180, 180, 73, 35);
         cancelButton.setBackground(new Color(180, 205, 205));
         cancelButton.setBorder(BorderFactory.createRaisedBevelBorder());
 

@@ -2,6 +2,7 @@ package commands;
 
 import utils.*;
 
+
 /**
  * @author kingfans
  */
@@ -80,8 +81,6 @@ public class CommandUtils {
     }
 
     public static byte[] rechargeCommand(int deviceType, int money, int lastTime, int startTime, int validDay, int rechargeTime, int payRate, int powerRate, int isReturn, String password) {
-        System.out.println("rechargeCommand ! " + deviceType + " , " + money + " , " + lastTime + " , " + startTime + " , " + validDay + " , "
-                + rechargeTime + " , " + payRate + " , " + powerRate + " , " + isReturn + " , " + password);
         byte[] moneyByte = Utils.intToByteArray2(money);
         byte[] startTimeByte = Utils.intToByteArray2(startTime);
         byte[] b = new byte[33];
@@ -133,4 +132,46 @@ public class CommandUtils {
         b[31] = (byte) (crc2[0] & 0xFF);
         return b;
     }
+
+    public static byte[] F1Command(int size) {
+        byte[] temp = Utils.intToByteArray2(size);
+        byte[] b = {(byte) 0xff, (byte) 0x55, (byte) 0x05, (byte) 0xf1, temp[0], temp[1],
+                0, 0, (byte) 0xbb};
+        int crc = generateCRC(b, 3, b.length - 6);
+        byte[] crc2 = Utils.intToByteArray2(crc);
+        b[6] = (byte) (crc2[1] & 0xFF);
+        b[7] = (byte) (crc2[0] & 0xFF);
+        return b;
+    }
+
+    public static byte[] updateCommand(int order, int total, byte[] content) {
+        byte[] b = new byte[1031];
+        b[0] = (byte) 0xff;
+        b[1] = (byte) 0xaa;
+        b[2] = (byte) order;
+        b[3] = (byte) total;
+
+        byte[] b2 = new byte[3];
+        b2[0] = 0;
+        b2[1] = 0;
+        b2[2] = (byte) 0xbb;
+
+        if (content.length < 1024) {
+            byte[] temp = new byte[1024];
+            System.arraycopy(content, 0, temp, 0, content.length);
+            for (int i = content.length; i < 1024; i++) {
+                temp[i] = 0x1a;
+            }
+            System.arraycopy(temp, 0, b, 4, temp.length);
+        }else{
+            System.arraycopy(content, 0, b, 4, content.length);
+        }
+        System.arraycopy(b2, 0, b, 1028, b2.length);
+        int crc = generateCRC(b, 2, b.length - 5);
+        byte[] crc2 = Utils.intToByteArray2(crc);
+        b[b.length - 3] = (byte) (crc2[1] & 0xFF);
+        b[b.length - 2] = (byte) (crc2[0] & 0xFF);
+        return b;
+    }
+
 }

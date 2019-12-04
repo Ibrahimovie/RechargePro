@@ -17,18 +17,27 @@ public class StatusCheckJob implements Job {
         if (PortManager.getSerialPort() != null) {
             LoginFrame.STATUS_COUNT++;
             if (LoginFrame.STATUS_COUNT >= 9) {
-                System.out.println("port status count reached 9 !!!");
                 frame.deviceStatusText.setText("连接异常");
                 frame.deviceStatusText.setForeground(Color.red);
+                frame.hardwareVersionText.setText("-");
+                frame.softwareVersionText.setText("-");
                 LoginFrame.STATUS_COUNT = 0;
             }
         }
-        LoginFrame.SERVER_STATUS_COUNT++;
-        if (LoginFrame.SERVER_STATUS_COUNT >= 3) {
-            System.out.println("server status count reached 3 !!!");
-            frame.serverStatusText.setText("离线");
-            frame.serverStatusText.setForeground(Color.red);
-            LoginFrame.SERVER_STATUS_COUNT = 0;
-        }
+//        LoginFrame.SERVER_STATUS_COUNT++;
+//        if (LoginFrame.SERVER_STATUS_COUNT >= 3) {
+//            frame.serverStatusText.setText("离线");
+//            frame.serverStatusText.setForeground(Color.red);
+//            frame.logoutButton.setEnabled(false);
+//            frame.registerButton.setEnabled(false);
+//            frame.queryButton.setEnabled(false);
+//            frame.rechargeButton.setEnabled(false);
+//            frame.rechargeHisButton.setEnabled(false);
+//            frame.unclaimedButton.setEnabled(false);
+//            frame.prechargeHisButton.setEnabled(false);
+//            frame.registerHisButton.setEnabled(false);
+//            frame.logoutHisButton.setEnabled(false);
+//            LoginFrame.SERVER_STATUS_COUNT = 0;
+//        }
     }
 }
